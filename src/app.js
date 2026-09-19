@@ -31,6 +31,7 @@ import Routes from './routing/Routes';
 
 // Sharetribe Web Template uses English translations as default translations.
 import defaultMessages from './translations/en.json';
+import messagesInLocale from './translations/da.json';
 
 // If you want to change the language of default (fallback) translations,
 // change the imports to match the wanted locale:
@@ -57,8 +58,6 @@ import defaultMessages from './translations/en.json';
 //
 // I.e. remove "const messagesInLocale" and add import for the correct locale:
 // import messagesInLocale from './translations/fr.json';
-const messagesInLocale = {};
-
 // If translation key is missing from `messagesInLocale` (e.g. fr.json),
 // corresponding key will be added to messages from `defaultMessages` (en.json)
 // to prevent missing translation key errors.
@@ -89,6 +88,17 @@ const isTestEnv = process.env.NODE_ENV === 'test';
 const localeMessages = isTestEnv
   ? Object.fromEntries(Object.entries(defaultMessages).map(([key]) => [key, key]))
   : addMissingTranslations(defaultMessages, messagesInLocale);
+
+/**
+ * Fairway ships a Danish UI, but the marketplace language in Console is still
+ * English, so its hosted translations would replace every Danish string with
+ * the English default. Local translations therefore win.
+ *
+ * Once the language is set to Danish in Console (General -> Localization),
+ * swap the spread order back to `{ ...localeMessages, ...hosted }` so operators
+ * can override individual strings from Console again.
+ */
+const mergeTranslations = hosted => ({ ...hosted, ...localeMessages });
 
 const Configurations = props => {
   const { appConfig, children } = props;
@@ -198,7 +208,7 @@ export const ClientApp = props => {
     return (
       <MaintenanceModeError
         locale={appConfig.localization.locale}
-        messages={{ ...localeMessages, ...hostedTranslations }}
+        messages={mergeTranslations(hostedTranslations)}
       />
     );
   }
@@ -217,7 +227,7 @@ export const ClientApp = props => {
     <Configurations appConfig={appConfig}>
       <IntlProvider
         locale={appConfig.localization.locale}
-        messages={{ ...localeMessages, ...hostedTranslations }}
+        messages={mergeTranslations(hostedTranslations)}
         textComponent="span"
       >
         <Provider store={store}>
@@ -254,7 +264,7 @@ export const ServerApp = props => {
     return (
       <MaintenanceModeError
         locale={appConfig.localization.locale}
-        messages={{ ...localeMessages, ...hostedTranslations }}
+        messages={mergeTranslations(hostedTranslations)}
         helmetContext={helmetContext}
       />
     );
@@ -265,7 +275,7 @@ export const ServerApp = props => {
     <Configurations appConfig={appConfig}>
       <IntlProvider
         locale={appConfig.localization.locale}
-        messages={{ ...localeMessages, ...hostedTranslations }}
+        messages={mergeTranslations(hostedTranslations)}
         textComponent="span"
       >
         <Provider store={store}>
