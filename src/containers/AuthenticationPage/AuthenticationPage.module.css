@@ -16,6 +16,13 @@
     height: unset;
     min-height: unset;
   }
+
+  /* FAIRWAY: the pitch and the form sit side by side once there is room */
+  @media (--viewportLarge) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .content {

@@ -56,6 +56,8 @@ import SocialLoginButtons from './SocialLoginButtons/SocialLoginButtons';
 
 import { TOS_ASSET_NAME, PRIVACY_POLICY_ASSET_NAME } from './AuthenticationPage.duck';
 
+import SignupPitch from './SignupPitch';
+
 import css from './AuthenticationPage.module.css';
 
 const getTabHeading = ({ messageId, isSelected }) => {
@@ -355,6 +357,10 @@ export const AuthenticationPageComponent = props => {
           sizes="100%"
           useOverlay
         >
+          {/* FAIRWAY: why an account is worth making, beside the form that
+              asks for one. Half this screen was a photograph doing nothing. */}
+          {showAuthenticationForm ? <SignupPitch /> : null}
+
           {showAuthenticationForm ? (
             <div className={css.content}>
               <LinkTabNavHorizontal
