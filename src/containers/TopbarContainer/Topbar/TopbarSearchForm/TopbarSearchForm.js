@@ -35,6 +35,9 @@ const KeywordSearchField = props => {
               data-testid={isMobile ? 'keyword-search-mobile' : 'keyword-search'}
               ref={inputRef}
               type="text"
+              /* FAIRWAY: a placeholder is not a label — it disappears the moment
+                 you type and is not reliably announced. */
+              aria-label={intl.formatMessage({ id: 'TopbarSearchForm.placeholder' })}
               placeholder={intl.formatMessage({
                 id: 'TopbarSearchForm.placeholder',
               })}

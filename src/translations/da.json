@@ -675,6 +675,8 @@
   "ListingImageGallery.closeModalTitle": "Luk vindue",
   "ListingImageGallery.imageAltText": "annoncebillede {index}/{count}",
   "ListingImageGallery.imageThumbnailAltText": "miniature af annoncebillede {index}/{count}",
+  "ListingImageGallery.nextImage": "Næste billede",
+  "ListingImageGallery.previousImage": "Forrige billede",
   "ListingImageGallery.viewImagesButton": "Vis store billeder ({count})",
   "ListingPage.aboutProviderTitle": "Om annoncens ejer",
   "ListingPage.addPayoutDetails": "Tilføj udbetalingsoplysninger",
