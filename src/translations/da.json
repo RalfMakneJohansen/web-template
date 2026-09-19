@@ -1354,6 +1354,8 @@
   "TopbarDesktop.signup": "Opret konto",
   "TopbarDesktop.yourListingsLink": "Dine annoncer",
   "TopbarMobileMenu.accountSettingsLink": "Kontoindstillinger",
+  "TopbarMobileMenu.browseAll": "Alt udstyr",
+  "TopbarMobileMenu.browseHeading": "Find udstyr",
   "TopbarMobileMenu.greeting": "Hej {displayName}",
   "TopbarMobileMenu.inboxLink": "Indbakke",
   "TopbarMobileMenu.loginLink": "Log ind",

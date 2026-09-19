@@ -17,6 +17,8 @@ import {
   NotificationBadge,
 } from '../../../../components';
 
+import MobileMenuCategories from './MobileMenuCategories';
+
 import css from './TopbarMobileMenu.module.css';
 
 const CustomLinkComponent = ({ linkConfig, currentPage }) => {
@@ -132,6 +134,8 @@ const TopbarMobileMenu = props => {
             />
           </div>
 
+          <MobileMenuCategories />
+
           <ul className={css.customLinksWrapper}>{extraLinks}</ul>
 
           <div className={css.spacer} />
@@ -192,6 +196,8 @@ const TopbarMobileMenu = props => {
             </NamedLink>
           </li>
         </ul>
+        <MobileMenuCategories />
+
         <ul className={css.customLinksWrapper}>{extraLinks}</ul>
         <div className={css.spacer} />
       </div>
