@@ -233,6 +233,12 @@ export const createListingDraftThunk = createAsyncThunk(
 
     // If images should be saved, create array out of the image UUIDs for the API call
     const imageProperty = typeof images !== 'undefined' ? { images: imageIds(images) } : {};
+
+    // Note: tracking_a, tracking_b and box_dispatched_at are metadata on the
+    // listing (see config/configListing.js). Metadata cannot be written with the
+    // seller's own token, so there is nothing to seed here — the shipping
+    // automation creates the keys through the Integration API when it has
+    // something to write.
     const ownListingValues = { ...imageProperty, ...rest };
 
     const imageVariantInfo = getImageVariantInfo(config.layout.listingImage);
@@ -736,9 +742,104 @@ export const downloadFile = fileAttachmentId => dispatch => {
   return dispatch(downloadFileThunk({ fileAttachmentId })).unwrap();
 };
 
+//////////////////////
+// Price guidance   //
+//////////////////////
+
+/**
+ * FAIRWAY: what comparable gear is listed at, shown while the seller types a
+ * price.
+ *
+ * "What is it worth?" is the question that stops people halfway through
+ * listing, and a seller guessing high is a listing that sits unsold for months.
+ *
+ * Two deliberate limits, because the alternative is a number that lies:
+ * - This is what similar items are *listed* at, not what they sold for. Sold
+ *   listings are closed and not readable through the public API, so the copy
+ *   says "ligger på", never "er solgt for".
+ * - Under MIN_COMPARABLES matches, nothing is shown at all. A range built from
+ *   two listings is worse than no range.
+ *
+ * Brand is a free-text field with no search schema, so it cannot be queried —
+ * the category is queried and the brand match is made here, over that page.
+ */
+export const MIN_COMPARABLES = 4;
+const COMPARABLES_PAGE_SIZE = 100;
+
+/** Linear-interpolated percentile over a sorted array of numbers. */
+export const percentile = (sorted, p) => {
+  if (sorted.length === 1) {
+    return sorted[0];
+  }
+  const pos = (sorted.length - 1) * p;
+  const lower = Math.floor(pos);
+  const upper = Math.ceil(pos);
+  return sorted[lower] + (sorted[upper] - sorted[lower]) * (pos - lower);
+};
+
+export const summarise = (listings, currency) => {
+  const amounts = listings
+    .map(l => l.attributes?.price)
+    .filter(price => price?.currency === currency && typeof price.amount === 'number')
+    .map(price => price.amount)
+    .sort((a, b) => a - b);
+
+  if (amounts.length < MIN_COMPARABLES) {
+    return null;
+  }
+  return {
+    count: amounts.length,
+    // The interquartile range, so one optimist asking 12.000 kr. for a putter
+    // cannot drag the whole band with them.
+    low: Math.round(percentile(amounts, 0.25)),
+    high: Math.round(percentile(amounts, 0.75)),
+    median: Math.round(percentile(amounts, 0.5)),
+  };
+};
+
+export const fetchPriceGuidanceThunk = createAsyncThunk(
+  'EditListingPage/fetchPriceGuidance',
+  ({ category, brand, currency, excludeListingId }, { rejectWithValue, extra: sdk }) => {
+    if (!category) {
+      return null;
+    }
+    return sdk.listings
+      .query({
+        pub_categoryLevel1: category,
+        perPage: COMPARABLES_PAGE_SIZE,
+        'fields.listing': ['price', 'publicData.brand'],
+      })
+      .then(response => {
+        const all = (response.data?.data || []).filter(l => l.id?.uuid !== excludeListingId);
+
+        // Same brand is a far better comparison than same category, so it wins
+        // whenever there is enough of it.
+        const normalised = brand ? `${brand}`.trim().toLowerCase() : null;
+        const sameBrand = normalised
+          ? all.filter(l => `${l.attributes?.publicData?.brand || ''}`.trim().toLowerCase() === normalised)
+          : [];
+
+        const brandSummary = summarise(sameBrand, currency);
+        if (brandSummary) {
+          return { ...brandSummary, scope: 'brand', brand, category };
+        }
+        const categorySummary = summarise(all, currency);
+        return categorySummary ? { ...categorySummary, scope: 'category', category } : null;
+      })
+      .catch(e => rejectWithValue(storableError(e)));
+  }
+);
+
+export const fetchPriceGuidance = params => dispatch =>
+  dispatch(fetchPriceGuidanceThunk(params));
+
 // ================ Slice ================ //
 
 const initialState = {
+  // FAIRWAY: comparable prices for the pricing step, null until enough matches
+  priceGuidance: null,
+  fetchPriceGuidanceInProgress: false,
+
   // Error instance placeholders for each endpoint
   createListingDraftError: null,
   listingId: null,
@@ -856,6 +957,19 @@ const editListingPageSlice = createSlice({
   },
   extraReducers: builder => {
     builder
+      // FAIRWAY: price guidance. A failed lookup is not an error worth showing —
+      // the seller simply gets the price field on its own.
+      .addCase(fetchPriceGuidanceThunk.pending, state => {
+        state.fetchPriceGuidanceInProgress = true;
+      })
+      .addCase(fetchPriceGuidanceThunk.fulfilled, (state, action) => {
+        state.fetchPriceGuidanceInProgress = false;
+        state.priceGuidance = action.payload;
+      })
+      .addCase(fetchPriceGuidanceThunk.rejected, state => {
+        state.fetchPriceGuidanceInProgress = false;
+        state.priceGuidance = null;
+      })
       // createListingDraft cases
       .addCase(createListingDraftThunk.pending, state => {
         state.createListingDraftInProgress = true;

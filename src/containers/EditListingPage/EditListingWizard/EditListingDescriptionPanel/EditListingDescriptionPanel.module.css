@@ -1,0 +1,51 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px 24px 24px;
+
+  @media (--viewportLarge) {
+    padding: 0;
+  }
+}
+
+.form {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hint {
+  composes: marketplaceBodyFontStyles from global;
+  margin: 12px 0 0 0;
+  color: var(--colorGrey600);
+}
+
+.description {
+  flex-shrink: 0;
+  margin-top: 24px;
+}
+
+.optionalNote {
+  composes: marketplaceTinyFontStyles from global;
+  margin: 12px 0 0 0;
+  color: var(--colorGrey600);
+}
+
+.error {
+  color: var(--colorFail);
+}
+
+.submitButton {
+  margin-top: auto;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+
+  @media (--viewportLarge) {
+    display: inline-block;
+    width: 241px;
+    margin-top: 40px;
+  }
+}

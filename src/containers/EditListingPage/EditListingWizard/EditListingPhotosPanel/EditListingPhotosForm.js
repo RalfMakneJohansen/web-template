@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import loadable from '@loadable/component';
 
 // Import configs and util modules
+import { useConfiguration } from '../../../../context/configurationContext';
 import { FormattedMessage, useIntl } from '../../../../util/reactIntl';
 import { propTypes } from '../../../../util/types';
 import { nonEmptyArray, composeValidators } from '../../../../util/validators';
@@ -111,6 +112,9 @@ export const FieldAddImage = props => {
     aspectHeight = 1,
     className,
     isChoosing,
+    // 'environment' opens the rear camera straight away on a phone.
+    // Desktop browsers ignore it and show the normal file picker.
+    capture,
     ...rest
   } = props;
   return (
@@ -124,7 +128,8 @@ export const FieldAddImage = props => {
           formApi.blur(`addImage`);
           onImageUploadHandler(file);
         };
-        const inputProps = { accept, id: name, name, onChange, type };
+        const captureMaybe = capture ? { capture } : {};
+        const inputProps = { accept, id: name, name, onChange, type, ...captureMaybe };
         return (
           <div className={classNames(css.addImageWrapper, className)}>
             <AspectRatioWrapper width={aspectWidth} height={aspectHeight}>
@@ -293,6 +298,7 @@ export const EditListingPhotosForm = props => {
     }
   };
   const intl = useIntl();
+  const config = useConfiguration();
 
   return (
     <FinalForm
@@ -343,8 +349,19 @@ export const EditListingPhotosForm = props => {
 
         const submitReady = (updated && pristineSinceLastSubmit) || ready;
         const submitInProgress = updateInProgress;
+        // FAIRWAY: a listing needs three photos before the seller can move on.
+        // The count is named in the message so it is never a generic "something
+        // is missing".
+        const minImages = config.listing.minListingImages || 3;
+        const hasEnoughImages = images.length >= minImages;
+
         const submitDisabled =
-          invalid || disabled || submitInProgress || state.imageUploadRequested || ready;
+          invalid ||
+          disabled ||
+          submitInProgress ||
+          state.imageUploadRequested ||
+          ready ||
+          !hasEnoughImages;
         const imagesError = touched.images && errors?.images && errors.images[ARRAY_ERROR];
 
         const classes = classNames(css.root, className);
@@ -463,6 +480,32 @@ export const EditListingPhotosForm = props => {
                 aspectWidth={aspectWidth}
                 aspectHeight={aspectHeight}
               />
+
+              {/* Shown only on touch devices: shoot the photo where the club is */}
+              <FieldAddImage
+                id="captureImage"
+                name="captureImage"
+                accept={ACCEPT_IMAGES}
+                capture="environment"
+                className={css.captureTile}
+                isChoosing={isChoosing}
+                label={
+                  <span className={css.chooseImageText}>
+                    <span className={css.chooseImage}>
+                      <FormattedMessage id="EditListingPhotosForm.captureImage" />
+                    </span>
+                    <span className={css.imageTypes}>
+                      <FormattedMessage id="EditListingPhotosForm.captureImageHint" />
+                    </span>
+                  </span>
+                }
+                type="file"
+                disabled={state.imageUploadRequested}
+                formApi={form}
+                onImageUploadHandler={onImageUploadHandler}
+                aspectWidth={aspectWidth}
+                aspectHeight={aspectHeight}
+              />
             </div>
 
             {imagesError ? <div className={css.arrayError}>{imagesError}</div> : null}
@@ -471,6 +514,16 @@ export const EditListingPhotosForm = props => {
               uploadOverLimit={uploadOverLimit}
               uploadImageError={uploadImageError}
             />
+
+            {/* FAIRWAY: name the shortfall and what a good set of photos is */}
+            {!hasEnoughImages ? (
+              <p className={css.arrayError}>
+                <FormattedMessage
+                  id="EditListingPhotosForm.minImagesRequired"
+                  values={{ min: minImages, count: images.length }}
+                />
+              </p>
+            ) : null}
 
             <p className={css.tip}>
               <FormattedMessage id="EditListingPhotosForm.addImagesTip" />

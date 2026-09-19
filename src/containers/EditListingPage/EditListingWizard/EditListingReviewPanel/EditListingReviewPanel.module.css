@@ -1,0 +1,128 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px 24px 24px;
+
+  @media (--viewportLarge) {
+    padding: 0;
+  }
+}
+
+.listingTitle {
+  composes: h4 from global;
+  margin: 12px 0 0 0;
+}
+
+.thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.thumb {
+  display: block;
+  width: 68px;
+  height: 68px;
+  object-fit: cover;
+
+  border-radius: var(--borderRadiusMedium);
+  background-color: var(--colorGrey50);
+}
+
+.rows {
+  margin: 24px 0 0 0;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 14px 0;
+  border-bottom: 1px solid var(--colorGrey100);
+}
+
+.rowLabel {
+  composes: marketplaceTinyFontStyles from global;
+  flex-shrink: 0;
+  margin: 0;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorGrey600);
+}
+
+.rowValue {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+
+  margin: 0;
+  text-align: right;
+}
+
+.rowEmpty {
+  color: var(--colorGrey600);
+  font-style: italic;
+}
+
+.editLink {
+  composes: marketplaceTinyFontStyles from global;
+  flex-shrink: 0;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--marketplaceColor);
+}
+
+/* Each unmet requirement names its own field, never "something is missing" */
+.missing {
+  margin-top: 24px;
+  padding: 18px 20px;
+
+  background-color: var(--colorAttentionLight, #fff7e6);
+  border: 1px solid var(--colorAttention, #ffaa00);
+  border-radius: var(--borderRadiusMedium);
+}
+
+.missingTitle {
+  composes: marketplaceBodyFontStyles from global;
+  margin: 0;
+  font-weight: var(--fontWeightSemiBold);
+}
+
+.missingList {
+  margin: 10px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.missingItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 6px 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.error {
+  color: var(--colorFail);
+}
+
+.submitButton {
+  margin-top: auto;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+
+  @media (--viewportLarge) {
+    display: inline-block;
+    width: 241px;
+    margin-top: 40px;
+  }
+}

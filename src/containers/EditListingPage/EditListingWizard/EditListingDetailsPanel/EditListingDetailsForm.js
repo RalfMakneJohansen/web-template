@@ -328,6 +328,8 @@ const EditListingDetailsForm = props => (
         marketplaceName,
         selectableListingTypes,
         selectableCategories,
+        // FAIRWAY: set when description is collected on its own wizard step
+        omitDescription,
         hasPredefinedListingType = false,
         pickSelectedCategories,
         categoryPrefix,
@@ -376,7 +378,8 @@ const EditListingDetailsForm = props => (
 
       const config = useConfiguration();
       const listingTypeConfig = getListingTypeConfig(config, listingType);
-      const showDescriptionMaybe = displayDescription(listingTypeConfig);
+      // FAIRWAY: description has a wizard step of its own, so this step omits it
+      const showDescriptionMaybe = omitDescription ? false : displayDescription(listingTypeConfig);
       const showDescription = hasCategories
         ? allCategoriesChosen && showDescriptionMaybe
         : showDescriptionMaybe;

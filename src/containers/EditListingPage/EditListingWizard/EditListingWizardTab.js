@@ -11,6 +11,7 @@ import { createResourceLocatorString } from '../../../util/routes';
 
 // Import modules from this directory
 import EditListingAvailabilityPanel from './EditListingAvailabilityPanel/EditListingAvailabilityPanel';
+import EditListingDescriptionPanel from './EditListingDescriptionPanel/EditListingDescriptionPanel';
 import EditListingDetailsPanel from './EditListingDetailsPanel/EditListingDetailsPanel';
 import EditListingDeliveryPanel from './EditListingDeliveryPanel/EditListingDeliveryPanel';
 import EditListingFilesPanel from './EditListingFilesPanel/EditListingFilesPanel';
@@ -18,7 +19,11 @@ import EditListingLocationPanel from './EditListingLocationPanel/EditListingLoca
 import EditListingPhotosPanel from './EditListingPhotosPanel/EditListingPhotosPanel';
 import EditListingPricingPanel from './EditListingPricingPanel/EditListingPricingPanel';
 import EditListingPricingAndStockPanel from './EditListingPricingAndStockPanel/EditListingPricingAndStockPanel';
+import EditListingReviewPanel from './EditListingReviewPanel/EditListingReviewPanel';
+import EditListingShippingPanel from './EditListingShippingPanel/EditListingShippingPanel';
 import EditListingStylePanel from './EditListingStylePanel/EditListingStylePanel';
+
+import { EVENTS, track } from '../../../analytics/track';
 
 import css from './EditListingWizardTab.module.css';
 
@@ -32,6 +37,13 @@ export const AVAILABILITY = 'availability';
 export const PHOTOS = 'photos';
 export const STYLE = 'style';
 
+// FAIRWAY steps: description has its own step (it comes after the photos),
+// SHIPPING asks the shipment_type question, and REVIEW is the last step before
+// publishing.
+export const DESCRIPTION = 'description';
+export const SHIPPING = 'shipping';
+export const REVIEW = 'review';
+
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
   DETAILS,
@@ -43,6 +55,9 @@ export const SUPPORTED_TABS = [
   AVAILABILITY,
   PHOTOS,
   STYLE,
+  DESCRIPTION,
+  SHIPPING,
+  REVIEW,
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -165,6 +180,11 @@ const EditListingWizardTab = props => {
 
     return onUpdateListingOrCreateListingDraft(tab, updateListingValues)
       .then(r => {
+        // One event per completed step, so the drop-off point is visible
+        track(isNewURI ? EVENTS.LISTING_DRAFT_CREATED : EVENTS.LISTING_STEP_COMPLETED, {
+          step: tab,
+          listing_id: r?.data?.data?.id?.uuid,
+        });
         // In Availability tab, the submitted data (plan) is inside a modal
         // We don't redirect provider immediately after plan is set
         if (isNewListingFlow && tab !== AVAILABILITY) {
@@ -257,6 +277,15 @@ const EditListingWizardTab = props => {
           hasPendingFileUploads={hasPendingFileUploads}
         />
       );
+    }
+    case DESCRIPTION: {
+      return <EditListingDescriptionPanel {...panelProps(DESCRIPTION)} />;
+    }
+    case SHIPPING: {
+      return <EditListingShippingPanel {...panelProps(SHIPPING)} />;
+    }
+    case REVIEW: {
+      return <EditListingReviewPanel {...panelProps(REVIEW)} config={config} params={params} />;
     }
     case LOCATION: {
       return <EditListingLocationPanel {...panelProps(LOCATION)} />;

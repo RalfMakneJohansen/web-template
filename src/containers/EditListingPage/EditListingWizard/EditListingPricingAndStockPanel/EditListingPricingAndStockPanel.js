@@ -144,6 +144,12 @@ const EditListingPricingAndStockPanel = props => {
         <EditListingPricingAndStockForm
           className={css.form}
           initialValues={initialValues}
+          priceGuidanceProps={{
+            category: publicData?.categoryLevel1,
+            brand: publicData?.brand,
+            currency: marketplaceCurrency,
+            listingId: listing?.id?.uuid,
+          }}
           onSubmit={values => {
             const { price, stock, stockTypeInfinity } = values;
 

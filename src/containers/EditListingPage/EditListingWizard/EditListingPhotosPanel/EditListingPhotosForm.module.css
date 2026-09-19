@@ -234,3 +234,16 @@
     width: 241px;
   }
 }
+
+/* The camera tile is only useful where there is a camera to open. Desktop
+   browsers ignore the capture attribute, so the tile would just duplicate the
+   upload tile there. */
+.captureTile {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .captureTile {
+    display: block;
+  }
+}

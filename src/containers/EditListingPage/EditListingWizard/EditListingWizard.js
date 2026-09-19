@@ -60,7 +60,12 @@ import EditListingWizardTab, {
   AVAILABILITY,
   PHOTOS,
   STYLE,
+  DESCRIPTION,
+  SHIPPING,
+  REVIEW,
 } from './EditListingWizardTab';
+import { EVENTS, priceParam, track } from '../../../analytics/track';
+
 import css from './EditListingWizard.module.css';
 
 // This is the initial tab on editlisting wizard.
@@ -103,7 +108,18 @@ const tabsForListingType = (processName, listingTypeConfig) => {
   //         that it is clear to the user why the 'publish' button is disabled during verification
   const tabs = {
     ['default-booking']: [DETAILS, ...locationMaybe, PRICING, AVAILABILITY, ...styleOrPhotosTab],
-    ['default-purchase']: [DETAILS, PRICING_AND_STOCK, ...deliveryMaybe, ...styleOrPhotosTab],
+    // FAIRWAY: the seller is walked through the listing in this order —
+    // category/brand/condition, price, photos, description, shipping, review.
+    // The built-in DELIVERY tab is replaced by SHIPPING, which asks the
+    // shipment_type question and derives deliveryOptions from the answer.
+    ['default-purchase']: [
+      DETAILS,
+      PRICING_AND_STOCK,
+      ...styleOrPhotosTab,
+      DESCRIPTION,
+      SHIPPING,
+      REVIEW,
+    ],
     ['default-negotiation']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],
     ['default-inquiry']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],
     ['default-download']: [DETAILS, ...locationMaybe, FILES, ...pricingMaybe, ...styleOrPhotosTab],
@@ -156,6 +172,16 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
   } else if (tab === STYLE) {
     labelKey = 'EditListingWizard.tabLabelStyle';
     submitButtonKey = `EditListingWizard.${processNameString}${newOrEdit}.saveStyle`;
+  } else if (tab === DESCRIPTION) {
+    // FAIRWAY steps keep their own keys: they are the same for every process
+    labelKey = 'EditListingWizard.tabLabelDescription';
+    submitButtonKey = `EditListingWizard.save${newOrEdit === 'new' ? 'New' : 'Edit'}Description`;
+  } else if (tab === SHIPPING) {
+    labelKey = 'EditListingWizard.tabLabelShipping';
+    submitButtonKey = `EditListingWizard.save${newOrEdit === 'new' ? 'New' : 'Edit'}Shipping`;
+  } else if (tab === REVIEW) {
+    labelKey = 'EditListingWizard.tabLabelReview';
+    submitButtonKey = `EditListingWizard.save${newOrEdit === 'new' ? 'New' : 'Edit'}Review`;
   }
 
   return {
@@ -261,8 +287,8 @@ const tabCompleted = (tab, listing, config, options = {}) => {
 
   switch (tab) {
     case DETAILS:
+      // Description is asked on its own step now, so it does not gate this one
       return !!(
-        (!descriptionRequired || hasValidDescription) &&
         title &&
         listingType &&
         transactionProcessAlias &&
@@ -281,8 +307,18 @@ const tabCompleted = (tab, listing, config, options = {}) => {
       return !!(geolocation && publicData?.location?.address);
     case AVAILABILITY:
       return !!availabilityPlan;
-    case PHOTOS:
-      return images && images.length > 0;
+    case PHOTOS: {
+      // FAIRWAY: three photos is a hard requirement before the seller may move on
+      const minImages = config.listing.minListingImages || 3;
+      return !!images && images.length >= minImages;
+    }
+    case DESCRIPTION:
+      // Optional in this version, so the step never blocks the flow
+      return true;
+    case SHIPPING:
+      return !!publicData?.shipment_type;
+    case REVIEW:
+      return false;
     case STYLE:
       return !!cardStyle;
     default:
@@ -501,6 +537,15 @@ class EditListingWizard extends Component {
       !isPayoutDetailsRequired ||
       (stripeConnected && !stripeRequirementsMissing)
     ) {
+      track(EVENTS.LISTING_PUBLISHED, {
+        listing_id: id?.uuid,
+        category: listing?.attributes?.publicData?.categoryLevel1,
+        brand: listing?.attributes?.publicData?.brand,
+        condition: listing?.attributes?.publicData?.condition,
+        shipment_type: listing?.attributes?.publicData?.shipment_type,
+        value: priceParam(listing?.attributes?.price),
+        currency: listing?.attributes?.price?.currency,
+      });
       onPublishListingDraft(id);
     } else {
       this.setState({

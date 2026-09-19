@@ -22,6 +22,7 @@ import {
 } from '../../../../components';
 
 // Import modules from this directory
+import PriceGuidance from './PriceGuidance';
 import css from './EditListingPricingAndStockForm.module.css';
 
 const { Money } = sdkTypes;
@@ -140,6 +141,7 @@ export const EditListingPricingAndStockForm = props => (
         updateInProgress,
         fetchErrors,
         values,
+        priceGuidanceProps,
       } = formRenderProps;
 
       const intl = useIntl();
@@ -195,6 +197,11 @@ export const EditListingPricingAndStockForm = props => (
             currencyConfig={appSettings.getCurrencyFormatting(marketplaceCurrency)}
             validate={priceValidators}
           />
+
+          {/* FAIRWAY: what comparable gear is listed at, updating as they type */}
+          {priceGuidanceProps ? (
+            <PriceGuidance {...priceGuidanceProps} currentPrice={values.price} />
+          ) : null}
 
           <UpdateStockToInfinityCheckboxMaybe
             formId={formId}

@@ -441,6 +441,8 @@ const EditListingDetailsPanel = props => {
           )}
           hasPredefinedListingType={hasExistingListingType || !!validPreselectedListingType}
           selectableCategories={listingCategories}
+          // FAIRWAY: description is asked on its own wizard step
+          omitDescription
           pickSelectedCategories={values =>
             pickCategoryFields(values, categoryKey, 1, listingCategories)
           }

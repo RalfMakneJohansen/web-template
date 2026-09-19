@@ -1,0 +1,82 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  margin: -8px 0 28px 0;
+  padding: 16px 18px;
+
+  border-radius: var(--radiusCard, 12px);
+  background-color: var(--colorSagePale, #eaf7f1);
+}
+
+.headline {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--colorInk, #0c2820);
+}
+
+.amount {
+  font-weight: var(--fontWeightSemiBold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The band is where comparable gear sits; the track runs wider so a price far
+   outside it still reads as far outside. */
+.track {
+  position: relative;
+  height: 6px;
+  margin: 14px 0 0 0;
+
+  border-radius: 3px;
+  background-color: rgba(12, 40, 32, 0.09);
+}
+
+.band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  border-radius: 3px;
+  background-color: var(--colorSage, #5dcaa5);
+}
+
+.marker {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+
+  border-radius: 50%;
+  border: 2.5px solid var(--colorForest, #0f6e56);
+  background-color: #fff;
+
+  transition: left 0.25s ease;
+}
+
+.verdict,
+.verdictGood {
+  margin: 10px 0 0 0;
+
+  font-size: 13px;
+  line-height: 19px;
+  font-weight: var(--fontWeightSemiBold);
+}
+
+.verdict {
+  color: var(--colorGold, #8f6a2b);
+}
+
+.verdictGood {
+  color: var(--colorForest, #0f6e56);
+}
+
+.footnote {
+  margin: 8px 0 0 0;
+
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--colorSlate, #5a6b63);
+}
