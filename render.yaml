@@ -1,0 +1,84 @@
+# FAIRWAY: one-click deploy of the test environment.
+#
+# Render reads this blueprint from the repo, so the whole service is defined
+# here rather than clicked together in a dashboard. Nothing secret lives in
+# this file: every value marked `sync: false` is typed into Render once, and
+# Render keeps it.
+#
+# How to use it:
+#   1. render.com -> New -> Blueprint -> connect RalfMakneJohansen/web-template
+#   2. Render finds this file and offers the service. Accept.
+#   3. Paste the values for the variables it asks for (the list below).
+#   4. After the first deploy, copy the service URL and set
+#      REACT_APP_MARKETPLACE_ROOT_URL to it, then redeploy once. The app builds
+#      absolute links from that value, so it has to match the real URL.
+#   5. In Sharetribe Console, add the same URL under Build -> Applications as an
+#      allowed redirect origin, or social login and email links will fail.
+#
+# The site is behind HTTP basic auth until launch — see BASIC_AUTH_* below.
+# That is the right way to keep a test deploy private. Leaving a marketplace
+# fully open before launch means real signups, real emails and an unfinished
+# checkout reachable by anyone who finds the URL.
+
+services:
+  - type: web
+    name: fairway-test
+    runtime: node
+    plan: starter
+    region: frankfurt
+    branch: fairway-frontend
+    buildCommand: yarn install --frozen-lockfile && yarn build
+    startCommand: yarn start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: REACT_APP_ENV
+        value: production
+
+      # Node needs headroom to build the client and server bundles
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=2048
+
+      # Render terminates TLS in front of the app
+      - key: SERVER_SHARETRIBE_TRUST_PROXY
+        value: 'true'
+      - key: SERVER_SHARETRIBE_REDIRECT_SSL
+        value: 'true'
+      - key: REACT_APP_SHARETRIBE_USING_SSL
+        value: 'true'
+
+      - key: REACT_APP_MARKETPLACE_NAME
+        value: Fairway
+
+      # Stripe is not connected yet, so the wizard must not demand payout
+      # details. Remove this once Stripe is set up in Console.
+      - key: REACT_APP_SKIP_STRIPE_PAYOUT_DETAILS
+        value: 'true'
+
+      # --- Paste these in Render ---
+
+      # Build -> Applications in Console. Same pair the local .env uses.
+      - key: REACT_APP_SHARETRIBE_SDK_CLIENT_ID
+        sync: false
+      - key: SHARETRIBE_SDK_CLIENT_SECRET
+        sync: false
+
+      # Set to the service's own https URL after the first deploy
+      - key: REACT_APP_MARKETPLACE_ROOT_URL
+        sync: false
+
+      # Keeps the test site private until launch. Pick any username and
+      # password; everyone testing uses the same pair. Delete both variables to
+      # open the site to the public.
+      - key: BASIC_AUTH_USERNAME
+        sync: false
+      - key: BASIC_AUTH_PASSWORD
+        sync: false
+
+      # Optional. The app runs without them: maps fall back to a notice, and
+      # Stripe is not in use yet.
+      - key: REACT_APP_MAPBOX_ACCESS_TOKEN
+        sync: false
+      - key: REACT_APP_STRIPE_PUBLISHABLE_KEY
+        sync: false
