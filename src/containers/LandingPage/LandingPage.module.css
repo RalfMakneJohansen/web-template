@@ -1685,3 +1685,60 @@
   text-transform: uppercase;
   color: rgba(237, 232, 220, 0.5);
 }
+
+/* ============================================================
+   FAIRWAY: depth on the front page
+
+   The same elevation language as the rest of the site — objects resting
+   on the page, lifting when you point at them, settling when you press.
+   ============================================================ */
+
+.tile {
+  box-shadow: var(--shadowRest);
+  transition: transform 0.25s var(--easeOut), box-shadow 0.25s var(--easeOut);
+}
+
+@media (hover: hover) {
+  .tile:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadowLifted);
+  }
+}
+
+.tile:active {
+  transform: translateY(0);
+  transition-duration: 0.08s;
+}
+
+/* The box walkthrough is the one thing on the page people touch, so it is
+   the one that should feel most like an object. */
+.walkStage {
+  box-shadow: var(--shadowRaised);
+}
+
+.walkButton {
+  transition: transform 0.18s var(--easeOut), background-color 0.15s ease;
+}
+
+.walkButton:active {
+  transform: translateY(1px);
+  transition-duration: 0.06s;
+}
+
+/* The conversation graphic reads as a phone held up next to the copy */
+.thread {
+  box-shadow: var(--shadowRaised);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .walkButton {
+    transition: none;
+  }
+
+  .tile:hover,
+  .tile:active,
+  .walkButton:active {
+    transform: none;
+  }
+}
