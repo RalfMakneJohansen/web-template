@@ -267,9 +267,8 @@
   }
 }
 
-.newSearchInProgress {
-  opacity: 0.1;
-}
+/* FAIRWAY: a search in progress is drawn as skeleton cards in the results
+   panel now. Fading the previous results to 10% read as a broken page. */
 
 .searchListingsPanel {
   flex-grow: 1;
@@ -321,4 +320,53 @@
 
 .mapRoot {
   background-color: var(--colorGrey100);
+}
+
+/* ============================================================
+   FAIRWAY: the library
+
+   The filter rail was a column of bare text flush against the window
+   edge — it read as a debug menu next to a shop. It becomes a panel with
+   a surface of its own, and the results get a gutter so the grid is not
+   glued to the filters.
+   ============================================================ */
+
+.filterColumnContent {
+  padding: 20px 18px 24px 18px;
+  margin: 8px 24px 24px 0;
+
+  background-color: var(--colorPaper, #f4f7f5);
+  border: 1px solid var(--colorDivider, #d9d5c9);
+  border-radius: var(--radiusSheet);
+
+  @media (--viewportMedium) {
+    padding: 22px 20px 26px 20px;
+    margin: 8px 24px 24px 0;
+  }
+
+  @media (--viewportLarge) {
+    width: 264px;
+    padding: 24px 22px 28px 22px;
+    margin: 8px 36px 24px 0;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 26px 24px 30px 24px;
+    margin: 8px 48px 24px 0;
+  }
+}
+
+/* Filter group headings in the brand's display face, so the rail reads as
+   part of the same site as the section titles everywhere else. */
+.filterColumnContent :global(.FilterComponent_label),
+.filterColumnContent button > span:first-child {
+  letter-spacing: 0.04em;
+}
+
+/* The count is what the page is scanned for after a search, so it carries
+   the weight rather than sitting as small grey text. */
+.mainPanel {
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 18px;
 }

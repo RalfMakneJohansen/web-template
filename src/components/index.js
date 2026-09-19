@@ -63,6 +63,7 @@ export { default as PropertyGroup } from './PropertyGroup/PropertyGroup';
 export { default as RangeSlider } from './RangeSlider/RangeSlider';
 export { default as ResponsiveImage } from './ResponsiveImage/ResponsiveImage';
 export { default as SectionWave } from './SectionWave/SectionWave';
+export { default as FairwayCardSkeleton } from './FairwayListingCard/FairwayCardSkeleton';
 export { default as ResponsiveBackgroundImageContainer } from './ResponsiveBackgroundImageContainer/ResponsiveBackgroundImageContainer';
 export { default as TimeRange } from './TimeRange/TimeRange';
 export { default as UserDisplayName } from './UserDisplayName/UserDisplayName';

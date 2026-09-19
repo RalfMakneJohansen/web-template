@@ -304,11 +304,7 @@ export class SearchPageComponent extends Component {
                 searchListingsError={searchListingsError}
                 noResultsInfo={noResultsInfo}
               />
-              <div
-                className={classNames(css.listingsForGridVariant, {
-                  [css.newSearchInProgress]: !(listingsAreLoaded || searchListingsError),
-                })}
-              >
+              <div className={css.listingsForGridVariant}>
                 <SearchErrors
                   searchListingsError={searchListingsError}
                   isValidDatesFilter={isValidDatesFilter}
@@ -319,6 +315,7 @@ export class SearchPageComponent extends Component {
                   pagination={listingsAreLoaded ? pagination : null}
                   search={parse(location.search)}
                   isMapVariant={false}
+                  isLoading={!(listingsAreLoaded || searchListingsError)}
                   listingTypeParam={listingTypePathParam}
                   intl={intl}
                 />

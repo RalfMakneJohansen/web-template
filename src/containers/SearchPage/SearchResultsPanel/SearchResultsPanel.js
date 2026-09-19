@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { propTypes } from '../../../util/types';
-import { FairwayListingCard, PaginationLinks } from '../../../components';
+import { FairwayCardSkeleton, FairwayListingCard, PaginationLinks } from '../../../components';
 
 import css from './SearchResultsPanel.module.css';
 
@@ -18,6 +18,7 @@ import css from './SearchResultsPanel.module.css';
  * @param {Object} props.search - The search
  * @param {Function} props.setActiveListing - The function to handle the active listing
  * @param {boolean} [props.isMapVariant] - Whether the map variant is enabled
+ * @param {boolean} [props.isLoading] - Whether a new search is still running
  * @returns {JSX.Element}
  */
 const SearchResultsPanel = props => {
@@ -29,6 +30,7 @@ const SearchResultsPanel = props => {
     search,
     setActiveListing,
     isMapVariant = true,
+    isLoading = false,
     listingTypeParam,
     intl,
   } = props;
@@ -75,7 +77,10 @@ const SearchResultsPanel = props => {
   return (
     <div className={classes}>
       <ul className={isMapVariant ? css.listingCardsMapVariant : css.listingCards}>
-        {listings.map(l => (
+        {/* FAIRWAY: placeholders in the shape of the card, rather than the old
+            10%-opacity fade over stale results */}
+        {isLoading ? <FairwayCardSkeleton count={8} /> : null}
+        {isLoading ? null : listings.map(l => (
           <li key={l.id.uuid} className={css.resultItem}>
             <FairwayListingCard
               className={css.listingCard}

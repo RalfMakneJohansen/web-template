@@ -50,3 +50,23 @@
   font-weight: var(--fontWeightRegular);
   padding: 8px 8px 8px 0;
 }
+
+/* FAIRWAY: the result count is the first thing scanned after a search, so it
+   gets the display face and room to breathe rather than sitting as small grey
+   text jammed under the category nav. */
+.searchResultSummary {
+  margin-top: 22px;
+  margin-bottom: 18px;
+  margin-right: 16px;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--colorInk);
+}
+
+.resultsFound {
+  font-variant-numeric: tabular-nums;
+}
