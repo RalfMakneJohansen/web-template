@@ -835,3 +835,429 @@
   width: 100%;
   height: 100%;
 }
+
+/* ================ Specifications ================ */
+
+.specs {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--colorDivider);
+}
+
+.specsHeading {
+  margin: 0 0 4px 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+}
+
+.specsList {
+  margin: 16px 0 0 0;
+}
+
+.specsRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 12px 0;
+  border-bottom: 1px solid var(--colorDivider);
+}
+
+.specsRow:last-child {
+  border-bottom: 0;
+}
+
+.specsLabel {
+  flex-shrink: 0;
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--colorSlate);
+}
+
+.specsValue {
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: var(--fontWeightSemiBold);
+  text-align: right;
+  color: var(--colorInk);
+}
+
+/* ================ Breadcrumb ================ */
+
+.breadcrumb {
+  margin-bottom: 12px;
+}
+
+.breadcrumbList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  font-size: 13px;
+  line-height: 20px;
+}
+
+/* The slash lives in CSS so the markup stays a clean list */
+.breadcrumbList > li + li::before {
+  content: '/';
+  margin-right: 8px;
+  color: var(--colorGrey300, #b0b0b0);
+}
+
+.breadcrumbLink {
+  color: var(--colorSlate);
+}
+
+.breadcrumbLink:hover {
+  color: var(--colorForest);
+}
+
+.breadcrumbCurrent {
+  color: var(--colorInk);
+  font-weight: var(--fontWeightSemiBold);
+}
+
+/* The listing name leads the buy column, the way a product page should */
+.orderPanelTitle {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportLarge) {
+    font-size: 32px;
+    line-height: 36px;
+    margin-bottom: 6px;
+  }
+}
+
+/* ============================================================
+   FAIRWAY: below the fold
+
+   Everything under the two-column area. Shares one container so the
+   left edge lines up with the gallery above it.
+   ============================================================ */
+
+.belowFold {
+  width: 100%;
+  max-width: var(--contentMaxWidth);
+  margin: 0 auto;
+  padding: 0 24px 72px 24px;
+
+  @media (--viewportLarge) {
+    max-width: unset;
+    width: min(calc(var(--contentMaxWidth) + 72px), 100vw);
+    padding: 0 36px 96px 36px;
+  }
+}
+
+.sectionTitle {
+  margin: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 26px;
+    line-height: 30px;
+  }
+}
+
+/* ---- More like this ---- */
+
+.relatedSection {
+  padding-top: 48px;
+  border-top: 1px solid var(--colorGrey100);
+}
+
+.relatedHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 20px;
+}
+
+.relatedAll {
+  flex-shrink: 0;
+
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorFairway);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.relatedAll:hover {
+  text-decoration: none;
+  color: var(--colorInk);
+}
+
+/* A scroller on phones, a grid from tablet up. The negative margin lets the
+   first card sit flush with the text above while the row still bleeds to the
+   screen edge as you scroll. */
+.relatedRow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 46%;
+  gap: 14px;
+
+  margin: 0 -24px;
+  padding: 0 24px 4px 24px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+
+  @media (--viewportMedium) {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px 14px;
+
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+}
+
+.relatedCard {
+  scroll-snap-align: start;
+}
+
+/* ---- How the purchase works ---- */
+
+.journeySection {
+  margin-top: 56px;
+  padding-top: 48px;
+  border-top: 1px solid var(--colorGrey100);
+}
+
+.journeySteps {
+  display: grid;
+  gap: 28px;
+
+  margin: 24px 0 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: none;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px 40px;
+  }
+
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.journeyStep {
+  /* the number sits above the text rather than beside it, so the four columns
+     keep an even baseline whatever the copy length */
+}
+
+.journeyNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 12px;
+
+  border-radius: 50%;
+  background-color: var(--colorSagePale, #eaf7f1);
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--colorFairway);
+}
+
+.journeyStepTitle {
+  margin: 0 0 6px 0;
+
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+}
+
+.journeyStepText {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--colorSlate);
+}
+
+/* ---- FAQ ---- */
+
+.faqSection {
+  margin-top: 56px;
+  padding-top: 48px;
+  border-top: 1px solid var(--colorGrey100);
+}
+
+.faqList {
+  margin-top: 16px;
+  max-width: 760px;
+}
+
+.faqItem {
+  border-bottom: 1px solid var(--colorGrey100);
+}
+
+.faqQuestion {
+  position: relative;
+  display: block;
+  padding: 16px 40px 16px 0;
+
+  font-size: 16px;
+  line-height: 23px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* the default disclosure triangle, removed in both engines */
+.faqQuestion::-webkit-details-marker {
+  display: none;
+}
+
+.faqMark {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 13px;
+  height: 13px;
+  margin-top: -7px;
+}
+
+.faqMark::before,
+.faqMark::after {
+  content: '';
+  position: absolute;
+  background-color: var(--colorFairway);
+}
+
+.faqMark::before {
+  top: 6px;
+  left: 0;
+  width: 13px;
+  height: 1.5px;
+}
+
+.faqMark::after {
+  top: 0;
+  left: 6px;
+  width: 1.5px;
+  height: 13px;
+  transition: transform 0.2s ease;
+}
+
+.faqItem[open] .faqMark::after {
+  transform: rotate(90deg);
+}
+
+.faqAnswer {
+  margin: 0;
+  padding: 0 40px 18px 0;
+
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--colorSlate);
+}
+
+/* ---- Have one to sell? ---- */
+
+.sellCta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+
+  margin-top: 48px;
+  padding: 26px 24px;
+
+  border-radius: var(--radiusCard, 12px);
+  background-color: var(--colorInk);
+  color: var(--colorOffWhite);
+
+  @media (--viewportMedium) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 30px 34px;
+  }
+}
+
+.sellCtaTitle {
+  margin: 0 0 4px 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--colorOffWhite);
+}
+
+.sellCtaText {
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 22px;
+  color: rgba(237, 232, 220, 0.78);
+}
+
+.sellCtaButton {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 26px;
+
+  border-radius: var(--radiusControl, 8px);
+  background-color: var(--colorOffWhite);
+
+  font-size: 15px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.sellCtaButton:hover {
+  text-decoration: none;
+  background-color: #fff;
+  color: var(--colorInk);
+}

@@ -32,3 +32,22 @@
     margin-top: 0;
   }
 }
+
+/* FAIRWAY: bid mode */
+
+.askingPrice {
+  margin: -14px 0 0 0;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorSlate, #5a6b63);
+}
+
+.hint {
+  margin: 12px 0 0 0;
+
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--colorSlate, #5a6b63);
+  text-align: center;
+}

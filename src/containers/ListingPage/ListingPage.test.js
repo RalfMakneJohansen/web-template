@@ -301,7 +301,8 @@ describe('ListingPage variants', () => {
       expect(orderTitle).toHaveLength(3);
 
       // Has details section title and selected category info
-      expect(getByRole('heading', { name: 'ListingPage.detailsTitle' })).toBeInTheDocument();
+      // FAIRWAY: the carousel layout renders one specification table
+      expect(getByRole('heading', { name: 'ListingPage.specsTitle' })).toBeInTheDocument();
       expect(getByText('Cat')).toBeInTheDocument();
       expect(getByText('Cat 1')).toBeInTheDocument();
 
@@ -359,6 +360,8 @@ describe('Duck', () => {
         sendInquiryInProgress: false,
         sendInquiryError: null,
         inquiryModalOpenForListingId: null,
+        relatedListings: [],
+        fetchRelatedListingsInProgress: false,
       });
     });
 

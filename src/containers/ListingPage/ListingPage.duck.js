@@ -369,6 +369,71 @@ export const fetchTransactionLineItems = ({ orderData, listingId, isOwnListing }
   return dispatch(fetchTransactionLineItemsThunk({ orderData, listingId, isOwnListing }));
 };
 
+//////////////////////////////
+// Fetch related listings   //
+//////////////////////////////
+
+/**
+ * FAIRWAY: a listing page that dead-ends is a listing page that loses the
+ * visit. These are the other listings in the same category — the single
+ * highest-value thing that can sit under the fold.
+ *
+ * Kept out of loadData's Promise.all on purpose: the page must never wait
+ * for, or fail because of, a recommendation strip.
+ */
+const RELATED_LISTINGS_COUNT = 8;
+
+export const fetchRelatedListingsThunk = createAsyncThunk(
+  'ListingPage/fetchRelatedListings',
+  ({ listingId, category, config }, { rejectWithValue, extra: sdk }) => {
+    const {
+      aspectWidth = 1,
+      aspectHeight = 1,
+      variantPrefix = 'listing-card',
+    } = config.layout.listingImage;
+    const aspectRatio = aspectHeight / aspectWidth;
+    const categoryMaybe = category ? { pub_categoryLevel1: category } : {};
+
+    return sdk.listings
+      .query({
+        ...categoryMaybe,
+        // one over, so the current listing can be dropped without a short row
+        perPage: RELATED_LISTINGS_COUNT + 1,
+        include: ['images'],
+        'fields.listing': [
+          'title',
+          'price',
+          'publicData.listingType',
+          'publicData.transactionProcessAlias',
+          'publicData.unitType',
+          'publicData.brand',
+          'publicData.model',
+          'publicData.condition',
+          'publicData.categoryLevel1',
+          'publicData.dexterity',
+          'publicData.shaft_flex',
+          'publicData.loft',
+          'publicData.wedge_loft',
+          'publicData.putter_length',
+          'publicData.shoe_size',
+        ],
+        'fields.image': [`variants.${variantPrefix}`, `variants.${variantPrefix}-2x`],
+        ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),
+        ...createImageVariantConfig(`${variantPrefix}-2x`, 800, aspectRatio),
+        'limit.images': 1,
+      })
+      .then(response =>
+        denormalisedResponseEntities(response)
+          .filter(l => l.id?.uuid !== listingId?.uuid)
+          .slice(0, RELATED_LISTINGS_COUNT)
+      )
+      .catch(e => rejectWithValue(storableError(e)));
+  }
+);
+
+export const fetchRelatedListings = (listingId, category, config) => dispatch =>
+  dispatch(fetchRelatedListingsThunk({ listingId, category, config }));
+
 // ================ Slice ================ //
 
 const initialState = {
@@ -399,6 +464,8 @@ const initialState = {
   sendInquiryInProgress: false,
   sendInquiryError: null,
   inquiryModalOpenForListingId: null,
+  relatedListings: [],
+  fetchRelatedListingsInProgress: false,
 };
 
 const listingPageSlice = createSlice({
@@ -421,6 +488,18 @@ const listingPageSlice = createSlice({
       })
       .addCase(showListingThunk.rejected, (state, action) => {
         state.showListingError = action.payload;
+      })
+      .addCase(fetchRelatedListingsThunk.pending, state => {
+        state.fetchRelatedListingsInProgress = true;
+      })
+      .addCase(fetchRelatedListingsThunk.fulfilled, (state, action) => {
+        state.fetchRelatedListingsInProgress = false;
+        state.relatedListings = action.payload;
+      })
+      .addCase(fetchRelatedListingsThunk.rejected, state => {
+        // A missing recommendation strip is not an error worth showing.
+        state.fetchRelatedListingsInProgress = false;
+        state.relatedListings = [];
       })
       .addCase(fetchReviewsThunk.pending, state => {
         state.fetchReviewsError = null;
@@ -564,6 +643,15 @@ export const loadData = (params, search, config) => (dispatch, getState, sdk) =>
     const listingResponse = response[0];
     const listing = listingResponse?.data?.data;
     const transactionProcessAlias = listing?.attributes?.publicData?.transactionProcessAlias || '';
+
+    // FAIRWAY: the "more like this" strip. Fired here because the category is
+    // only known once the listing has loaded, and deliberately not awaited.
+    if (!hasNoViewingRights) {
+      dispatch(
+        fetchRelatedListings(listingId, listing?.attributes?.publicData?.categoryLevel1, config)
+      );
+    }
+
     if (isBookingProcessAlias(transactionProcessAlias) && !hasNoViewingRights) {
       // Fetch timeSlots if the user has viewing rights.
       // This can happen parallel to loadData.

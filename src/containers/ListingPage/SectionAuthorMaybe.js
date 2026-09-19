@@ -27,6 +27,9 @@ const SectionAuthorMaybe = props => {
     onSubmitInquiry,
     currentUser,
     onManageDisableScrolling,
+    isOffer,
+    listingPrice,
+    marketplaceCurrency,
   } = props;
 
   if (!listing.author) {
@@ -68,6 +71,9 @@ const SectionAuthorMaybe = props => {
           sendInquiryError={sendInquiryError}
           onSubmit={onSubmitInquiry}
           inProgress={sendInquiryInProgress}
+          isOffer={isOffer}
+          listingPrice={listingPrice}
+          marketplaceCurrency={marketplaceCurrency}
         />
       </Modal>
     </section>

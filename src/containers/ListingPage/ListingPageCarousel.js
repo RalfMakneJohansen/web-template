@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useCallback } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import classNames from 'classnames';
@@ -51,9 +51,15 @@ import {
 import Notifications from './Notifications/Notifications';
 import SectionReviews from './SectionReviews';
 import SectionAuthorMaybe from './SectionAuthorMaybe';
+import { EVENTS, priceParam, track } from '../../analytics/track';
+
+import SectionBreadcrumb from './SectionBreadcrumb';
+import SectionSpecs from './SectionSpecs';
 import SectionMapMaybe from './SectionMapMaybe';
 import SectionGallery from './SectionGallery';
-import CustomListingFields from './CustomListingFields';
+import SectionRelatedListings from './SectionRelatedListings';
+import SectionBuyerJourney from './SectionBuyerJourney';
+import SectionListingFaq from './SectionListingFaq';
 import ListingPageAccessWrapper from './ListingPageAccessWrapper';
 
 import css from './ListingPage.module.css';
@@ -65,6 +71,8 @@ export const ListingPageComponent = props => {
     props.inquiryModalOpenForListingId === props.params.id
   );
   const [mounted, setMounted] = useState(false);
+  // Whether the modal was opened to ask a question or to place a bid
+  const [inquiryIntent, setInquiryIntent] = useState('message');
 
   useEffect(() => {
     setMounted(true);
@@ -144,6 +152,26 @@ export const ListingPageComponent = props => {
 
   const topbar = <TopbarContainer />;
 
+  // Once per listing, after it is loaded — not on every render
+  const viewedId = currentListing?.id?.uuid;
+  const lastViewedRef = useRef(null);
+  useEffect(() => {
+    if (!viewedId || lastViewedRef.current === viewedId) {
+      return;
+    }
+    lastViewedRef.current = viewedId;
+    const pd = currentListing?.attributes?.publicData || {};
+    track(EVENTS.LISTING_VIEWED, {
+      listing_id: viewedId,
+      category: pd.categoryLevel1,
+      brand: pd.brand,
+      condition: pd.condition,
+      value: priceParam(currentListing?.attributes?.price),
+      currency: currentListing?.attributes?.price?.currency,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewedId]);
+
   if (showListingError && showListingError.status === 404) {
     // 404 listing not found
     return <NotFoundPage staticContext={props.staticContext} />;
@@ -165,7 +193,7 @@ export const ListingPageComponent = props => {
   const isNegotiation = processType === 'negotiation';
 
   const commonParams = { params, history, routes: routeConfiguration };
-  const onContactUser = handleContactUser({
+  const contactUser = handleContactUser({
     ...commonParams,
     currentUser,
     callSetInitialValues,
@@ -173,6 +201,27 @@ export const ListingPageComponent = props => {
     location,
     setInquiryModalOpen,
   });
+  // Counted before the modal opens, so signed-out clicks are counted too
+  const onContactUser = () => {
+    setInquiryIntent('message');
+    track(EVENTS.CONTACT_SELLER_CLICKED, {
+      listing_id: listingId?.uuid,
+      signed_in: !!currentUser?.id,
+    });
+    contactUser();
+  };
+  // Bidding reuses the same modal and the same inquiry transition — the bid is
+  // composed into the opening message. See InquiryForm.
+  const onMakeOffer = () => {
+    setInquiryIntent('offer');
+    track(EVENTS.OFFER_STARTED, {
+      listing_id: listingId?.uuid,
+      signed_in: !!currentUser?.id,
+      value: priceParam(price),
+      currency: price?.currency,
+    });
+    contactUser();
+  };
   // Note: this is for inquire transition to inquiry state in booking, purchase and negotiation processes.
   // Inquiry process is handled through handleSubmit.
   const onSubmitInquiry = handleSubmitInquiry({
@@ -238,6 +287,11 @@ export const ListingPageComponent = props => {
       <LayoutSingleColumn className={css.pageRoot} topbar={topbar} footer={<FooterContainer />}>
         <div className={css.contentWrapperForProductLayout}>
           <div className={css.mainColumnForProductLayout}>
+            <SectionBreadcrumb
+              publicData={publicData}
+              categoryConfiguration={config.categoryConfiguration}
+              title={title}
+            />
             <Notifications
               mounted={mounted}
               listing={currentListing}
@@ -273,12 +327,12 @@ export const ListingPageComponent = props => {
             </div>
             {showDescription && <SectionText text={description} showAsIngress />}
 
-            <CustomListingFields
+            {/* FAIRWAY: one specification table instead of a details list plus
+                a paragraph per text field */}
+            <SectionSpecs
               publicData={publicData}
-              metadata={metadata}
               listingFieldConfigs={listingConfig.listingFields}
               categoryConfiguration={config.categoryConfiguration}
-              intl={intl}
             />
 
             <SectionMapMaybe
@@ -300,6 +354,9 @@ export const ListingPageComponent = props => {
               onSubmitInquiry={onSubmitInquiry}
               currentUser={currentUser}
               onManageDisableScrolling={onManageDisableScrolling}
+              isOffer={inquiryIntent === 'offer'}
+              listingPrice={price}
+              marketplaceCurrency={config.currency}
             />
           </div>
           <div className={css.orderColumnForProductLayout}>
@@ -331,6 +388,7 @@ export const ListingPageComponent = props => {
               author={ensuredAuthor}
               onManageDisableScrolling={onManageDisableScrolling}
               onContactUser={onContactUser}
+              onMakeOffer={onMakeOffer}
               {...restOfProps}
               validListingTypes={config.listing.listingTypes}
               marketplaceCurrency={config.currency}
@@ -339,6 +397,15 @@ export const ListingPageComponent = props => {
               showListingImage={showListingImage}
             />
           </div>
+        </div>
+
+        {/* FAIRWAY: below the fold. A listing used to end in whitespace — now it
+            ends in somewhere else to go, how the purchase works, and a reason
+            to list your own. */}
+        <div className={css.belowFold}>
+          <SectionRelatedListings categoryId={publicData.categoryLevel1} />
+          <SectionBuyerJourney />
+          <SectionListingFaq />
         </div>
       </LayoutSingleColumn>
     </Page>
