@@ -266,7 +266,11 @@ const mergeBranding = (brandingConfig, defaultBranding) => {
     logoSettings: validLogoSettings ? logoSettingsRaw : { format: 'image', height: 24 },
     logoImageDesktop: logo || defaultBranding.logoImageDesktopURL,
     logoImageMobile: logo || defaultBranding.logoImageMobileURL,
-    brandImage: loginBackgroundImage,
+    // Fairway's own brand image wins: the asset currently in Console is an
+    // almost black placeholder, which leaves the auth pages unreadable.
+    // To let Console control it again, flip this to
+    // `loginBackgroundImage || defaultBranding.brandImageURL`.
+    brandImage: defaultBranding.brandImageURL || loginBackgroundImage,
     facebookImage,
     twitterImage,
     ...rest,
@@ -1104,7 +1108,19 @@ export const requireListingImage = listingTypeConfig => {
   return listingTypeConfig?.defaultListingFields?.images !== false;
 };
 
+/**
+ * Whether a provider must connect Stripe before a listing may be published.
+ *
+ * FAIRWAY: while Stripe is not set up, REACT_APP_SKIP_STRIPE_PAYOUT_DETAILS=true
+ * lets drafts publish without it, so the rest of the marketplace can be tested.
+ * Listings published this way cannot be bought — the checkout still needs a
+ * connected Stripe account. The flag is opt-in precisely so it cannot reach
+ * production by accident; remove it from .env once Stripe is live.
+ */
 export const requirePayoutDetails = listingTypeConfig => {
+  if (process.env.REACT_APP_SKIP_STRIPE_PAYOUT_DETAILS === 'true') {
+    return false;
+  }
   return listingTypeConfig?.defaultListingFields?.payoutDetails !== false;
 };
 
@@ -1385,9 +1401,16 @@ const mergeListingConfig = (hostedConfig, defaultConfigs, categoriesInUse) => {
   const listingTypes = shouldMerge
     ? union(hostedListingTypes, defaultListingTypes, 'listingType')
     : hostedListingTypes;
+
+  // FAIRWAY: Console's listingFields asset is still empty, so fall back to the
+  // local definitions in config/configListing.js. Once the same fields exist in
+  // Console, the hosted ones win again on their own and this line is a no-op.
+  const hasHostedListingFields = hostedListingFields.length > 0;
   const listingFields = shouldMerge
     ? union(hostedListingFields, defaultListingFields, 'key')
-    : hostedListingFields;
+    : hasHostedListingFields
+    ? hostedListingFields
+    : defaultListingFields || [];
 
   const listingTypesInUse = listingTypes.map(lt => `${lt.listingType}`);
 
@@ -1643,6 +1666,18 @@ const mergeSearchConfig = (
       ? [defaultSearchConfig.keywordsFilter]
       : [];
 
+  // FAIRWAY: keep Console's on/off switch for the price filter but take the
+  // range from configSearch.js. Console is capped at 500, which would hide every
+  // listing above 500 kr. Remove this once the range is corrected in Console.
+  const priceFilterWithLocalRange = priceFilter
+    ? {
+        ...priceFilter,
+        min: defaultSearchConfig.priceFilter?.min ?? priceFilter.min,
+        max: defaultSearchConfig.priceFilter?.max ?? priceFilter.max,
+        step: defaultSearchConfig.priceFilter?.step ?? priceFilter.step,
+      }
+    : priceFilter;
+
   const seatsFilterMaybe = typeof seatsFilter?.enabled === 'boolean' ? [seatsFilter] : [];
 
   const listingTypeFilterMaybe =
@@ -1659,7 +1694,7 @@ const mergeSearchConfig = (
     ...categoryFilterMaybe,
     dateRangeFilter,
     ...seatsFilterMaybe,
-    priceFilter,
+    priceFilterWithLocalRange,
     ...keywordsFilterMaybe,
   ];
 
@@ -1738,7 +1773,13 @@ export const mergeConfig = (configAsset = {}, defaultConfigs = {}) => {
     getListingMinimumPrice(configAsset.transactionSize) ||
     defaultConfigs.listingMinimumPriceSubUnits;
 
-  const validHostedCategories = validateCategoryConfig(configAsset.categories);
+  // FAIRWAY: same fallback as listing fields — local categories are used until
+  // they are created in Console. Ids must match the ones the nav links to.
+  const hostedCategories = validateCategoryConfig(configAsset.categories);
+  const validHostedCategories =
+    hostedCategories?.length > 0
+      ? hostedCategories
+      : validateCategoryConfig({ categories: defaultConfigs.listing?.categories });
   const categoryConfiguration = getBuiltInCategorySpecs(validHostedCategories);
   const listingConfiguration = mergeListingConfig(
     configAsset,

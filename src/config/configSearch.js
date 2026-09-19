@@ -52,10 +52,15 @@ export const dateRangeFilter = {
  */
 export const priceFilter = {
   schemaType: 'price',
-  // Note: unlike most prices this is not handled in subunits
+  // Note: unlike most prices this is not handled in subunits — these are whole
+  // DKK, the marketplace currency.
+  //
+  // FAIRWAY: Console still has this capped at 500, which hides every club worth
+  // more than 500 kr. mergeSearchConfig overrides the hosted range with this one
+  // until the same numbers are saved in Console → Search → Price filter.
   min: 0,
-  max: 1000,
-  step: 5,
+  max: 50000,
+  step: 100,
 };
 // // This is not in use by default.
 // export const keywordsFilter = {

@@ -3,7 +3,9 @@
  * showFilter takes priority and falls back to indexForSearch.
  */
 export const isFilterEnabled = filterConfig => {
-  return filterConfig.showFilter === true;
+  // A listing field does not have to be filterable — text fields cannot carry a
+  // filterConfig at all, and metadata fields are never searched.
+  return filterConfig?.showFilter === true;
 };
 
 /**
