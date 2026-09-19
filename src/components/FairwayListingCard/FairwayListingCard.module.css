@@ -152,3 +152,21 @@
   color: var(--colorInk);
   font-variant-numeric: tabular-nums;
 }
+
+/* Someone who has asked for less motion still gets the shadow change, just
+   nothing that moves. */
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .aspectRatio {
+    transition: none;
+  }
+
+  .root:hover,
+  .root:active {
+    transform: none;
+  }
+
+  .root:hover .aspectRatio {
+    transform: none;
+  }
+}

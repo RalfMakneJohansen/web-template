@@ -78,6 +78,35 @@ const NegotiationRequestQuoteForm = loadable(() =>
   )
 );
 
+const strokeIcon = children => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden={true}
+  >
+    {children}
+  </svg>
+);
+
+const TagIcon = () =>
+  strokeIcon(
+    <>
+      <path d="M10.4 2.5H17.5v7.1L9.6 17.5a1.3 1.3 0 0 1-1.8 0l-5.3-5.3a1.3 1.3 0 0 1 0-1.8L10.4 2.5Z" />
+      <circle cx="13.9" cy="6.1" r="1.1" />
+    </>
+  );
+
+const ChatIcon = () =>
+  strokeIcon(
+    <path d="M17.5 9.6c0 3.3-3.4 6-7.5 6a8.8 8.8 0 0 1-2.2-.3L3.3 17l1.2-3.2A5.7 5.7 0 0 1 2.5 9.6c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6Z" />
+  );
+
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023;
 const TODAY = new Date();
@@ -443,6 +472,8 @@ const OrderPanel = props => {
   const titleClasses = classNames(titleClassName || css.orderTitle);
 
   const ctaTotal = customerTotal(lineItems, marketplaceCurrency)?.total;
+  const showMakeOffer = typeof onMakeOffer === 'function' && shouldHavePurchase;
+  const showContactSeller = typeof onContactUser === 'function' && shouldHavePurchase;
 
   return (
     <div className={classes}>
@@ -610,6 +641,42 @@ const OrderPanel = props => {
             showCurrencyMismatch
           />
         )}
+
+        {/* FAIRWAY: bidding and asking were a tap away only after opening the
+            panel. On a phone all three ways of reaching a seller belong in the
+            bar itself — a used marketplace where the only visible action is
+            "buy" is a shop. Icons rather than labels, because three text
+            buttons will not fit next to a price at 375px. */}
+        {!isClosed && !isOwnListing && !isOutOfStock && (showMakeOffer || showContactSeller) ? (
+          <div className={css.ctaSecondary}>
+            {showMakeOffer ? (
+              <button
+                type="button"
+                className={css.ctaIconButton}
+                onClick={onMakeOffer}
+                title={intl.formatMessage({ id: 'ProductOrderForm.makeOffer' })}
+              >
+                <TagIcon />
+                <span className={css.ctaIconLabel}>
+                  <FormattedMessage id="ProductOrderForm.makeOffer" />
+                </span>
+              </button>
+            ) : null}
+            {showContactSeller ? (
+              <button
+                type="button"
+                className={css.ctaIconButton}
+                onClick={onContactUser}
+                title={intl.formatMessage({ id: 'ProductOrderForm.contactSeller' })}
+              >
+                <ChatIcon />
+                <span className={css.ctaIconLabel}>
+                  <FormattedMessage id="OrderPanel.ctaAsk" />
+                </span>
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
         {isClosed ? (
           <div className={css.closedListingButton}>

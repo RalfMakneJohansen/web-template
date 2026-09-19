@@ -68,10 +68,13 @@
   }
 }
 
-/* The gallery reaches the screen edges on a phone, the way an app's does */
+/* The gallery reaches the screen edges on a phone, the way an app's does.
+   Measured from the centre rather than by negative gutters, because the
+   container's padding is not symmetric and a fixed -24px overshot the right
+   edge by exactly that much. */
 .root {
-  margin-left: -24px;
-  margin-right: -24px;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 
   @media (--viewportMedium) {
     margin-left: 0;

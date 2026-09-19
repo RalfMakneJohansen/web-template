@@ -1445,6 +1445,51 @@ textarea {
   color: var(--colorWhite);
 }
 
+/* FAIRWAY: every button presses.
+   The variants above each bring their own colours and hover shadow; this adds
+   the one thing they all share — going down under the finger and coming back
+   on a decelerating curve. It is the cheapest thing that makes a web page feel
+   like an app, because it is the response people expect from a physical
+   control.
+
+   :active only, so keyboard focus is untouched, and :not(:disabled) so a dead
+   button stays dead. */
+.buttonDefault,
+.buttonPrimary,
+.buttonPrimaryInline,
+.buttonSecondary,
+.buttonSecondaryInline,
+.buttonSmall {
+  transition: transform 0.18s var(--easeOut), box-shadow 0.18s var(--easeOut),
+    background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.buttonDefault:active:not(:disabled),
+.buttonPrimary:active:not(:disabled),
+.buttonPrimaryInline:active:not(:disabled),
+.buttonSecondary:active:not(:disabled),
+.buttonSecondaryInline:active:not(:disabled),
+.buttonSmall:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: none;
+
+  /* Down is immediate; coming back up is what gets eased */
+  transition-duration: 0.06s;
+}
+
+/* Someone who has asked for less motion gets the colour change and nothing
+   that moves. */
+@media (prefers-reduced-motion: reduce) {
+  .buttonDefault:active:not(:disabled),
+  .buttonPrimary:active:not(:disabled),
+  .buttonPrimaryInline:active:not(:disabled),
+  .buttonSecondary:active:not(:disabled),
+  .buttonSecondaryInline:active:not(:disabled),
+  .buttonSmall:active:not(:disabled) {
+    transform: none;
+  }
+}
+
 /* ================ Modals ================ */
 
 .marketplaceModalRootStyles {

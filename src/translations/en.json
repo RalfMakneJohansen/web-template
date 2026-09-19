@@ -818,6 +818,7 @@
   "OrderBreakdown.total": "Total price",
   "OrderPanel.author": "{name}",
   "OrderPanel.closedListingButtonText": "Sorry, this listing has been closed.",
+  "OrderPanel.ctaAsk": "Ask",
   "OrderPanel.ctaButtonMessageBooking": "Book now",
   "OrderPanel.ctaButtonMessageDownload": "Buy now",
   "OrderPanel.ctaButtonMessageInquiry": "Send an inquiry",

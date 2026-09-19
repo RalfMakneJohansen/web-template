@@ -874,6 +874,7 @@
   "OrderBreakdown.total": "Samlet pris",
   "OrderPanel.author": "{name}",
   "OrderPanel.closedListingButtonText": "Beklager, denne annonce er blevet lukket.",
+  "OrderPanel.ctaAsk": "Spørg",
   "OrderPanel.ctaButtonMessageBooking": "Book nu",
   "OrderPanel.ctaButtonMessageDownload": "Køb nu",
   "OrderPanel.ctaButtonMessageInquiry": "Send en forespørgsel",
