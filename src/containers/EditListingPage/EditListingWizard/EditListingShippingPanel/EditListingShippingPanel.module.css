@@ -23,17 +23,48 @@
   margin-top: 24px;
 }
 
+/* FAIRWAY: a choice you can see you have made.
+   These were grey-bordered boxes with a tiny grey line under a radio dot, and
+   nothing changed when you picked one — so a big box carried one small
+   sentence and the step felt dead. They are choice cards now: warm edge, card
+   radius, and a selected state that fills. */
 .option {
   padding: 16px 18px;
-  border: 1px solid var(--colorGrey100);
-  border-radius: var(--borderRadiusMedium);
+
+  background-color: var(--colorPaper);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
+  cursor: pointer;
+
+  transition: border-color 0.18s var(--easeOut), background-color 0.18s var(--easeOut),
+    box-shadow 0.18s var(--easeOut);
 }
 
-/* The consequence of each choice, so the seller is not guessing */
+@media (hover: hover) {
+  .option:hover {
+    border-color: var(--colorGroundDeep);
+    box-shadow: var(--shadowRest);
+  }
+}
+
+.optionSelected {
+  border-color: var(--colorFairway);
+  background-color: var(--colorSagePale);
+  box-shadow: var(--shadowRest);
+}
+
+/* The consequence of each choice, so the seller is not guessing. Aligned to
+   the label rather than the radio, and given room to be read. */
 .optionHint {
-  composes: marketplaceTinyFontStyles from global;
-  margin: 4px 0 0 30px;
-  color: var(--colorGrey600);
+  margin: 6px 0 0 30px;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorSlate);
+}
+
+.optionSelected .optionHint {
+  color: var(--colorInk);
 }
 
 .requiredNote {

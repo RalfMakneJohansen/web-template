@@ -25,6 +25,7 @@ import {
   CustomExtendedDataField,
 } from '../../../../components';
 // Import modules from this directory
+import CategoryImagePicker, { canUseImagePicker } from './CategoryImagePicker';
 import css from './EditListingDetailsForm.module.css';
 
 const TITLE_MAX_LENGTH = 60;
@@ -149,6 +150,20 @@ const CategoryField = props => {
 
   const currentCategoryKey = `${prefix}${level}`;
 
+  // FAIRWAY: a flat set of golf categories is shown as photographs instead of
+  // a dropdown — see CategoryImagePicker. Nested categories keep the select,
+  // because a grid of pictures cannot show that something has children.
+  if (level === 1 && canUseImagePicker(currentCategoryOptions)) {
+    return (
+      <CategoryImagePicker
+        name={currentCategoryKey}
+        categories={currentCategoryOptions}
+        intl={intl}
+        onChange={value => handleCategoryChange(value, level, currentCategoryOptions)}
+      />
+    );
+  }
+
   const categoryConfig = findCategoryConfig(currentCategoryOptions, values[`${prefix}${level}`]);
 
   return (
@@ -243,6 +258,18 @@ const FieldSelectCategory = props => {
   );
 };
 
+/**
+ * FAIRWAY: fields that have a wizard step to themselves.
+ *
+ * shipment_type is a normal listing field — the shipping panel, the review
+ * step and the listing page all read its options for their labels — but it is
+ * asked on its own Fragt step, which also writes the delivery settings and the
+ * freight price that this step cannot. Without this it was rendered here too,
+ * so the seller answered the same question twice, two steps apart, with the
+ * same two options.
+ */
+const KEYS_WITH_THEIR_OWN_STEP = ['shipment_type'];
+
 // Add collect data for listing fields (both publicData and privateData) based on configuration
 const AddListingFields = props => {
   const { listingType, listingFieldsConfig, selectedCategories, formId, intl } = props;
@@ -256,8 +283,13 @@ const AddListingFields = props => {
     const isProviderScope = ['public', 'private'].includes(scope);
     const isTargetListingType = isFieldForListingType(listingType, fieldConfig);
     const isTargetCategory = isFieldForCategory(targetCategoryIds, fieldConfig);
+    const hasOwnStep = KEYS_WITH_THEIR_OWN_STEP.includes(key);
 
-    return isKnownSchemaType && isProviderScope && isTargetListingType && isTargetCategory
+    return isKnownSchemaType &&
+      isProviderScope &&
+      isTargetListingType &&
+      isTargetCategory &&
+      !hasOwnStep
       ? [
           ...pickedFields,
           <CustomExtendedDataField

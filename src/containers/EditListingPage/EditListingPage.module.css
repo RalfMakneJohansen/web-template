@@ -34,3 +34,8 @@
 .wizard {
   flex-grow: 1;
 }
+
+/* FAIRWAY: the warm ground runs through the listing wizard too */
+.root {
+  background-color: var(--colorGround);
+}

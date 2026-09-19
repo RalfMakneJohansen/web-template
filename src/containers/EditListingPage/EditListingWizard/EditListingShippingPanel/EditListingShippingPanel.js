@@ -124,7 +124,14 @@ const EditListingShippingPanel = props => {
 
               <div className={css.options}>
                 {OPTIONS.map(option => (
-                  <div key={option.value} className={css.option}>
+                  <div
+                    key={option.value}
+                    className={
+                      values.shipment_type === option.value
+                        ? classNames(css.option, css.optionSelected)
+                        : css.option
+                    }
+                  >
                     <FieldRadioButton
                       id={`shipment_type_${option.value}`}
                       name="shipment_type"

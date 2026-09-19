@@ -60,6 +60,8 @@
   "BookingTimeForm.seatsPlaceholder": "Vælg…",
   "BookingTimeForm.seatsTitle": "Antal pladser",
   "BookingTimeForm.timeSlotsError": "Der opstod en fejl, da de ledige datoer skulle indlæses. Genindlæs siden.",
+  "CategoryImagePicker.label": "Hvad sælger du?",
+  "CategoryImagePicker.required": "Vælg hvad du sælger.",
   "CheckoutPage.bookingTimeNotAvailableMessage": "Det ønskede tidspunkt er desværre lige blevet booket.",
   "CheckoutPage.chargeDisabledMessage": "Transaktionen kan ikke gennemføres, fordi udbyderens udbetalingsoplysninger er ufuldstændige. Kontakt support.",
   "CheckoutPage.correctQuantityInformationMissing": "Ordredata mangler korrekt information om antal",

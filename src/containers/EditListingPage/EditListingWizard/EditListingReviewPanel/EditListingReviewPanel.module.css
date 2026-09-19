@@ -35,8 +35,16 @@
   background-color: var(--colorGrey50);
 }
 
+/* FAIRWAY: the summary is one card, not a run of loose lines on white.
+   Rows are tighter than they were — every value here is a word or a number,
+   and 14px of padding on each made a short answer look lost. */
 .rows {
   margin: 24px 0 0 0;
+  padding: 4px 18px;
+
+  background-color: var(--colorPaper);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
 }
 
 .row {
@@ -45,16 +53,22 @@
   justify-content: space-between;
   gap: 16px;
 
-  padding: 14px 0;
-  border-bottom: 1px solid var(--colorGrey100);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--colorGround);
+}
+
+.row:last-child {
+  border-bottom: none;
 }
 
 .rowLabel {
-  composes: marketplaceTinyFontStyles from global;
   flex-shrink: 0;
   margin: 0;
+
+  font-size: 13px;
+  line-height: 19px;
   font-weight: var(--fontWeightSemiBold);
-  color: var(--colorGrey600);
+  color: var(--colorSlate);
 }
 
 .rowValue {

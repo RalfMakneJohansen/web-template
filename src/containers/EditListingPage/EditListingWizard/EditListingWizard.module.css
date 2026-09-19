@@ -102,3 +102,21 @@
     margin-bottom: 40px;
   }
 }
+
+/* ============================================================
+   FAIRWAY: the wizard on the warm ground
+
+   Creating a listing was the one plain-white stretch left on the site,
+   which is what made it feel flat next to the library. The step rail and
+   the page take the warm ground; the form content stays on white, so the
+   step you are filling in is the lit object.
+   ============================================================ */
+
+.tabsContainer {
+  background-color: var(--colorGround);
+  border-top-color: var(--colorDividerWarm);
+
+  @media (--viewportLarge) {
+    background-color: var(--colorGround);
+  }
+}
