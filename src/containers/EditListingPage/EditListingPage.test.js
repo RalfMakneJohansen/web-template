@@ -26,12 +26,12 @@ import {
 import EditListingPage, { EditListingPageComponent } from './EditListingPage';
 import {
   AVAILABILITY,
-  DELIVERY,
   DETAILS,
   LOCATION,
   PHOTOS,
   PRICING,
   PRICING_AND_STOCK,
+  SHIPPING,
 } from './EditListingWizard/EditListingWizardTab';
 
 const { screen, userEvent, waitFor, within } = testingLibrary;
@@ -418,10 +418,10 @@ describe('EditListingPage', () => {
     // Assert the presence of the default listing fields after selecting both categories
     await waitFor(() => {
       expect(getByRole('textbox', { name: 'EditListingDetailsForm.title' })).toBeInTheDocument();
-      //
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
       expect(
-        getByRole('textbox', { name: 'EditListingDetailsForm.description' })
-      ).toBeInTheDocument();
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
       expect(getByLabelText('Cat')).toBeInTheDocument();
       //
       expect(
@@ -468,10 +468,10 @@ describe('EditListingPage', () => {
       // Tab: panel title
       expect(getByText('EditListingDetailsPanel.createListingTitle')).toBeInTheDocument();
       expect(getByRole('textbox', { name: 'EditListingDetailsForm.title' })).toBeInTheDocument();
-      // Check description exists
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
       expect(
-        getByRole('textbox', { name: 'EditListingDetailsForm.description' })
-      ).toBeInTheDocument();
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
       expect(getByLabelText('Cat')).toBeInTheDocument();
       // Check custom extended data field exists
       expect(
@@ -544,9 +544,10 @@ describe('EditListingPage', () => {
     await user.selectOptions(selectSubcategory, screen.getByRole('option', { name: 'Adidas' }));
 
     expect(getByRole('option', { name: 'Adidas' }).selected).toBe(true);
+    // FAIRWAY: description has a wizard step of its own, so the details step omits it
     expect(
-      getByRole('textbox', { name: 'EditListingDetailsForm.description' })
-    ).toBeInTheDocument();
+      screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+    ).not.toBeInTheDocument();
     expect(getByLabelText('Cat')).toBeInTheDocument();
     expect(
       getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
@@ -607,9 +608,10 @@ describe('EditListingPage', () => {
     await waitFor(() => {
       expect(getByRole('textbox', { name: 'EditListingDetailsForm.title' })).toBeInTheDocument();
 
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
       expect(
-        getByRole('textbox', { name: 'EditListingDetailsForm.description' })
-      ).toBeInTheDocument();
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
       expect(getByLabelText('Cat')).toBeInTheDocument();
 
       expect(
@@ -667,10 +669,10 @@ describe('EditListingPage', () => {
         'the listing'
       );
 
-      // Tab/form: description
-      expect(getByRole('textbox', { name: 'EditListingDetailsForm.description' })).toHaveValue(
-        'Lorem ipsum'
-      );
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
+      expect(
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
 
       // Tab/form: listing field
       expect(getByLabelText('Cat')).toBeInTheDocument();
@@ -764,7 +766,10 @@ describe('EditListingPage', () => {
     expect(screen.getByRole('spinbutton')).toHaveValue(10);
   });
 
-  it('Purchase: edit flow on delivery tab', async () => {
+  // FAIRWAY: the built-in delivery step is replaced by the shipping step, which asks the
+  // seller to pick a shipment_type. Pickup/shipping and the freight price are no longer a
+  // seller choice, so there is no delivery-method form here.
+  it('Purchase: edit flow on shipping tab', async () => {
     const user = userEvent.setup();
     const config = getConfig(listingTypesPurchase, listingFieldsPurchase);
     const routeConfiguration = getRouteConfiguration(config.layout);
@@ -792,62 +797,46 @@ describe('EditListingPage', () => {
         id: listing.id.uuid,
         slug: 'slug',
         type: LISTING_PAGE_PARAM_TYPE_EDIT,
-        tab: DELIVERY,
+        tab: SHIPPING,
       },
     };
 
-    const { getByText, getByRole, queryByPlaceholderText } = render(
-      <EditListingPage {...props} />,
-      {
-        initialState: initialState(listing),
-        config,
-        routeConfiguration,
-      }
-    );
+    const { getByText, getByRole, queryByRole } = render(<EditListingPage {...props} />, {
+      initialState: initialState(listing),
+      config,
+      routeConfiguration,
+    });
 
     await waitFor(() => {
       // Navigation to tab
-      const tabLabel = 'EditListingWizard.tabLabelDelivery';
+      const tabLabel = 'EditListingWizard.tabLabelShipping';
       expect(getByText(tabLabel)).toBeInTheDocument();
 
       // Tab: panel title
-      expect(getByText('EditListingDeliveryPanel.title')).toBeInTheDocument();
+      expect(getByText('EditListingShippingPanel.title')).toBeInTheDocument();
 
-      expect(getByText('EditListingDeliveryForm.shippingLabel')).toBeInTheDocument();
+      // Tab/form: the two shipment_type options, neither one preselected
+      expect(getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })).not.toBeChecked();
+      expect(getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })).not.toBeChecked();
 
-      // Tab/form: pickup
+      // No delivery-method choice any more: pickup is off and shipping is on for every listing
       expect(
-        getByRole('checkbox', { name: /EditListingDeliveryForm.pickupLabel/i })
-      ).not.toBeChecked();
-      expect(queryByPlaceholderText('EditListingDeliveryForm.addressPlaceholder')).toBeDisabled();
-      expect(getByRole('textbox', { name: 'EditListingDeliveryForm.building' })).toBeDisabled();
-
-      // Tab/form: shipping
+        queryByRole('checkbox', { name: /EditListingDeliveryForm.pickupLabel/i })
+      ).not.toBeInTheDocument();
       expect(
-        getByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i })
-      ).not.toBeChecked();
-      expect(
-        getByRole('textbox', { name: 'EditListingDeliveryForm.shippingOneItemLabel' })
-      ).toBeDisabled();
-      expect(
-        getByRole('textbox', { name: 'EditListingDeliveryForm.shippingAdditionalItemsLabel' })
-      ).toBeDisabled();
+        queryByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i })
+      ).not.toBeInTheDocument();
 
       expect(
-        getByRole('button', { name: 'EditListingWizard.edit.saveDelivery' })
+        getByRole('button', { name: 'EditListingWizard.saveEditShipping' })
       ).toBeInTheDocument();
     });
 
-    // Test intercation
-    await user.click(getByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i }));
+    // Test interaction
+    await user.click(getByRole('radio', { name: 'EditListingShippingPanel.optionBox' }));
 
-    expect(getByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i })).toBeChecked();
-    expect(
-      getByRole('textbox', { name: 'EditListingDeliveryForm.shippingOneItemLabel' })
-    ).toBeEnabled();
-    expect(
-      getByRole('textbox', { name: 'EditListingDeliveryForm.shippingAdditionalItemsLabel' })
-    ).toBeEnabled();
+    expect(getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })).toBeChecked();
+    expect(getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })).not.toBeChecked();
   });
 
   it('Purchase: edit flow on photos tab', async () => {
@@ -980,7 +969,9 @@ describe('EditListingPage', () => {
     expect(saveButton).not.toBeDisabled();
   });
 
-  it('Purchase: edit flow no shipping on delivery tab', async () => {
+  // FAIRWAY: the shipping step hardcodes shippingEnabled: true and a flat 5000-subunit
+  // freight, so the built-in `shipping` toggle on the listing type no longer has an effect.
+  it('Purchase: shipping tab ignores the listing type shipping toggle', async () => {
     const listingTypePurchase = listingTypesPurchase[0];
     const purchaseNoShipping = {
       ...listingTypePurchase,
@@ -1012,44 +1003,44 @@ describe('EditListingPage', () => {
         id: listing.id.uuid,
         slug: 'slug',
         type: LISTING_PAGE_PARAM_TYPE_EDIT,
-        tab: DELIVERY,
+        tab: SHIPPING,
       },
     };
 
-    const { getByText, getByRole, queryByRole, queryByPlaceholderText } = render(
-      <EditListingPage {...props} />,
-      {
-        initialState: initialState(listing),
-        config,
-        routeConfiguration,
-      }
-    );
+    const { getByText, getByRole, queryByRole } = render(<EditListingPage {...props} />, {
+      initialState: initialState(listing),
+      config,
+      routeConfiguration,
+    });
 
     await waitFor(() => {
       // Navigation to tab
-      const tabLabel = 'EditListingWizard.tabLabelDelivery';
-      expect(getByText(tabLabel)).toBeInTheDocument();
+      expect(getByText('EditListingWizard.tabLabelShipping')).toBeInTheDocument();
 
       // Tab: panel title
-      expect(getByText('EditListingDeliveryPanel.title')).toBeInTheDocument();
+      expect(getByText('EditListingShippingPanel.title')).toBeInTheDocument();
 
-      expect(getByText('EditListingDeliveryForm.shippingLabel')).toBeInTheDocument();
-
-      // Tab/form: pickup
-      expect(getByRole('checkbox', { name: /EditListingDeliveryForm.pickupLabel/i })).toBeChecked();
+      // Tab/form: the shipment_type question is asked regardless of the shipping toggle
       expect(
-        queryByPlaceholderText('EditListingDeliveryForm.addressPlaceholder')
-      ).not.toBeDisabled();
-      expect(getByRole('textbox', { name: 'EditListingDeliveryForm.building' })).not.toBeDisabled();
-
-      // Tab/form: no shipping
+        getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })
+      ).toBeInTheDocument();
       expect(
-        queryByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i }).parentNode
-      ).toHaveClass('hidden');
+        getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })
+      ).toBeInTheDocument();
+
+      // The built-in delivery form is gone, so its shipping fields are never rendered
+      expect(
+        queryByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i })
+      ).not.toBeInTheDocument();
+      expect(
+        queryByRole('textbox', { name: 'EditListingDeliveryForm.shippingOneItemLabel' })
+      ).not.toBeInTheDocument();
     });
   });
 
-  it('Purchase: edit flow no pickup on delivery tab', async () => {
+  // FAIRWAY: the shipping step hardcodes pickupEnabled: false, so the built-in `pickup`
+  // toggle on the listing type no longer changes what the seller is asked for.
+  it('Purchase: shipping tab ignores the listing type pickup toggle', async () => {
     const listingTypePurchase = listingTypesPurchase[0];
     const purchaseNoPickup = { ...listingTypePurchase, defaultListingFields: { pickup: false } };
     const config = getConfig([purchaseNoPickup], listingFieldsPurchase);
@@ -1078,45 +1069,39 @@ describe('EditListingPage', () => {
         id: listing.id.uuid,
         slug: 'slug',
         type: LISTING_PAGE_PARAM_TYPE_EDIT,
-        tab: DELIVERY,
+        tab: SHIPPING,
       },
     };
 
-    const { getByText, getByRole } = render(<EditListingPage {...props} />, {
-      initialState: initialState(listing),
-      config,
-      routeConfiguration,
-    });
+    const { getByText, getByRole, queryByRole, queryByPlaceholderText } = render(
+      <EditListingPage {...props} />,
+      {
+        initialState: initialState(listing),
+        config,
+        routeConfiguration,
+      }
+    );
 
     await waitFor(() => {
       // Navigation to tab
-      const tabLabel = 'EditListingWizard.tabLabelDelivery';
-      expect(getByText(tabLabel)).toBeInTheDocument();
+      expect(getByText('EditListingWizard.tabLabelShipping')).toBeInTheDocument();
 
       // Tab: panel title
-      expect(getByText('EditListingDeliveryPanel.title')).toBeInTheDocument();
+      expect(getByText('EditListingShippingPanel.title')).toBeInTheDocument();
 
-      expect(getByText('EditListingDeliveryForm.shippingLabel')).toBeInTheDocument();
-
-      // Tab/form: pickup
+      // Tab/form: the shipment_type question is asked regardless of the pickup toggle
       expect(
-        getByRole('checkbox', { name: /EditListingDeliveryForm.pickupLabel/i }).parentNode
-      ).toHaveClass('hidden');
-
-      // Tab/form: no shipping
-      expect(
-        getByRole('checkbox', { name: /EditListingDeliveryForm.shippingLabel/i })
-      ).toBeChecked();
-      expect(
-        getByRole('textbox', { name: 'EditListingDeliveryForm.shippingOneItemLabel' })
+        getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })
       ).toBeInTheDocument();
       expect(
-        getByRole('textbox', { name: 'EditListingDeliveryForm.shippingAdditionalItemsLabel' })
+        getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })
       ).toBeInTheDocument();
 
+      // The built-in delivery form is gone, so its pickup fields are never rendered
       expect(
-        getByRole('button', { name: 'EditListingWizard.edit.saveDelivery' })
-      ).toBeInTheDocument();
+        queryByRole('checkbox', { name: /EditListingDeliveryForm.pickupLabel/i })
+      ).not.toBeInTheDocument();
+      expect(queryByPlaceholderText('EditListingDeliveryForm.addressPlaceholder')).toBeNull();
     });
   });
 
@@ -1264,10 +1249,10 @@ describe('EditListingPage', () => {
         'the listing'
       );
 
-      // Tab/form: description
-      expect(getByRole('textbox', { name: 'EditListingDetailsForm.description' })).toHaveValue(
-        'Lorem ipsum'
-      );
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
+      expect(
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
 
       // Tab/form: listing field
       expect(getByText('Amenities')).toBeInTheDocument();
@@ -2570,10 +2555,10 @@ describe('EditListingPage', () => {
         'the listing'
       );
 
-      // Tab/form: description
-      expect(getByRole('textbox', { name: 'EditListingDetailsForm.description' })).toHaveValue(
-        'Lorem ipsum'
-      );
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
+      expect(
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
 
       // Tab/form: listing field
       expect(getByLabelText('Cat')).toBeInTheDocument();
@@ -2942,10 +2927,10 @@ describe('EditListingPage', () => {
         'the listing'
       );
 
-      // Tab/form: description
-      expect(getByRole('textbox', { name: 'EditListingDetailsForm.description' })).toHaveValue(
-        'Lorem ipsum'
-      );
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
+      expect(
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
 
       // Tab/form: save button
       expect(
@@ -3011,10 +2996,10 @@ describe('EditListingPage', () => {
       // Tab/form: form title
       expect(getByRole('textbox', { name: 'EditListingDetailsForm.title' })).toBeInTheDocument();
 
-      // Tab/form: description
+      // FAIRWAY: description has a wizard step of its own, so the details step omits it
       expect(
-        getByRole('textbox', { name: 'EditListingDetailsForm.description' })
-      ).toBeInTheDocument();
+        screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
+      ).not.toBeInTheDocument();
 
       // Tab/form: save button
       expect(
@@ -3167,8 +3152,16 @@ describe('EditListingPageComponent', () => {
     // Tabs added
     const tabLabelPricingAndStock = 'EditListingWizard.tabLabelPricingAndStock';
     expect(screen.getByText(tabLabelPricingAndStock)).toBeInTheDocument();
+    // FAIRWAY: the built-in delivery tab is replaced by the shipping step, and the
+    // purchase flow also gained its own description and review steps.
+    const tabLabelDescription = 'EditListingWizard.tabLabelDescription';
+    expect(screen.getByText(tabLabelDescription)).toBeInTheDocument();
+    const tabLabelShipping = 'EditListingWizard.tabLabelShipping';
+    expect(screen.getByText(tabLabelShipping)).toBeInTheDocument();
+    const tabLabelReview = 'EditListingWizard.tabLabelReview';
+    expect(screen.getByText(tabLabelReview)).toBeInTheDocument();
     const tabLabelDelivery = 'EditListingWizard.tabLabelDelivery';
-    expect(screen.getByText(tabLabelDelivery)).toBeInTheDocument();
+    expect(screen.queryByText(tabLabelDelivery)).not.toBeInTheDocument();
     expect(screen.getByText(tabLabelPhotos)).toBeInTheDocument();
   });
 });

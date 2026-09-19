@@ -60,7 +60,62 @@ exports[`EditListingDeliveryForm matches snapshot 1`] = `
           </div>
         </div>
       </div>
+      <div
+        class="addImageWrapper captureTile"
+      >
+        <div
+          class="root"
+        >
+          <div
+            class="aspectPadding"
+            style="padding-bottom: 100%;"
+          >
+            <div
+              class="aspectBox"
+            >
+              <input
+                accept="image/*"
+                capture="environment"
+                class="addImageInput"
+                id="captureImage"
+                name="captureImage"
+                type="file"
+              />
+              <label
+                class="addImage"
+                for="captureImage"
+              >
+                <span
+                  class="chooseImageText"
+                >
+                  <span
+                    class="chooseImage"
+                  >
+                    <span>
+                      EditListingPhotosForm.captureImage
+                    </span>
+                  </span>
+                  <span
+                    class="imageTypes"
+                  >
+                    <span>
+                      EditListingPhotosForm.captureImageHint
+                    </span>
+                  </span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <p
+      class="arrayError"
+    >
+      <span>
+        EditListingPhotosForm.minImagesRequired
+      </span>
+    </p>
     <p
       class="tip"
     >

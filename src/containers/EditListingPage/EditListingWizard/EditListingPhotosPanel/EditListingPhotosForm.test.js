@@ -33,6 +33,8 @@ describe('EditListingDeliveryForm', () => {
         allFilesUploadedAndVerified={true}
       />
     );
+    // FAIRWAY: the photos step also offers a camera-capture tile and requires three
+    // photos, so the snapshot covers the capture tile and the minImagesRequired notice.
     expect(tree.asFragment()).toMatchSnapshot();
   });
 
