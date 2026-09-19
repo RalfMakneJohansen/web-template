@@ -51,6 +51,7 @@ import ConfirmSignupForm from './ConfirmSignupForm/ConfirmSignupForm';
 import LoginForm from './LoginForm/LoginForm';
 import SignupForm from './SignupForm/SignupForm';
 import EmailVerificationInfo from './EmailVerificationInfo';
+import { EVENTS, track } from '../../analytics/track';
 import SocialLoginButtons from './SocialLoginButtons/SocialLoginButtons';
 
 import { TOS_ASSET_NAME, PRIVACY_POLICY_ASSET_NAME } from './AuthenticationPage.duck';
@@ -539,12 +540,34 @@ const AuthenticationPage = props => {
   // already render loginError / signupError / confirmError from Redux (same as
   // pre-RTK thunks, which caught inside the duck and did not reject).
   const submitLogin = useCallback(
-    ({ email, password }) => dispatch(login(email, password)).catch(() => {}),
+    ({ email, password }) =>
+      dispatch(login(email, password))
+        .then(res => {
+          track(EVENTS.LOGIN_COMPLETED, { method: 'email' });
+          return res;
+        })
+        .catch(() => {}),
     [dispatch]
   );
-  const submitSignup = useCallback(params => dispatch(signup(params)).catch(() => {}), [dispatch]);
+  const submitSignup = useCallback(
+    params =>
+      dispatch(signup(params))
+        .then(res => {
+          track(EVENTS.SIGNUP_COMPLETED, { method: 'email' });
+          return res;
+        })
+        .catch(() => {}),
+    [dispatch]
+  );
   const submitSingupWithIdp = useCallback(
-    params => dispatch(signupWithIdp(params)).catch(() => {}),
+    params =>
+      dispatch(signupWithIdp(params))
+        .then(res => {
+          // idpId is 'facebook' or 'google', so the two routes stay comparable
+          track(EVENTS.SIGNUP_COMPLETED, { method: params?.idpId || 'idp' });
+          return res;
+        })
+        .catch(() => {}),
     [dispatch]
   );
   const onResendVerificationEmail = useCallback(

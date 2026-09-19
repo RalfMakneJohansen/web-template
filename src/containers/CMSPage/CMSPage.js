@@ -11,6 +11,9 @@ import { getListingsById } from '../../ducks/marketplaceData.duck';
 import { getFeaturedListingsProps } from '../../util/data';
 
 import NotFoundPage from '../../containers/NotFoundPage/NotFoundPage';
+import LocalInfoPage from './LocalInfoPage';
+import localPages from './localPages';
+
 const PageBuilder = loadable(() =>
   import(/* webpackChunkName: "PageBuilder" */ '../PageBuilder/PageBuilder')
 );
@@ -20,7 +23,14 @@ export const CMSPageComponent = props => {
   const pageId = params.pageId || props.pageId;
 
   if (!inProgress && error?.status === 404) {
-    return <NotFoundPage staticContext={props.staticContext} />;
+    // Content pages that have not been created in Console fall back to local
+    // copy, so footer links resolve before an operator takes them over.
+    const localPage = localPages[pageId];
+    return localPage ? (
+      <LocalInfoPage page={localPage} />
+    ) : (
+      <NotFoundPage staticContext={props.staticContext} />
+    );
   }
 
   return (

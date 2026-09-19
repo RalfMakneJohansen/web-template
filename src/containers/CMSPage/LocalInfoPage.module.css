@@ -1,0 +1,167 @@
+﻿@import '../../styles/customMediaQueries.css';
+
+.root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 88px 24px;
+
+  @media (--viewportMedium) {
+    padding: 80px 32px 120px 32px;
+  }
+}
+
+.header {
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--colorDivider);
+}
+
+/* Page title in the display face. The section headings below stay in the
+   grotesque: caps on every subheading would slow down a page meant to be read. */
+.title {
+  margin: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 42px;
+  line-height: 42px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 56px;
+    line-height: 56px;
+  }
+}
+
+.intro {
+  margin: 16px 0 0 0;
+  font-size: 17px;
+  line-height: 28px;
+  color: var(--colorSlate);
+}
+
+.section {
+  margin-top: 44px;
+}
+
+.heading {
+  margin: 0 0 16px 0;
+  font-size: 21px;
+  line-height: 29px;
+
+  @media (--viewportMedium) {
+    font-size: 24px;
+    line-height: 32px;
+  }
+}
+
+.text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 27px;
+  color: var(--colorGraphite);
+}
+
+/* Bulleted list */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.listItem {
+  position: relative;
+  padding-left: 22px;
+
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--colorGraphite);
+}
+
+.listItem::before {
+  content: '';
+  position: absolute;
+  top: 11px;
+  left: 2px;
+
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--colorBrass);
+}
+
+/* Numbered steps */
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+  counter-reset: step;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.stepNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 28px;
+  height: 28px;
+  margin-top: 1px;
+
+  background-color: var(--colorForest);
+  border-radius: 50%;
+  color: var(--colorPaper);
+
+  font-family: var(--fontFamily);
+  font-size: 13px;
+  font-weight: var(--fontWeightSemiBold);
+}
+
+.stepText {
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--colorGraphite);
+}
+
+/* FAQ */
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.faqItem {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--colorDivider);
+}
+
+.faqItem:first-child {
+  padding-top: 0;
+}
+
+.faqQuestion {
+  font-family: var(--fontFamilyHeading);
+  font-size: 17px;
+  line-height: 25px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.faqAnswer {
+  margin: 8px 0 0 0;
+  font-size: 15px;
+  line-height: 25px;
+  color: var(--colorSlate);
+}
