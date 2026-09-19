@@ -19,7 +19,9 @@ import routeConfiguration from '../routing/routeConfiguration';
 // In case you have translated the template and have new translations that
 // are missing from the en translations file, the language for the tests can
 // be changed here so that there are no missing translation keys in tests.
-import messages from '../translations/en.json';
+// FAIRWAY: da.json is the marketplace locale and a strict superset of en.json,
+// so pointing the tests at it keeps every Fairway key resolvable.
+import messages from '../translations/da.json';
 
 let undefined;
 export const getDefaultConfiguration = () => {
