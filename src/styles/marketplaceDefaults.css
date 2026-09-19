@@ -1,4 +1,4 @@
-@import '../assets/sanitize.css';
+﻿@import '../assets/sanitize.css';
 @import './customMediaQueries.css';
 
 /* ================ Custom Properties aka CSS variables ================ */
@@ -14,6 +14,54 @@
  */
 
 :root {
+  /* ================ Fairway brand tokens ================ */
+
+  /**
+   * Fairway's own design tokens. These are the source of truth for the brand
+   * palette; the semantic color variables below are mapped onto these so that
+   * the rest of the app picks up the brand without per-component edits.
+   */
+  /* Surfaces */
+  --colorInk: #0c2820;
+  --colorPaper: #ffffff;
+  --colorSand: #f4f7f5;
+  --colorCream: #f4f7f5;
+
+  /* Off-white for text and marks sitting on the deep green */
+  --colorOffWhite: #ede8dc;
+
+  /* Brand greens: deep forest for dark panels, a mid green for accents */
+  --colorForest: #0f6e56;
+  --colorFairway: #0f6e56;
+  --colorSage: #5dcaa5;
+  --colorSagePale: #eaf7f1;
+
+  /* A soft pink, used only for the decorative stroke on the hero. Cool enough
+     that it never reads as the coral call-to-action. */
+  --colorBlush: #f4a6b8;
+
+  /* Antique brass: the call-to-action colour, and nothing else. Green and
+     gold is the oldest pairing in the game — it sits on the deep forest
+     without shouting, and it reads on white too. */
+  --colorCoral: #8f6a2b;
+  --colorCoralDark: #745521;
+  --colorCoralPale: #f4eedf;
+
+  /* Kept as aliases so older rules resolve; both point at the green accent */
+  --colorBrass: #0f6e56;
+  --colorBrassPale: #eaf7f1;
+
+  /* Text and lines */
+  --colorGraphite: #344054;
+  --colorSlate: #667085;
+  --colorDivider: #e4e7ec;
+
+  /* Support colors: condition badges */
+  --colorNavy: #175cd3;
+  --colorGold: #b54708;
+  --colorTeal: #0e9384;
+  --colorRust: #b42318;
+
   /* ================ Colors ================ */
 
   /**
@@ -56,17 +104,19 @@
   * In the future, we are planning to bring more --marketplace* CSS Properties
   * from hosted assets, which means that they could be managed through Console.
   */
-  --marketplaceColor: #6938ef; /* hsl(256, 85%, 58%) */
-  --marketplaceColorLight: #4a12e2; /* hsl(256, 85%, 48%) */
-  --marketplaceColorDark: #8d68f3; /* hsl(256, 85%, 68% */
+  --marketplaceColor: var(--colorFairway);
+  --marketplaceColorLight: #14876a;
+  --marketplaceColorDark: #0a4f3d;
 
-  /** 
+  /**
    * The fill color used by <PrimaryButton>
    * These might be overwritten by values from hosted assets
    */
-  --colorPrimaryButton: #138041;
-  --colorPrimaryButtonDark: #0d542a;
-  --colorPrimaryButtonLight: #1aad57;
+  --colorPrimaryButton: var(--colorCoral);
+  --colorPrimaryButtonDark: var(--colorCoralDark);
+  --colorPrimaryButtonLight: #f58170;
+
+  --colorPrimaryButtonText: var(--colorPaper);
 
   /** 
    * The fill color used by <SecondaryButton>
@@ -83,8 +133,17 @@
   --colorStatusFinalState: var(--colorGrey600);
 
   /* ================ Font ================ */
-  --fontFamily: -apple-system, BlinkMacSystemFont, 'Inter', Helvetica, Arial, sans-serif,
+  --fontFamily: 'Schibsted Grotesk', -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif,
     'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  /* Condensed display face for headings, set against the grotesque body
+     text and the serif wordmark. */
+  --fontFamilyDisplay: 'Barlow Condensed', 'Schibsted Grotesk', Arial Narrow, Helvetica,
+    sans-serif;
+  --fontFamilyHeading: var(--fontFamily);
+
+  --letterSpacingHeading: -0.022em;
+  --letterSpacingLabel: 0.06em;
 
   --fontWeightRegular: 400;
   --fontWeightMedium: 500;
@@ -102,6 +161,11 @@
    */
   --contentMaxWidth: 1056px;
   --contentMaxWidthPages: 1120px; /* calc(Global width (1056px) + (Horizontal padding (32px) * 2) */
+
+  /* One gutter and one vertical step, so every section lines up on the same
+     edge and breathes on the same rhythm. */
+  --pageGutter: 24px;
+  --sectionY: 52px;
 
   /* Multiples of mobile and desktop spacing units should be used with margins and paddings. */
   --spacingUnit: 6px;
@@ -137,6 +201,11 @@
 
   --borderRadius: 2px;
   --borderRadiusMedium: 4px;
+
+  /* Fairway radius scale: one step for controls, one for cards, one for pills */
+  --radiusControl: 6px;
+  --radiusCard: 12px;
+  --radiusPill: 999px;
 
   /* ================ Transition styles ================ */
 
@@ -203,6 +272,23 @@
   --carouselWidth: 100vw;
 }
 
+@media (--viewportMedium) {
+  :root {
+    --pageGutter: 32px;
+    --sectionY: 72px;
+  }
+}
+
+/**
+ * One visible focus ring for keyboard users across the whole app. The template
+ * ships without one, which leaves tab navigation invisible.
+ */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--colorFairway);
+  outline-offset: 2px;
+  border-radius: var(--radiusControl);
+}
+
 /* ================ Global element styles ================ */
 /**
  * Here are the global styles: for elements as well as some
@@ -221,7 +307,7 @@ body {
   text-rendering: optimizeSpeed;
   font-optical-sizing: auto;
 
-  background-color: var(--colorGrey50);
+  background-color: var(--colorPaper);
 }
 
 ::selection {
@@ -379,6 +465,33 @@ h6 {
   }
 }
 
+/* Fairway: headings are serif, in ink, with tightened tracking. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: var(--fontFamilyHeading);
+  font-weight: var(--fontWeightHeavy);
+  letter-spacing: var(--letterSpacingHeading);
+  color: var(--colorInk);
+}
+
+/* Note: no text-transform here — labels also wrap full sentences (consent
+   checkboxes, help text), and those are hard to read in caps. */
+label,
+.label {
+  letter-spacing: 0.01em;
+  color: var(--colorSlate);
+}
+
 html,
 li,
 p,
@@ -415,7 +528,7 @@ pre {
 
 html {
   /* font is set earlier */
-  color: var(--colorGrey700);
+  color: var(--colorGraphite);
   padding: 0;
   margin: 0;
 }
@@ -488,7 +601,7 @@ select {
 
   /* Borders */
   border-radius: 6px;
-  border: 1px solid #d8dce6;
+  border: 1px solid var(--colorDivider);
   outline: none;
 
   /* Transition */
@@ -517,13 +630,13 @@ select {
 }
 /* Effects */
 select:hover {
-  border: 1px solid #b8bfd1;
+  border: 1px solid var(--colorSlate);
   transition: all ease-in-out 100ms;
 }
 select:focus {
   background-color: #fff;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+  border-color: var(--colorFairway);
+  box-shadow: 0 0 0 3px rgb(45 106 79 / 15%);
   transition: all ease-in-out 100ms;
 }
 select:disabled {
@@ -549,7 +662,7 @@ textarea {
 
   /* Borders */
   border-radius: 6px;
-  border: 1px solid #d8dce6;
+  border: 1px solid var(--colorDivider);
   outline: none;
 
   /* Transition */
@@ -568,14 +681,14 @@ textarea {
 /* Effects */
 input:hover,
 textarea:hover {
-  border: 1px solid #b8bfd1;
+  border: 1px solid var(--colorSlate);
   transition: all ease-in-out 100ms;
 }
 input:focus,
 textarea:focus {
   background-color: #fff;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+  border-color: var(--colorFairway);
+  box-shadow: 0 0 0 3px rgb(45 106 79 / 15%);
   transition: all ease-in-out 100ms;
 }
 input:disabled,
@@ -757,6 +870,24 @@ textarea {
   }
 }
 
+/* Re-applied after the .h* class definitions above, which set their own weight. */
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: var(--fontFamilyHeading);
+  font-weight: var(--fontWeightHeavy);
+  letter-spacing: var(--letterSpacingHeading);
+  color: var(--colorInk);
+}
+
+.label {
+  letter-spacing: 0.01em;
+  color: var(--colorSlate);
+}
+
 .p,
 .buttonDefault,
 .buttonPrimary,
@@ -900,7 +1031,7 @@ textarea {
 
   /* Borders */
   border-radius: 6px;
-  border: 1px solid #d8dce6;
+  border: 1px solid var(--colorDivider);
   outline: none;
 
   /* Transition */
@@ -918,13 +1049,13 @@ textarea {
 }
 /* Effects */
 .marketplaceInputStyles:hover {
-  border: 1px solid #b8bfd1;
+  border: 1px solid var(--colorSlate);
   transition: all ease-in-out 100ms;
 }
 .marketplaceInputStyles:focus {
   background-color: #fff;
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgb(0 123 255 / 25%);
+  border-color: var(--colorFairway);
+  box-shadow: 0 0 0 3px rgb(45 106 79 / 15%);
   transition: all ease-in-out 100ms;
 }
 .marketplaceInputStyles:disabled {
@@ -1066,9 +1197,9 @@ textarea {
   border-radius: var(--borderRadiusMedium);
 
   /* Button colors */
-  /* Primary button uses success color */
+  /* Primary button uses the deep brand green */
   background-color: var(--colorPrimaryButton);
-  color: var(--colorWhite);
+  color: var(--colorPrimaryButtonText);
 
   @media (--viewportMedium) {
     padding: 20px 0 20px 0;
@@ -1079,7 +1210,7 @@ textarea {
   outline: none;
   box-shadow: var(--boxShadowButton);
   background-color: var(--colorPrimaryButtonDark);
-  color: var(--colorWhite);
+  color: var(--colorPrimaryButtonText);
 }
 .buttonPrimary:hover {
   text-decoration: none;
@@ -1116,7 +1247,7 @@ textarea {
   border-radius: var(--borderRadiusMedium);
 
   background-color: var(--colorPrimaryButton);
-  color: var(--colorWhite);
+  color: var(--colorPrimaryButtonText);
 
   @media (--viewportMedium) {
     line-height: 16px;
@@ -1128,7 +1259,7 @@ textarea {
   box-shadow: var(--boxShadowButton);
   text-decoration: none;
   background-color: var(--colorPrimaryButtonDark);
-  color: var(--colorWhite);
+  color: var(--colorPrimaryButtonText);
 }
 .buttonPrimaryInline:disabled {
   box-shadow: none;

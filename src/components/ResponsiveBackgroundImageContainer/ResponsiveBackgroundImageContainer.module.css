@@ -17,8 +17,10 @@
   left: 0;
 }
 
+/* Tinted toward the brand green rather than flat black, and light enough that
+   the photo behind it still reads. */
 .overlay {
-  background: linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6));
+  background: linear-gradient(-45deg, rgba(18, 23, 20, 0.22), rgba(27, 67, 50, 0.48));
 }
 
 .backgroundImage {

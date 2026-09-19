@@ -114,6 +114,11 @@
   }
 }
 
+.primaryButton .spinner,
+.primaryButton .checkmark {
+  stroke: var(--colorPrimaryButtonText);
+}
+
 .secondaryButton .spinner,
 .secondaryButtonInline .spinner {
   stroke: var(--colorGrey300);

@@ -1,6 +1,9 @@
 @import '../../../styles/customMediaQueries.css';
 .root {
   grid-template-rows: auto 1fr auto;
+  /* Clamp the column: an implicit `auto` track is sized to its max-content and
+     can push the page wider than the viewport (nowrap rows, carousels). */
+  grid-template-columns: minmax(0, 1fr);
   min-height: 100vh;
 }
 
@@ -12,6 +15,7 @@
 
 .main {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   scroll-margin-top: var(--topbarHeight);
 
   @media (--viewportMedium) {
