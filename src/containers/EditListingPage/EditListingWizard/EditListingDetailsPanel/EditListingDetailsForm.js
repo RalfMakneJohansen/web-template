@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Field, Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classNames from 'classnames';
@@ -308,6 +308,37 @@ const getListingTypeConfig = (config, listingType) => {
  * @param {Function} props.onSubmit - The submit function
  * @returns {JSX.Element}
  */
+/**
+ * FAIRWAY: keeps the title in step with brand and model.
+ *
+ * Writes the composed name only while the seller has not written their own —
+ * tracked by remembering what was last composed. The moment the title differs
+ * from that, it is theirs and this stops touching it.
+ */
+const ComposeTitleFromBrandAndModel = props => {
+  const { formApi, values } = props;
+  const lastComposed = useRef(null);
+  const { brand, model, title } = values || {};
+
+  useEffect(() => {
+    const composed = [brand, model]
+      .map(part => (typeof part === 'string' ? part.trim() : ''))
+      .filter(Boolean)
+      .join(' ');
+
+    if (!composed) {
+      return;
+    }
+    const titleIsOursOrEmpty = !title || title === lastComposed.current;
+    if (titleIsOursOrEmpty && title !== composed) {
+      lastComposed.current = composed;
+      formApi.change('title', composed);
+    }
+  }, [brand, model, title, formApi]);
+
+  return null;
+};
+
 const EditListingDetailsForm = props => (
   <FinalForm
     {...props}
@@ -423,22 +454,6 @@ const EditListingDetailsForm = props => (
             />
           )}
 
-          {showTitle && isCompatibleCurrency && (
-            <FieldTextInput
-              id={`${formId}title`}
-              name="title"
-              className={css.title}
-              type="text"
-              label={intl.formatMessage({ id: 'EditListingDetailsForm.title' })}
-              placeholder={intl.formatMessage({
-                id: 'EditListingDetailsForm.titlePlaceholder',
-              })}
-              maxLength={TITLE_MAX_LENGTH}
-              validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
-              autoFocus={autoFocus}
-            />
-          )}
-
           {showDescription && isCompatibleCurrency && (
             <FieldTextInput
               id={`${formId}description`}
@@ -465,6 +480,29 @@ const EditListingDetailsForm = props => (
               formId={formId}
               intl={intl}
             />
+          )}
+
+          {/* FAIRWAY: the title comes last and writes itself.
+              It used to be the first thing asked, before brand and model — so
+              the seller invented a name, then typed the same words again two
+              fields later. Now brand and model compose it, and the seller only
+              has to look at it. Typing over it stops the composing. */}
+          {showTitle && isCompatibleCurrency && (
+            <>
+              <ComposeTitleFromBrandAndModel formApi={formApi} values={values} />
+              <FieldTextInput
+                id={`${formId}title`}
+                name="title"
+                className={css.title}
+                type="text"
+                label={intl.formatMessage({ id: 'EditListingDetailsForm.title' })}
+                placeholder={intl.formatMessage({
+                  id: 'EditListingDetailsForm.titlePlaceholder',
+                })}
+                maxLength={TITLE_MAX_LENGTH}
+                validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+              />
+            </>
           )}
 
           {!isCompatibleCurrency && listingType && (
