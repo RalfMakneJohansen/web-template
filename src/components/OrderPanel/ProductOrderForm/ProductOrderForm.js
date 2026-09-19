@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Form as FinalForm, FormSpy } from 'react-final-form';
 
+import { EVENTS, track } from '../../../analytics/track';
 import { FormattedMessage, useIntl } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
 import { numberAtLeast, required } from '../../../util/validators';
-import { PURCHASE_PROCESS_NAME } from '../../../transactions/transaction';
 
 import {
   Form,
@@ -12,11 +12,11 @@ import {
   FieldTextInput,
   InlineTextButton,
   PrimaryButton,
-  H3,
-  H6,
+  SecondaryButton,
 } from '../../../components';
 
-import EstimatedCustomerBreakdownMaybe from '../EstimatedCustomerBreakdownMaybe';
+import FairwayPriceBreakdown from '../FairwayPriceBreakdown/FairwayPriceBreakdown';
+import ShareListingButton from '../ShareListingButton/ShareListingButton';
 
 import FetchLineItemsError from '../FetchLineItemsError/FetchLineItemsError.js';
 
@@ -26,6 +26,57 @@ import css from './ProductOrderForm.module.css';
 // (stock is shown inside select element)
 // Note: input element could allow ordering bigger quantities
 const MAX_QUANTITY_FOR_DROPDOWN = 100;
+
+const strokeIcon = path => (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 20 20"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    {path}
+  </svg>
+);
+
+/**
+ * FAIRWAY: three reasons to press the button, each with a line icon rather than
+ * a tick — a column of ticks reads as a pricing table, not as a guarantee.
+ */
+const GUARANTEES = [
+  {
+    id: 'ProductOrderForm.guaranteeEscrow',
+    icon: strokeIcon(
+      <>
+        <path d="M10 2.5 3.75 5v4.4c0 3.6 2.5 6.7 6.25 8.1 3.75-1.4 6.25-4.5 6.25-8.1V5L10 2.5Z" />
+        <path d="m7.5 9.9 1.9 1.9 3.6-3.6" />
+      </>
+    ),
+  },
+  {
+    id: 'ProductOrderForm.guaranteeShipping',
+    icon: strokeIcon(
+      <>
+        <path d="M1.9 5.6h9.4v8.1H1.9z" />
+        <path d="M11.3 8.1h3.1l2.5 2.5v3.1h-5.6z" />
+        <circle cx="5.3" cy="15" r="1.6" />
+        <circle cx="14.1" cy="15" r="1.6" />
+      </>
+    ),
+  },
+  {
+    id: 'ProductOrderForm.guaranteeInspection',
+    icon: strokeIcon(
+      <>
+        <circle cx="10" cy="10" r="7.5" />
+        <path d="M10 5.6V10l2.8 1.9" />
+      </>
+    ),
+  },
+];
 
 const handleFetchLineItems = ({
   quantity,
@@ -54,17 +105,11 @@ const handleFetchLineItems = ({
 };
 
 const DeliveryMethodMaybe = props => {
-  const {
-    displayDeliveryMethod,
-    hasMultipleDeliveryMethods,
-    deliveryMethod,
-    hasStock,
-    formId,
-    intl,
-    sectionHeadingAs,
-  } = props;
+  const { displayDeliveryMethod, hasMultipleDeliveryMethods, hasStock, formId, intl } = props;
   const showDeliveryMethodSelector = displayDeliveryMethod && hasMultipleDeliveryMethods;
-  const showSingleDeliveryMethod = displayDeliveryMethod && deliveryMethod;
+  // FAIRWAY: when there is only one delivery method there is nothing to choose,
+  // and the breakdown below already names the freight. The value still travels
+  // with the form as a hidden field — only the label is gone.
   return !hasStock ? null : showDeliveryMethodSelector ? (
     <FieldSelect
       id={`${formId}.deliveryMethod`}
@@ -83,23 +128,6 @@ const DeliveryMethodMaybe = props => {
         {intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })}
       </option>
     </FieldSelect>
-  ) : showSingleDeliveryMethod ? (
-    <div className={css.deliveryField}>
-      <H3 as={sectionHeadingAs} rootClassName={css.singleDeliveryMethodLabel}>
-        {intl.formatMessage({ id: 'ProductOrderForm.deliveryMethodLabel' })}
-      </H3>
-      <p className={css.singleDeliveryMethodSelected}>
-        {deliveryMethod === 'shipping'
-          ? intl.formatMessage({ id: 'ProductOrderForm.shippingOption' })
-          : intl.formatMessage({ id: 'ProductOrderForm.pickupOption' })}
-      </p>
-      <FieldTextInput
-        id={`${formId}.deliveryMethod`}
-        className={css.deliveryField}
-        name="deliveryMethod"
-        type="hidden"
-      />
-    </div>
   ) : (
     <FieldTextInput
       id={`${formId}.deliveryMethod`}
@@ -128,12 +156,13 @@ const renderForm = formRenderProps => {
     isOwnListing,
     onFetchTransactionLineItems,
     onContactUser,
+    onMakeOffer,
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
     price,
     payoutDetailsWarning,
-    marketplaceName,
+    listingTitle,
     values,
     sectionHeadingAs = 'h3',
   } = formRenderProps;
@@ -191,15 +220,23 @@ const renderForm = formRenderProps => {
     }
   };
 
-  const breakdownData = {};
-  const showBreakdown =
-    breakdownData && lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
+  const showBreakdown = lineItems && !fetchLineItemsInProgress && !fetchLineItemsError;
 
   const showContactUser = typeof onContactUser === 'function';
+  const showMakeOffer = typeof onMakeOffer === 'function';
+
+  const onClickBuy = () => {
+    track(EVENTS.BUY_CLICKED, { listing_id: listingId?.uuid });
+  };
 
   const onClickContactUser = e => {
     e.preventDefault();
     onContactUser();
+  };
+
+  const onClickMakeOffer = e => {
+    e.preventDefault();
+    onMakeOffer();
   };
 
   const contactSellerLink = (
@@ -259,36 +296,73 @@ const renderForm = formRenderProps => {
         hasStock={hasStock}
         formId={formId}
         intl={intl}
-        sectionHeadingAs={sectionHeadingAs}
       />
 
+      {/* FAIRWAY: the total before the button, not after it. A buyer who only
+          learns about freight on the checkout page is a buyer who leaves. */}
       {showBreakdown ? (
-        <div className={css.breakdownWrapper}>
-          <H6 as={sectionHeadingAs} className={css.bookingBreakdownTitle}>
-            <FormattedMessage id="ProductOrderForm.breakdownTitle" />
-          </H6>
-          <hr className={css.totalDivider} />
-          <EstimatedCustomerBreakdownMaybe
-            breakdownData={breakdownData}
-            lineItems={lineItems}
-            currency={price.currency}
-            marketplaceName={marketplaceName}
-            processName={PURCHASE_PROCESS_NAME}
-          />
-        </div>
+        <FairwayPriceBreakdown lineItems={lineItems} currency={price.currency} />
       ) : null}
 
       <FetchLineItemsError error={fetchLineItemsError} />
 
       <div className={css.submitButton}>
-        <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitDisabled}>
+        <PrimaryButton
+          type="submit"
+          inProgress={submitInProgress}
+          disabled={submitDisabled}
+          onClick={onClickBuy}
+        >
           {hasStock ? (
             <FormattedMessage id="ProductOrderForm.ctaButton" />
           ) : (
             <FormattedMessage id="ProductOrderForm.ctaButtonNoStock" />
           )}
         </PrimaryButton>
+
+        {/* FAIRWAY: bidding and asking used to be reachable only from the author
+            card far down the page. Both belong next to the buy button — a used
+            marketplace where you cannot negotiate is a shop. */}
+        {!isOwnListing && (showMakeOffer || showContactUser) ? (
+          <div className={css.secondaryActions}>
+            {showMakeOffer ? (
+              <SecondaryButton
+                type="button"
+                className={css.secondaryAction}
+                onClick={onClickMakeOffer}
+              >
+                <FormattedMessage id="ProductOrderForm.makeOffer" />
+              </SecondaryButton>
+            ) : null}
+            {showContactUser ? (
+              <SecondaryButton
+                type="button"
+                className={css.secondaryAction}
+                onClick={onClickContactUser}
+              >
+                <FormattedMessage id="ProductOrderForm.contactSeller" />
+              </SecondaryButton>
+            ) : null}
+          </div>
+        ) : null}
+
+        <div className={css.shareRow}>
+          <ShareListingButton listingId={listingId} title={listingTitle} />
+        </div>
       </div>
+
+      {/* FAIRWAY: what the buyer is covered by, stated where they decide */}
+      <ul className={css.guarantees}>
+        {GUARANTEES.map(g => (
+          <li key={g.id} className={css.guarantee}>
+            <span className={css.guaranteeIcon} aria-hidden={true}>
+              {g.icon}
+            </span>
+            <FormattedMessage id={g.id} />
+          </li>
+        ))}
+      </ul>
+
       <p className={css.finePrint}>
         {payoutDetailsWarning ? (
           payoutDetailsWarning

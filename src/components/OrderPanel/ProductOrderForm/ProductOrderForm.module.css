@@ -1,24 +1,5 @@
 @import '../../../styles/customMediaQueries.css';
 
-.bookingBreakdownTitle {
-  letter-spacing: 1px;
-  font-weight: var(--fontWeightMedium);
-}
-
-.totalDivider {
-  /* dimensions */
-  width: 100%;
-  height: 1px;
-  margin: 12px 0 5px 0;
-
-  border: none;
-  background-color: var(--colorGrey100);
-
-  @media (--viewportMedium) {
-    margin: 7px 0 0px 0;
-  }
-}
-
 .quantityField {
   padding: 0 24px;
 
@@ -52,23 +33,33 @@
   }
 }
 
-.breakdownWrapper {
+/* The buy button follows the total directly — nothing should come between the
+   number and the decision. */
+.submitButton {
   padding: 0 24px;
+  margin-top: 20px;
 
   @media (--viewportMedium) {
     padding: 0;
-    margin-top: 40px;
   }
 }
 
-.submitButton {
-  padding: 0 24px;
-  margin-top: 24px;
+/* Bidding and asking sit side by side under the buy button: equal weight to
+   each other, clearly below the primary action. */
+.secondaryActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 
-  @media (--viewportMedium) {
-    padding: 0;
-    margin-top: 72px;
-  }
+  margin-top: 10px;
+}
+
+.secondaryAction {
+  min-height: 48px;
+  padding: 0 8px;
+
+  font-size: 15px;
+  letter-spacing: 0;
 }
 
 .finePrint {
@@ -85,4 +76,39 @@
   @media (--viewportMedium) {
     padding: 0;
   }
+}
+
+/* What the buyer is covered by */
+.guarantees {
+  display: grid;
+  gap: 10px;
+
+  margin: 20px 0 0 0;
+  padding: 16px 18px;
+
+  background-color: var(--colorSagePale, #eaf7f1);
+  border-radius: var(--radiusCard, 12px);
+  list-style: none;
+}
+
+.guarantee {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  align-items: start;
+  gap: 10px;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorInk, #0c2820);
+}
+
+.guaranteeIcon {
+  display: block;
+  margin-top: 2px;
+  color: var(--colorFairway, #0f6e56);
+}
+
+.shareRow {
+  display: flex;
+  justify-content: center;
 }

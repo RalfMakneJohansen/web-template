@@ -279,3 +279,63 @@
     padding: 0;
   }
 }
+
+/* ================ FAIRWAY: the buy column ================
+   The template stacks loose blocks down the page. A product marketplace puts
+   the decision in one tight card: name, price, seller, action. */
+
+.orderHeading {
+  @media (--viewportLarge) {
+    margin-bottom: 8px;
+  }
+}
+
+.orderTitle {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportLarge) {
+    font-size: 32px;
+    line-height: 36px;
+    margin-bottom: 8px;
+  }
+}
+
+/* The seller gets a card of their own, with the way to reach them inside it */
+.author {
+  gap: 10px;
+
+  padding: 14px 16px;
+  border: 1px solid var(--colorDivider);
+  border-radius: var(--radiusCard);
+
+  @media (--viewportMedium) {
+    margin: 20px 0 0 0;
+    color: var(--colorGraphite);
+  }
+}
+
+.providerAvatar {
+  flex-shrink: 0;
+  margin-right: 10px;
+}
+
+/* Price carries the decision, so it gets the weight */
+.priceValue {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 34px;
+  line-height: 38px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--colorInk);
+}
+
+.perUnit {
+  font-size: 14px;
+  color: var(--colorSlate);
+}

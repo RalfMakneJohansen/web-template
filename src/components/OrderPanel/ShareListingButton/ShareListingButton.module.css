@@ -1,0 +1,22 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin: 12px auto 0 auto;
+  padding: 6px 4px;
+
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorSlate, #5a6b63);
+  transition: color 0.15s ease;
+}
+
+.root:hover {
+  color: var(--colorInk, #0c2820);
+}

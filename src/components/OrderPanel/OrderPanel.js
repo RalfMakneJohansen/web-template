@@ -265,6 +265,7 @@ const hasValidPriceVariants = priceVariants => {
  * @param {Object} [props.monthlyTimeSlots] - Available time slots by month
  * @param {Function} props.onFetchTransactionLineItems - Handler for fetching transaction line items
  * @param {Function} [props.onContactUser] - Handler for contacting the listing author
+ * @param {Function} [props.onMakeOffer] - Handler for opening the bid modal
  * @param {Array} [props.lineItems] - Array of line items for the transaction
  * @param {boolean} props.fetchLineItemsInProgress - Whether line items are being fetched
  * @param {Object} [props.fetchLineItemsError] - Error object if line items fetch failed
@@ -303,6 +304,7 @@ const OrderPanel = props => {
     timeSlotsForDate,
     onFetchTransactionLineItems,
     onContactUser,
+    onMakeOffer,
     lineItems,
     marketplaceCurrency,
     dayCountAvailableForBooking,
@@ -417,6 +419,7 @@ const OrderPanel = props => {
     price,
     marketplaceCurrency,
     listingId: listing.id,
+    listingTitle: listing?.attributes?.title,
     isOwnListing,
     marketplaceName,
     onFetchTransactionLineItems,
@@ -544,6 +547,7 @@ const OrderPanel = props => {
             shippingEnabled={shippingEnabled && displayShipping}
             displayDeliveryMethod={displayPickup || displayShipping}
             onContactUser={onContactUser}
+            onMakeOffer={onMakeOffer}
             {...sharedProps}
           />
         ) : showDownloadForm ? (

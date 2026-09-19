@@ -1,0 +1,128 @@
+@import '../../styles/customMediaQueries.css';
+
+/* Every tile the same height, so a row reads as one shelf and the prices land
+   on a shared baseline. */
+.root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+
+  color: var(--colorInk);
+  text-decoration: none;
+}
+
+.root:hover {
+  text-decoration: none;
+}
+
+.imageWrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radiusControl);
+
+  /* Listing photos arrive on wooden floors and on white studio grounds. A
+     neutral tile behind them is what stops a grid from looking untidy. */
+  background-color: var(--colorSand);
+}
+
+.aspectRatio {
+  transition: transform 0.4s ease;
+}
+
+.root:hover .aspectRatio {
+  transform: scale(1.03);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.conditionBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  padding: 4px 10px;
+  border-radius: var(--borderRadius);
+
+  background-color: rgba(255, 255, 255, 0.94);
+
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.conditionSomNy {
+  color: var(--colorFairway);
+}
+.conditionGod {
+  color: var(--colorTeal);
+}
+.conditionOkay {
+  color: var(--colorGold);
+}
+.conditionSlidt {
+  color: var(--colorRust);
+}
+
+/* ---- Text block ---- */
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  padding-top: 12px;
+}
+
+.brand {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+}
+
+.title {
+  margin-top: 3px;
+
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+
+  /* two lines at most, so a long name cannot push the price out of line */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.meta {
+  margin-top: 3px;
+
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--colorSlate);
+}
+
+/* The price is what the row is scanned for, so it carries the weight and sits
+   at the bottom of every tile regardless of how the name wrapped. */
+.price {
+  margin-top: auto;
+  padding-top: 8px;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--colorInk);
+  font-variant-numeric: tabular-nums;
+}

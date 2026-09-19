@@ -491,9 +491,10 @@ describe('OrderPanel', () => {
       expect(queryAllByText('OrderPanel.perUnit')).toHaveLength(1);
       expect(queryAllByText('OrderPanel.author')).toHaveLength(2);
       expect(getByText('ProductOrderForm.quantityLabel')).toBeInTheDocument();
-      expect(getByText('ProductOrderForm.deliveryMethodLabel')).toBeInTheDocument();
-      expect(getByText('ProductOrderForm.pickupOption')).toBeInTheDocument();
-      expect(getByText('ProductOrderForm.breakdownTitle')).toBeInTheDocument();
+      // FAIRWAY: with a single delivery method there is nothing to choose, so
+      // the label and the old breakdown heading are gone. The value still
+      // reaches the form through a hidden field, and the freight is named in
+      // the price breakdown instead.
       expect(getByText('ProductOrderForm.ctaButton')).toBeInTheDocument();
       expect(getByText('ProductOrderForm.finePrint')).toBeInTheDocument();
       expect(getByText('OrderPanel.ctaButtonMessagePurchase')).toBeInTheDocument();
