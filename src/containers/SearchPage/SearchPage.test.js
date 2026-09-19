@@ -296,6 +296,18 @@ const getSearchParams = config => {
       'publicData.shippingEnabled',
       'publicData.priceVariationsEnabled',
       'publicData.priceVariants',
+      // FAIRWAY: the card shows brand, condition and a spec line. Without these
+      // the API returns none of it and every tile renders bare.
+      'publicData.brand',
+      'publicData.model',
+      'publicData.condition',
+      'publicData.categoryLevel1',
+      'publicData.dexterity',
+      'publicData.shaft_flex',
+      'publicData.loft',
+      'publicData.wedge_loft',
+      'publicData.putter_length',
+      'publicData.shoe_size',
     ],
     'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
     'fields.image': [
@@ -385,8 +397,9 @@ describe('SearchPage', () => {
       expect(getByText('l1 title')).toBeInTheDocument();
       // Has listing with title
       expect(getByText('l2 title')).toBeInTheDocument();
-      // 2 listings with the same price
-      expect(getAllByText('ListingCard.price')).toHaveLength(2);
+      // 2 listings with the same price. FAIRWAY: the card formats the amount
+      // itself rather than wrapping it in a ListingCard.price message.
+      expect(getAllByText(/55[.,]00/)).toHaveLength(2);
     });
 
     // Test category intercation: click "Fish"
@@ -475,8 +488,9 @@ describe('SearchPage', () => {
       expect(getByText('l1 title')).toBeInTheDocument();
       // Has listing with title
       expect(getByText('l2 title')).toBeInTheDocument();
-      // 2 listings with the same price
-      expect(getAllByText('ListingCard.price')).toHaveLength(2);
+      // 2 listings with the same price. FAIRWAY: the card formats the amount
+      // itself rather than wrapping it in a ListingCard.price message.
+      expect(getAllByText(/55[.,]00/)).toHaveLength(2);
     });
 
     // Test category intercation

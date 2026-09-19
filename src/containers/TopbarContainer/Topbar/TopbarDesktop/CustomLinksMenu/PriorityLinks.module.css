@@ -47,11 +47,30 @@
   }
 }
 
+/* "Sælg" is the primary action in the topbar: a solid ink button. */
 .highlight {
-  color: var(--marketplaceColor);
+  display: flex;
+  align-items: center;
+  align-self: center;
+
+  height: 40px;
+  padding: 0 22px;
+  border-radius: var(--radiusPill);
+
+  /* the site's primary action, so it carries the call-to-action colour */
+  background-color: var(--colorCoral);
+  color: var(--colorPaper);
+
   &:hover {
-    color: var(--marketplaceColorDark);
+    background-color: var(--colorCoralDark);
+    border-bottom: none;
+    color: var(--colorPaper);
   }
+}
+
+.highlight .priorityLinkLabel {
+  margin: 0;
+  font-weight: var(--fontWeightSemiBold);
 }
 
 .priorityLinkLabel {

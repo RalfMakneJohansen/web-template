@@ -5,7 +5,8 @@
 }
 
 .desktopInputRoot {
-  height: var(--topbarHeightDesktop);
+  /* fills the search pill; the pill, not the topbar, sets the height */
+  height: 100%;
 }
 
 .mobileIcon {
@@ -65,23 +66,27 @@
 }
 
 .desktopIcon {
-  height: var(--topbarHeightDesktop);
+  height: 100%;
   border: none;
-  padding-top: 2px;
+  padding-top: 0;
 
   display: flex;
+  align-items: center;
   width: 24px;
   align-self: stretch;
-  background-color: var(--colorWhite);
+
+  /* the pill behind it provides the fill */
+  background-color: transparent;
 }
 
 .desktopInput {
   composes: p from global;
   flex-grow: 1;
   /* Font */
-  height: var(--topbarHeightDesktop);
+  height: 100%;
   line-height: unset;
   border: none;
+  background-color: transparent;
   padding-top: 0;
   padding-bottom: 0;
 

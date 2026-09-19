@@ -449,6 +449,18 @@ export const loadData = (params, search, config) => (dispatch, getState, sdk) =>
         'publicData.shippingEnabled',
         'publicData.priceVariationsEnabled',
         'publicData.priceVariants',
+        // FAIRWAY: the card shows brand, condition and a spec line. Without these
+        // the API returns none of it and every tile renders bare.
+        'publicData.brand',
+        'publicData.model',
+        'publicData.condition',
+        'publicData.categoryLevel1',
+        'publicData.dexterity',
+        'publicData.shaft_flex',
+        'publicData.loft',
+        'publicData.wedge_loft',
+        'publicData.putter_length',
+        'publicData.shoe_size',
       ],
       'fields.user': ['profile.displayName', 'profile.abbreviatedName'],
       'fields.image': [

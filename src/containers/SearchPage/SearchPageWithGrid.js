@@ -1,4 +1,4 @@
-import React, { Component, useCallback, useMemo } from 'react';
+import React, { Component, useCallback, useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
@@ -6,6 +6,7 @@ import { FormattedMessage } from '../../util/reactIntl';
 import { parse } from '../../util/urlHelpers';
 import { makeGetListingsByIdSelector } from '../../ducks/marketplaceData.duck';
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/ui.duck';
+import { EVENTS, track } from '../../analytics/track';
 
 import { Page } from '../../components';
 import TopbarContainer from '../TopbarContainer/TopbarContainer';
@@ -356,6 +357,34 @@ const SearchPage = props => {
       dispatch(manageDisableScrolling(componentId, disableScrolling)),
     [dispatch]
   );
+
+  // One event per settled search: which filters were used, and how many hits
+  // it returned. A search with 0 results is the interesting one.
+  const searchQuery = props.location?.search || '';
+  const resultCount = pagination?.totalItems;
+  // React runs effects twice in development, and the page renders once before
+  // the query params are parsed — both would double-count the same search.
+  const lastSearchRef = useRef(null);
+  useEffect(() => {
+    if (searchInProgress || typeof resultCount !== 'number') {
+      return;
+    }
+    const signature = `${searchQuery}|${resultCount}`;
+    if (lastSearchRef.current === signature) {
+      return;
+    }
+    lastSearchRef.current = signature;
+    const params = new URLSearchParams(searchQuery);
+    const filters = [...params.keys()].filter(k => k !== 'page' && k !== 'sort');
+    track(EVENTS.SEARCH_PERFORMED, {
+      keywords: params.get('keywords'),
+      category: params.get('pub_categoryLevel1'),
+      filters: filters.join(','),
+      filter_count: filters.length,
+      results: resultCount,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery, resultCount, searchInProgress]);
 
   return (
     <SearchPageAccessWrapper

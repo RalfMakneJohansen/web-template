@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { propTypes } from '../../../util/types';
-import { ListingCard, PaginationLinks } from '../../../components';
+import { FairwayListingCard, PaginationLinks } from '../../../components';
 
 import css from './SearchResultsPanel.module.css';
 
@@ -77,11 +77,10 @@ const SearchResultsPanel = props => {
       <ul className={isMapVariant ? css.listingCardsMapVariant : css.listingCards}>
         {listings.map(l => (
           <li key={l.id.uuid} className={css.resultItem}>
-            <ListingCard
+            <FairwayListingCard
               className={css.listingCard}
               listing={l}
               renderSizes={cardRenderSizes(isMapVariant)}
-              setActiveListing={setActiveListing}
             />
           </li>
         ))}

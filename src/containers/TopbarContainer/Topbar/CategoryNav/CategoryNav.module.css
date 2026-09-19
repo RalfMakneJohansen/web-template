@@ -1,0 +1,146 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  position: relative;
+  width: 100%;
+  background-color: var(--colorPaper);
+  border-bottom: 1px solid var(--colorDivider);
+}
+
+.bar,
+.barCompact {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
+  list-style: none;
+
+  /* 12px less than the page gutter, so the label text lines up with the logo */
+  padding: 0 12px;
+}
+
+/* Narrow screens: one scrollable row of every category, no dropdowns */
+.barCompact {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.barCompact::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desktop: grouped, with sub-category panels */
+.bar {
+  display: none;
+
+  @media (--viewportLarge) {
+    display: flex;
+    padding: 0 24px;
+  }
+}
+
+.item {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin: 4px 0;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--radiusControl);
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightMedium);
+  line-height: 20px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--colorGraphite);
+
+  background-color: transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    color: var(--colorForest);
+    background-color: var(--colorSagePale);
+    text-decoration: none;
+  }
+}
+
+.linkOpen {
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+}
+
+.chevron {
+  /* sanitize.css sets svg { fill: currentColor }, so say it again here */
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+.linkOpen .chevron {
+  transform: rotate(180deg);
+}
+
+/* ================ Sub-category panel ================ */
+
+.panel {
+  position: absolute;
+  top: calc(100% - 2px);
+  /* 8px panel padding + 1px border, so sub-labels sit under the trigger label */
+  left: -9px;
+  z-index: 1;
+
+  min-width: 220px;
+  padding: 8px;
+
+  background-color: var(--colorPaper);
+  border: 1px solid var(--colorDivider);
+  border-radius: var(--radiusCard);
+  box-shadow: 0 12px 28px rgba(15, 26, 20, 0.12);
+}
+
+.panelList {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panelLink {
+  display: block;
+  padding: 9px 12px;
+  border-radius: var(--radiusControl);
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightMedium);
+  line-height: 20px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  color: var(--colorInk);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--colorForest);
+    background-color: var(--colorSand);
+    text-decoration: none;
+  }
+}

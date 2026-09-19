@@ -26,6 +26,8 @@ import TopbarSearchForm from './TopbarSearchForm/TopbarSearchForm';
 import TopbarMobileMenu from './TopbarMobileMenu/TopbarMobileMenu';
 import TopbarDesktop from './TopbarDesktop/TopbarDesktop';
 
+import CategoryNav from './CategoryNav/CategoryNav';
+
 import css from './Topbar.module.css';
 import { getCurrentUserTypeRoles, showCreateListingLinkForUser } from '../../../util/userHelpers';
 
@@ -385,6 +387,7 @@ const TopbarComponent = props => {
           inboxTab={topbarInboxTab}
         />
       </div>
+      <CategoryNav />
       <Modal
         id="TopbarMobileMenu"
         containerClassName={css.modalContainer}
