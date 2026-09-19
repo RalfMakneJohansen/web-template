@@ -50,16 +50,35 @@
   }
 }
 
+/* FAIRWAY: the photo frame.
+   Sellers upload portrait phone shots and landscape studio shots into the same
+   slot. The image is never cropped — cropping a club head is worse than a
+   margin — so instead the margin sits on the sand ground rather than white,
+   which reads as a deliberate frame instead of a gap. The frame is a rounded
+   card on desktop and goes edge to edge on a phone, the way an app does. */
 :global(.image-gallery-slide-wrapper) {
-  background-color: var(--colorWhite);
-  border-bottom: 1px solid var(--colorGrey100);
+  position: relative;
+
+  background-color: var(--colorSand);
+  overflow: hidden;
 
   @media (--viewportMedium) {
-    border-radius: var(--borderRadiusMedium);
-    border: 1px solid var(--colorGrey100);
-    overflow: hidden;
+    border-radius: var(--radiusCard);
+    box-shadow: var(--shadowRest);
   }
 }
+
+/* The gallery reaches the screen edges on a phone, the way an app's does */
+.root {
+  margin-left: -24px;
+  margin-right: -24px;
+
+  @media (--viewportMedium) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 
 :global(.fullscreen) {
   background-color: var(--colorWhite) !important;
@@ -75,17 +94,11 @@
   }
 }
 
-.root {
-}
-
 .itemWrapper,
 .itemWrapperFullscreen {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.itemWrapper {
 }
 
 .noImage {

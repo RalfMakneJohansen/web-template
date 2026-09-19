@@ -10,20 +10,46 @@
 
   color: var(--colorInk);
   text-decoration: none;
+
+  transition: transform 0.25s var(--easeOut);
 }
 
 .root:hover {
   text-decoration: none;
 }
 
+/* The tile lifts off the page rather than just brightening. Only on devices
+   that actually hover — on a phone this would fire on tap and feel broken. */
+@media (hover: hover) {
+  .root:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* Pressing it puts it back down. This is the whole trick: the card behaves
+   like something physical under the finger. */
+.root:active {
+  transform: translateY(0);
+  transition-duration: 0.08s;
+}
+
 .imageWrapper {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radiusControl);
+  border-radius: var(--radiusCard);
 
   /* Listing photos arrive on wooden floors and on white studio grounds. A
      neutral tile behind them is what stops a grid from looking untidy. */
   background-color: var(--colorSand);
+
+  box-shadow: var(--shadowRest);
+  transition: box-shadow 0.25s var(--easeOut);
+}
+
+@media (hover: hover) {
+  .root:hover .imageWrapper {
+    box-shadow: var(--shadowRaised);
+  }
 }
 
 .aspectRatio {

@@ -21,11 +21,17 @@
     margin-bottom: 12.5vh;
   }
 
+  /* FAIRWAY: on desktop this stops being a modal and becomes the buy card —
+     one raised white surface holding price, actions and guarantees, instead of
+     loose blocks floating on the page. */
   @media (--viewportLarge) {
-    padding: 0;
-    background-color: transparent;
+    padding: 24px;
+    background-color: var(--colorWhite);
     margin-top: 0;
     margin-bottom: 0;
+
+    border-radius: var(--radiusSheet);
+    box-shadow: var(--shadowRaised);
   }
 }
 
@@ -171,18 +177,29 @@
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100vw;
-  padding: 18px 24px 18px 16px;
+  width: 100%;
+  padding: 14px 16px 14px 18px;
   background-color: var(--colorWhite);
-  box-shadow: var(--boxShadowTop);
   display: flex;
+  align-items: center;
+  gap: 14px;
+
+  /* FAIRWAY: an app action bar rather than a strip glued to the bottom —
+     rounded at the top and casting upward onto the content scrolling under it,
+     so it reads as a layer above the page. */
+  border-radius: var(--radiusSheet) var(--radiusSheet) 0 0;
+  box-shadow: var(--shadowBar);
+
+  /* Clear of the home indicator on iPhones */
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
 
   /* Contain repainting to this component only */
   /* 3D painting container helps scrolling */
   transform: translate3d(0, 0, 0);
 
   @media (--viewportMedium) {
-    padding: 18px 60px 18px 60px;
+    padding: 16px 60px 16px 60px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   }
 
   @media (--viewportLarge) {
@@ -338,4 +355,37 @@
 .perUnit {
   font-size: 14px;
   color: var(--colorSlate);
+}
+
+/* FAIRWAY: the total in the mobile action bar */
+
+.ctaTotal {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.ctaTotalLabel {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+}
+
+.ctaTotalValue {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  color: var(--colorInk);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* The bar's button takes the room the price does not */
+.openOrderForm > button,
+.openOrderForm > .closedListingButton {
+  flex-grow: 1;
 }
