@@ -961,7 +961,7 @@
   width: 100%;
   max-width: var(--contentMaxWidth);
   margin: 0 auto;
-  padding: 0 24px 72px 24px;
+  padding: 0 24px 64px 24px;
 
   @media (--viewportLarge) {
     max-width: unset;
@@ -991,7 +991,6 @@
 
 .relatedSection {
   padding-top: 48px;
-  border-top: 1px solid var(--colorGrey100);
 }
 
 .relatedHead {
@@ -1051,10 +1050,35 @@
 
 /* ---- How the purchase works ---- */
 
+/* A full-width band in the page's own colour, cut top and bottom by the same
+   wave the front page uses. It breaks up what was one long white scroll, and
+   it is the one place below the fold that has to feel like the brand. */
 .journeySection {
-  margin-top: 56px;
-  padding-top: 48px;
-  border-top: 1px solid var(--colorGrey100);
+  position: relative;
+  margin-top: 64px;
+  padding: 72px 0 76px 0;
+
+  background-color: var(--colorOffWhite);
+
+  @media (--viewportMedium) {
+    padding: 88px 0 92px 0;
+  }
+}
+
+.journeyInner {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  max-width: var(--contentMaxWidth);
+  margin: 0 auto;
+  padding: 0 24px;
+
+  @media (--viewportLarge) {
+    max-width: unset;
+    width: min(calc(var(--contentMaxWidth) + 72px), 100vw);
+    padding: 0 36px;
+  }
 }
 
 .journeySteps {
@@ -1076,9 +1100,15 @@
   }
 }
 
+/* Each step is its own card resting on the sand band. The number sits above
+   the text rather than beside it, so the four columns keep an even baseline
+   whatever the copy length. */
 .journeyStep {
-  /* the number sits above the text rather than beside it, so the four columns
-     keep an even baseline whatever the copy length */
+  padding: 22px 20px 24px 20px;
+
+  background-color: var(--colorWhite);
+  border-radius: var(--radiusCard);
+  box-shadow: var(--shadowRest);
 }
 
 .journeyNumber {
@@ -1118,9 +1148,7 @@
 /* ---- FAQ ---- */
 
 .faqSection {
-  margin-top: 56px;
-  padding-top: 48px;
-  border-top: 1px solid var(--colorGrey100);
+  padding-top: 56px;
 }
 
 .faqList {

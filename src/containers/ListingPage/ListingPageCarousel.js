@@ -404,7 +404,12 @@ export const ListingPageComponent = props => {
             to list your own. */}
         <div className={css.belowFold}>
           <SectionRelatedListings categoryId={publicData.categoryLevel1} />
-          <SectionBuyerJourney />
+        </div>
+
+        {/* A full-width band, so the wave can span the viewport */}
+        <SectionBuyerJourney />
+
+        <div className={css.belowFold}>
           <SectionListingFaq />
         </div>
       </LayoutSingleColumn>

@@ -134,32 +134,8 @@
 
 /* One curved edge, used at every boundary between a dark section and the light
    page. Drawn inside the dark section and filled with the light surface. */
-.wave {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 1;
-
-  display: block;
-  width: 100%;
-  height: 30px;
-  pointer-events: none;
-
-  fill: var(--colorPaper);
-
-  @media (--viewportMedium) {
-    height: 46px;
-  }
-}
-
-.waveBottom {
-  bottom: -1px;
-}
-
-.waveTop {
-  top: -1px;
-  transform: scaleY(-1);
-}
+/* The wave itself now lives in components/SectionWave, shared with the
+   listing page so both are cut by the same line. */
 
 /* The wave is positioned against these */
 .community,

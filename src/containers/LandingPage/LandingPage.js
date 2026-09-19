@@ -6,7 +6,13 @@ import { useConfiguration } from '../../context/configurationContext';
 import { isScrollingDisabled } from '../../ducks/ui.duck';
 import { getListingsById } from '../../ducks/marketplaceData.duck';
 
-import { FairwayListingCard, LayoutSingleColumn, NamedLink, Page } from '../../components';
+import {
+  FairwayListingCard,
+  LayoutSingleColumn,
+  NamedLink,
+  Page,
+  SectionWave,
+} from '../../components';
 import TopbarContainer from '../TopbarContainer/TopbarContainer';
 
 import boxDriver from '../../assets/box/box-driver.jpg';
@@ -18,13 +24,13 @@ import tileBuy from '../../assets/tiles/tile-buy.jpg';
 import tileSell from '../../assets/tiles/tile-sell.jpg';
 
 
-import FairwayFooter from './FairwayFooter';
+import FooterContainer from '../FooterContainer/FooterContainer';
 import BoxWalkthrough from './BoxWalkthrough';
 import FirstListings from './FirstListings';
 import ShippingChoice from './ShippingChoice';
 import HeroCollage from './HeroCollage';
 import RotatingHeadline from './RotatingHeadline';
-import SectionWave from './SectionWave';
+
 
 import css from './LandingPage.module.css';
 
@@ -230,7 +236,7 @@ export const LandingPageComponent = props => {
 
   return (
     <Page title={title} description={description} scrollingDisabled={scrollingDisabled}>
-      <LayoutSingleColumn topbar={<TopbarContainer />} footer={<FairwayFooter />}>
+      <LayoutSingleColumn topbar={<TopbarContainer />} footer={<FooterContainer />}>
         <section className={css.hero}>
           <div className={css.heroPanel}>
             <span className={css.eyebrowOnDark}>Brugt golfudstyr · Danmark</span>

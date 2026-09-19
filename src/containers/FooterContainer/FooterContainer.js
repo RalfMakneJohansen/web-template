@@ -1,43 +1,24 @@
 import React from 'react';
-import { useConfiguration } from '../../context/configurationContext';
-import loadable from '@loadable/component';
 
-const SectionBuilder = loadable(
-  () => import(/* webpackChunkName: "SectionBuilder" */ '../PageBuilder/PageBuilder'),
-  {
-    resolveComponent: components => components.SectionBuilder,
-  }
-);
+import FairwayFooter from './FairwayFooter';
 
+/**
+ * FAIRWAY: every page gets Fairway's own footer.
+ *
+ * The template renders the footer from the hosted `footer` asset in Console,
+ * and returns null when that asset is empty. Ours is empty, so until today the
+ * front page carried the Fairway footer while every other page carried the
+ * Console placeholder — "In Console, go to Content → Footer to add your slogan
+ * here. © 2026 Your marketplace." — in English, on the listing and search
+ * pages, which is where buyers actually decide.
+ *
+ * The footer is a fixed part of the brand rather than something an operator
+ * should be editing per page, so it is authored in code and the hosted asset is
+ * deliberately not read. To go back to a Console-managed footer, restore the
+ * SectionBuilder version from git history and fill in the asset.
+ */
 const FooterComponent = () => {
-  const { footer = {}, topbar } = useConfiguration();
-
-  // If footer asset is not set, let's not render Footer at all.
-  if (Object.keys(footer).length === 0) {
-    return null;
-  }
-
-  // The footer asset does not specify sectionId or sectionType. However, the SectionBuilder
-  // expects sectionId and sectionType in order to identify the section. We add those
-  // attributes here before passing the asset to SectionBuilder.
-  const footerSection = {
-    ...footer,
-    sectionId: 'footer',
-    sectionType: 'footer',
-    linkLogoToExternalSite: topbar?.logoLink,
-  };
-
-  return <SectionBuilder sections={[footerSection]} />;
+  return <FairwayFooter />;
 };
-
-// NOTE: if you want to add dynamic data to FooterComponent,
-//       you could just connect this FooterContainer to Redux Store
-//
-// const mapStateToProps = state => {
-//   const { currentUser } = state.user;
-//   return { currentUser };
-// };
-// const FooterContainer = compose(connect(mapStateToProps))(FooterComponent);
-// export default FooterContainer;
 
 export default FooterComponent;

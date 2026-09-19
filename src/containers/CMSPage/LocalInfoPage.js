@@ -4,7 +4,7 @@ import { useConfiguration } from '../../context/configurationContext';
 
 import { LayoutSingleColumn, Page } from '../../components';
 import TopbarContainer from '../TopbarContainer/TopbarContainer';
-import FairwayFooter from '../LandingPage/FairwayFooter';
+import FooterContainer from '../FooterContainer/FooterContainer';
 
 import css from './LocalInfoPage.module.css';
 
@@ -65,7 +65,7 @@ const LocalInfoPage = props => {
 
   return (
     <Page title={`${page.title} | ${config.marketplaceName}`} description={page.intro}>
-      <LayoutSingleColumn topbar={<TopbarContainer />} footer={<FairwayFooter />}>
+      <LayoutSingleColumn topbar={<TopbarContainer />} footer={<FooterContainer />}>
         <article className={css.root}>
           <header className={css.header}>
             <h1 className={css.title}>{page.title}</h1>
