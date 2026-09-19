@@ -148,10 +148,11 @@
      * and left padding together with border should be 60px.
      */
     padding: 24px 24px 0 24px;
-    background-color: var(--colorWhite);
-    border-left-width: 1px;
-    border-left-style: solid;
-    border-left-color: var(--colorGrey100);
+    /* FAIRWAY: the warm ground runs through the results column too, and the
+       hard divider between rail and results goes — the rail is its own panel
+       now, so a rule as well is one line too many. */
+    background-color: var(--colorGround);
+    border-left: none;
 
     scroll-margin-top: var(--topbarHeightDesktop);
   }
@@ -369,4 +370,38 @@
   align-items: baseline;
   gap: 16px;
   margin-bottom: 18px;
+}
+
+/* ============================================================
+   FAIRWAY: a warm ground for the library
+
+   The page was white, the filter rail was near-white and the cards had
+   no surface of their own, so the whole thing read as one open sheet.
+   Warm ground, white objects on it — that contrast is the "shop" feeling.
+   ============================================================ */
+
+.layoutWrapperContainer,
+.searchResultContainer {
+  background-color: var(--colorGround);
+}
+
+/* The rail is a solid white panel on the warm ground, with the same edge as
+   the cards so the whole page is drawn with one line. */
+.filterColumnContent {
+  background-color: var(--colorPaper);
+  border-color: var(--colorDividerWarm);
+  box-shadow: var(--shadowRest);
+}
+
+/* Filter groups get a line between them instead of floating in space */
+.filter + .filter {
+  margin-top: 6px;
+  padding-top: 18px;
+  border-top: 1px solid var(--colorDividerWarm);
+}
+
+/* Category options: a warm hover so the rail responds to the pointer */
+.filterColumnContent li > button:hover {
+  background-color: var(--colorGround);
+  border-radius: var(--radiusControl);
 }

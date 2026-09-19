@@ -25,6 +25,16 @@
   --colorInk: #0c2820;
   --colorPaper: #ffffff;
   --colorSand: #f4f7f5;
+
+  /* FAIRWAY: the warm ground.
+     --colorPaper is literally white and --colorSand is a cool grey-green, so
+     every surface we had was cold — which is why the library reads as white
+     and empty. These are the brand's off-white taken down to page weight: a
+     warm ground for pages, and a warm divider to match, so white cards sit on
+     something instead of disappearing into it. */
+  --colorGround: #f7f4ee;
+  --colorGroundDeep: #f1ece1;
+  --colorDividerWarm: #e5ded0;
   --colorCream: #f4f7f5;
 
   /* Off-white for text and marks sitting on the deep green */

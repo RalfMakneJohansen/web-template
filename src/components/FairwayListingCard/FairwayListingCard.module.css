@@ -11,7 +11,18 @@
   color: var(--colorInk);
   text-decoration: none;
 
-  transition: transform 0.25s var(--easeOut);
+  /* FAIRWAY: the tile is a card, not a floating photo with text under it.
+     A white surface with a warm edge, sitting on the page's warm ground —
+     that contrast is what makes a grid read as a shop rather than a
+     directory listing. */
+  background-color: var(--colorPaper);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
+  overflow: hidden;
+  box-shadow: var(--shadowRest);
+
+  transition: transform 0.25s var(--easeOut), box-shadow 0.25s var(--easeOut),
+    border-color 0.25s var(--easeOut);
 }
 
 .root:hover {
@@ -23,6 +34,8 @@
 @media (hover: hover) {
   .root:hover {
     transform: translateY(-3px);
+    box-shadow: var(--shadowRaised);
+    border-color: var(--colorGroundDeep);
   }
 }
 
@@ -33,23 +46,15 @@
   transition-duration: 0.08s;
 }
 
+/* Flush inside the card: the card carries the frame now, so the photo just
+   sits at the top of it. */
 .imageWrapper {
   position: relative;
   overflow: hidden;
-  border-radius: var(--radiusCard);
 
   /* Listing photos arrive on wooden floors and on white studio grounds. A
      neutral tile behind them is what stops a grid from looking untidy. */
   background-color: var(--colorSand);
-
-  box-shadow: var(--shadowRest);
-  transition: box-shadow 0.25s var(--easeOut);
-}
-
-@media (hover: hover) {
-  .root:hover .imageWrapper {
-    box-shadow: var(--shadowRaised);
-  }
 }
 
 .aspectRatio {
@@ -103,7 +108,7 @@
   flex-direction: column;
   flex-grow: 1;
 
-  padding-top: 12px;
+  padding: 13px 14px 15px 14px;
 }
 
 .brand {
