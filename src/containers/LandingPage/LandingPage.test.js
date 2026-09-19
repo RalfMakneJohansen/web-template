@@ -1,70 +1,50 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 
+import { createListing } from '../../util/testData';
 import { renderWithProviders as render, testingLibrary } from '../../util/testHelpers';
 
 import { LandingPageComponent } from './LandingPage';
 
-const { waitFor } = testingLibrary;
+const { screen } = testingLibrary;
 
+/**
+ * FAIRWAY: the front page is hand-built rather than assembled from Console page
+ * assets, so these check the page we actually ship — and above all that it
+ * renders at all when the listing fetch has not come back, or failed.
+ */
 describe('LandingPage', () => {
-  it('renders the Fallback page on error', async () => {
-    const errorMessage = 'LandingPage failed';
-    let e = new Error(errorMessage);
-    e.type = 'error';
-    e.name = 'Test';
+  it('renders the hero before any listings have arrived', () => {
+    render(<LandingPageComponent scrollingDisabled={false} />);
 
-    const { getByText } = render(
-      <LandingPageComponent pageAssetsData={null} inProgress={false} error={e} />
-    );
-
-    await waitFor(() => {
-      expect(getByText('Oops, something went wrong!')).toBeInTheDocument();
-      expect(getByText(errorMessage)).toBeInTheDocument();
-    });
+    expect(screen.getByText('Brugt golfudstyr · Danmark')).toBeInTheDocument();
+    expect(screen.getByText('Vi sender kassen')).toBeInTheDocument();
+    expect(screen.getByText('Klar til at sælge?')).toBeInTheDocument();
   });
 
-  it('renders given pageAssetsData', async () => {
-    const data = {
-      sections: [
-        {
-          sectionType: 'columns',
-          sectionId: 'test-section',
-          numColumns: 1,
-          title: { fieldType: 'heading2', content: 'Landing page' },
-          description: {
-            fieldType: 'paragraph',
-            content: 'This is the description of the section',
-          },
-          blocks: [
-            {
-              blockType: 'defaultBlock',
-              blockId: 'test-block',
-              title: { fieldType: 'heading3', content: 'Block title here' },
-              text: {
-                fieldType: 'markdown',
-                content: `**Lorem ipsum** dolor sit amet, consectetur adipiscing elit. Nulla orci nisi, lobortis sit amet posuere et, vulputate sit amet neque. Nam a est id lectus viverra sagittis. Proin sed imperdiet lorem. Duis aliquam fermentum purus, tincidunt venenatis felis gravida in. Sed imperdiet mi vitae consequat rhoncus. Sed velit leo, porta at lorem ac, iaculis fermentum leo. Morbi tellus orci, bibendum id ante vel, hendrerit efficitur lectus. Proin vitae condimentum justo. Phasellus finibus nisi quis neque feugiat, ac auctor ipsum suscipit.`,
-              },
-            },
-          ],
-        },
-      ],
-    };
+  it('tells the visitor when the listings could not be fetched, and still renders the page', () => {
+    const fetchError = new Error('LandingPage failed');
 
-    const { getByText } = render(
-      <LandingPageComponent
-        pageAssetsData={{ landingPage: { data } }}
-        inProgress={false}
-        error={null}
-      />
-    );
+    render(<LandingPageComponent listings={[]} fetchError={fetchError} scrollingDisabled={false} />);
 
-    await waitFor(() => {
-      // Expect following texts to be found from rendered UI (inside <body>)
-      expect(getByText('Landing page')).toBeInTheDocument();
-      expect(getByText('This is the description of the section')).toBeInTheDocument();
-      expect(getByText('Block title here')).toBeInTheDocument();
-      expect(getByText('Lorem ipsum')).toBeInTheDocument();
-    });
+    expect(
+      screen.getByText('Vi kunne ikke hente annoncerne lige nu. Prøv at genindlæse siden.')
+    ).toBeInTheDocument();
+    expect(screen.getByText('Klar til at sælge?')).toBeInTheDocument();
+  });
+
+  it('shows a listing row once there are listings', () => {
+    const listings = [createListing('l1'), createListing('l2')];
+
+    render(<LandingPageComponent listings={listings} scrollingDisabled={false} />);
+
+    expect(screen.getByText('Lige lagt op')).toBeInTheDocument();
+    expect(screen.getAllByText('l1 title').length).toBeGreaterThan(0);
+  });
+
+  it('leaves out a row that has nothing to put in it', () => {
+    render(<LandingPageComponent listings={[]} scrollingDisabled={false} />);
+
+    expect(screen.queryByText('Lige lagt op')).not.toBeInTheDocument();
   });
 });

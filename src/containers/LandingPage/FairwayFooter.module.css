@@ -1,0 +1,132 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  background-color: var(--colorInk);
+  color: var(--colorPaper);
+}
+
+.promise {
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(237, 232, 220, 0.12);
+
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--colorSage);
+}
+
+.inner {
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: 56px 24px 36px 24px;
+
+  @media (--viewportMedium) {
+    padding: 72px 32px 40px 32px;
+  }
+}
+
+/* The mark and one line of what this place is, above the link columns */
+.brand {
+  display: block;
+  margin-bottom: 48px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(237, 232, 220, 0.12);
+
+  @media (--viewportLarge) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 30em);
+    gap: 48px;
+    align-items: center;
+  }
+}
+
+.brandLink {
+  display: inline-block;
+}
+
+.brandLogo {
+  display: block;
+
+  /* the light wordmark on its own: inverting the full mark flattens the ball's
+     dimples into a solid blob */
+  width: auto;
+  height: 34px;
+}
+
+.brandText {
+  margin: 20px 0 0 0;
+
+  font-size: 15px;
+  line-height: 24px;
+  color: rgba(237, 232, 220, 0.62);
+
+  @media (--viewportLarge) {
+    margin: 0;
+  }
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px 24px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.column ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.columnTitle {
+  margin: 0 0 20px 0;
+
+  font-family: var(--fontFamily);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+}
+
+.link {
+  font-size: 14px;
+  line-height: 20px;
+  color: rgba(237, 232, 220, 0.72);
+}
+
+.link:hover {
+  color: var(--colorPaper);
+  text-decoration: none;
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(237, 232, 220, 0.12);
+
+  font-size: 13px;
+  line-height: 20px;
+  color: rgba(237, 232, 220, 0.5);
+}
+
+.bottomLink {
+  font-size: 13px;
+  color: rgba(237, 232, 220, 0.5);
+}
+
+.bottomLink:hover {
+  color: var(--colorPaper);
+  text-decoration: none;
+}

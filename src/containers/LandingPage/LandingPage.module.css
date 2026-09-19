@@ -1,0 +1,1711 @@
+@import '../../styles/customMediaQueries.css';
+
+
+
+.eyebrow,
+.eyebrowOnDark {
+  display: block;
+
+  font-family: var(--fontFamily);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--colorBrass);
+}
+
+.eyebrowOnDark {
+  color: var(--colorSage);
+}
+
+/* One button shape across the page: a pill, solid or outlined. */
+.buttonPrimary,
+.buttonGhost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-height: 52px;
+  padding: 0 32px;
+  border-radius: var(--radiusPill);
+
+  font-family: var(--fontFamily);
+  font-size: 15px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.01em;
+
+  transition: background-color var(--transitionStyle), border-color var(--transitionStyle),
+    color var(--transitionStyle);
+}
+
+/* Coral is the one call-to-action colour, on light and dark alike */
+.buttonPrimary {
+  background-color: var(--colorCoral);
+  border: 1px solid var(--colorCoral);
+  color: var(--colorPaper);
+}
+.buttonPrimary:hover {
+  background-color: var(--colorCoralDark);
+  border-color: var(--colorCoralDark);
+  text-decoration: none;
+}
+
+.buttonGhost {
+  border: 1px solid rgba(237, 232, 220, 0.3);
+  color: var(--colorPaper);
+}
+.buttonGhost:hover {
+  border-color: var(--colorPaper);
+  background-color: rgba(237, 232, 220, 0.06);
+  text-decoration: none;
+}
+
+/* ================ Trust bar ================ */
+
+.trustBar {
+  position: relative;
+  padding-bottom: 48px;
+
+  background-color: var(--colorInk);
+  color: var(--colorOffWhite);
+}
+
+.trustBarInner {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: 26px var(--pageGutter) 0 var(--pageGutter);
+}
+
+.trustBarLabel {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+}
+
+/* One swipeable line on phones rather than three stacked rows */
+.trustBarList {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  padding: 0 var(--pageGutter);
+  list-style: none;
+
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  @media (--viewportMedium) {
+    justify-content: center;
+    gap: 40px;
+    overflow-x: visible;
+  }
+}
+
+.trustBarList::-webkit-scrollbar {
+  display: none;
+}
+
+.trustBarItem {
+  flex-shrink: 0;
+  padding-inline: 20px;
+  border-left: 1px solid rgba(237, 232, 220, 0.2);
+
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  color: rgba(237, 232, 220, 0.86);
+}
+
+/* ================ Section wave ================ */
+
+/* One curved edge, used at every boundary between a dark section and the light
+   page. Drawn inside the dark section and filled with the light surface. */
+.wave {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+
+  display: block;
+  width: 100%;
+  height: 30px;
+  pointer-events: none;
+
+  fill: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    height: 46px;
+  }
+}
+
+.waveBottom {
+  bottom: -1px;
+}
+
+.waveTop {
+  top: -1px;
+  transform: scaleY(-1);
+}
+
+/* The wave is positioned against these */
+.community,
+.fee {
+  position: relative;
+}
+
+/* ================ Hero ================ */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr;
+
+  background-color: var(--colorInk);
+  background-image: linear-gradient(160deg, #124c3c 0%, #0e3225 48%, #0c2820 100%);
+
+  @media (--viewportLarge) {
+    grid-template-columns: 1.08fr 1fr;
+  }
+}
+
+.heroPanel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: var(--sectionY) var(--pageGutter);
+
+  @media (--viewportLarge) {
+    padding-left: max(
+      var(--pageGutter),
+      calc((100vw - var(--contentMaxWidthPages)) / 2 + var(--pageGutter))
+    );
+    padding-right: 40px;
+  }
+}
+
+.heroTitle {
+  margin: 16px 0 0 0;
+  max-width: 16ch;
+
+  font-size: 34px;
+  line-height: 34px;
+  font-family: var(--fontFamilyDisplay);
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 52px;
+    line-height: 50px;
+  }
+}
+
+/* Both headlines share one grid cell, so the block is as tall as the longer
+   of the two and nothing below it jumps when they swap. */
+.heroStack {
+  display: grid;
+  min-width: 0;
+}
+
+.heroLine {
+  grid-area: 1 / 1;
+  min-width: 0;
+
+  /* hidden rather than removed: the cell keeps the taller line's height */
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* The resting state of the visible line is fully opaque. The fade only runs
+   towards it and sets no fill-mode, so a headline still reads if animations
+   never run at all. */
+.heroLineOn {
+  visibility: visible;
+  opacity: 1;
+  animation: heroLineIn 560ms ease-out;
+}
+
+@keyframes heroLineIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroLineOn {
+    animation: none;
+  }
+}
+
+.heroAccent {
+  /* the accent is a whole phrase now, so it has to be allowed to wrap */
+  color: var(--colorSage);
+}
+
+.heroText {
+  max-width: 24em;
+  margin: 18px 0 0 0;
+
+  font-size: 16px;
+  line-height: 26px;
+  color: rgba(237, 232, 220, 0.7);
+
+  @media (--viewportMedium) {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.heroMedia {
+  position: relative;
+  /* Collage sits below the copy on small screens, beside it from large up */
+  height: 200px;
+
+  @media (--viewportMedium) {
+    height: 260px;
+  }
+  @media (--viewportLarge) {
+    height: auto;
+  }
+}
+
+/* Decorative stroke over the hero photos. Thin, pink, and well out of the
+   way of the headline — it adds movement, nothing more. Coral stays reserved
+   for calls to action. */
+.heroStroke {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+
+  fill: none;
+  stroke: var(--colorBlush);
+  stroke-width: 2;
+  stroke-linecap: round;
+  opacity: 0.8;
+}
+
+.collage {
+  position: relative;
+  display: flex;
+  gap: 4px;
+
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.collagePanel {
+  flex: 1;
+  overflow: hidden;
+
+  /* Angled panels, as on sports marketplaces */
+  transform: skewX(-8deg);
+}
+
+/* Widen the outer panels so the skew does not leave gaps at the edges */
+.collagePanel:first-child {
+  margin-left: -6%;
+}
+.collagePanel:last-child {
+  margin-right: -6%;
+}
+
+.collageImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* Counter-skew so the photo itself stays straight */
+  transform: skewX(8deg) scale(1.18);
+}
+
+/* Fades the collage into the dark panel on its left edge */
+.collageScrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-image: linear-gradient(
+    90deg,
+    var(--colorInk) 0%,
+    rgba(12, 40, 32, 0.35) 14%,
+    rgba(12, 40, 32, 0) 34%
+  );
+}
+
+@keyframes tokenTravel {
+  0%,
+  8% {
+    left: 12.5%;
+  }
+  22%,
+  52% {
+    left: 37.5%;
+  }
+  64%,
+  76% {
+    left: 62.5%;
+  }
+  88%,
+  100% {
+    left: 87.5%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .token {
+    animation: none;
+  }
+}
+
+/* ================ What each side gets ================ */
+
+/* Two lines, one per side of the trade. Said plainly, before the three ways in. */
+.offer {
+  background-color: var(--colorPaper);
+}
+
+.offerInner {
+  display: grid;
+  gap: 10px;
+
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: 44px var(--pageGutter) 0 var(--pageGutter);
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    padding-top: 56px;
+  }
+}
+
+.offerLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+
+  margin: 0;
+  font-size: 17px;
+  line-height: 26px;
+  color: var(--colorGraphite);
+
+  @media (--viewportMedium) {
+    font-size: 19px;
+    line-height: 28px;
+  }
+}
+
+.offerWho {
+  flex-shrink: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 19px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--colorForest);
+
+  @media (--viewportMedium) {
+    font-size: 22px;
+  }
+}
+
+/* ================ Buy / sell tiles ================ */
+
+.tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+
+  /* width is explicit: auto margins on a grid item shrink it to max-content
+     instead of letting it fill the column */
+  width: 100%;
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter) 0 var(--pageGutter);
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: var(--sectionY) var(--pageGutter) 0 var(--pageGutter);
+  }
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+
+  min-height: 300px;
+  padding: 26px;
+  border-radius: var(--radiusCard);
+
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    min-height: 360px;
+    padding: 30px;
+  }
+}
+
+.tile:hover {
+  text-decoration: none;
+}
+
+.tileImage {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transition: transform 0.6s ease;
+}
+
+.tile:hover .tileImage {
+  transform: scale(1.04);
+}
+
+.tileScrim {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    5deg,
+    rgba(8, 28, 22, 0.92) 8%,
+    rgba(8, 28, 22, 0.62) 48%,
+    rgba(8, 28, 22, 0.18) 100%
+  );
+}
+
+.tileContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  max-width: 17em;
+}
+
+.tileLabel {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+}
+
+.tileTitle {
+  margin-top: 8px;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 28px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+
+  @media (--viewportMedium) {
+    font-size: 30px;
+    line-height: 30px;
+  }
+}
+
+.tileText {
+  margin-top: 12px;
+  font-size: 15px;
+  line-height: 23px;
+  color: rgba(237, 232, 220, 0.78);
+}
+
+.tileButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 52px;
+  margin-top: 26px;
+  padding: 0 30px;
+  border-radius: var(--radiusPill);
+
+  background-color: var(--colorCoral);
+  color: var(--colorPaper);
+
+  font-size: 15px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.01em;
+
+  transition: background-color var(--transitionStyle), gap var(--transitionStyle);
+}
+
+.tile:hover .tileButton {
+  background-color: var(--colorCoralDark);
+  gap: 16px;
+}
+
+.arrow {
+  flex-shrink: 0;
+  fill: none;
+}
+
+/* ================ Product rows ================ */
+
+.content {
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter);
+}
+
+.row {
+  padding: 36px 0;
+}
+
+.rowHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--colorDivider);
+}
+
+.rowTitle {
+  margin: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 25px;
+  line-height: 26px;
+  font-weight: 700;
+
+  /* caps need a touch of positive tracking; the grotesque wanted negative */
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 30px;
+    line-height: 31px;
+  }
+}
+.rowSubtitle {
+  margin: 7px 0 0 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--colorSlate);
+}
+
+.seeAll {
+  flex-shrink: 0;
+
+  font-size: 12px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--colorForest);
+}
+
+.seeAll:hover {
+  color: var(--colorBrass);
+  text-decoration: none;
+}
+
+.productRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 14px;
+  margin: 0;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 32px 20px;
+  }
+}
+
+.productItem {
+  min-width: 0;
+}
+
+.errorState {
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+}
+
+/* ================ First listings showcase ================ */
+
+.showcase {
+  padding: 0 0 16px 0;
+}
+
+.showcaseHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--colorDivider);
+}
+
+.showcaseTitle {
+  margin: 10px 0 0 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 25px;
+  line-height: 26px;
+  font-weight: 700;
+
+  /* caps need a touch of positive tracking; the grotesque wanted negative */
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 30px;
+    line-height: 31px;
+  }
+}
+.showcaseCta {
+  flex-shrink: 0;
+
+  font-size: 12px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--colorFairway);
+}
+
+.showcaseCta:hover {
+  color: var(--colorForest);
+  text-decoration: none;
+}
+
+.showcaseGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 14px;
+  margin: 0;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 28px 18px;
+  }
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.showcaseItem {
+  display: flex;
+  min-width: 0;
+}
+
+.showcaseButton {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+
+  padding: 0;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.showcaseImageWrap {
+  position: relative;
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radiusControl);
+  background-color: var(--colorSand);
+}
+
+.showcaseImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.showcaseButton:hover .showcaseImage {
+  transform: scale(1.03);
+}
+
+.showcaseBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+
+  padding: 4px 10px;
+  border-radius: var(--borderRadius);
+
+  background-color: rgba(255, 255, 255, 0.94);
+
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.showcaseSomNy {
+  color: var(--colorFairway);
+}
+.showcaseGod {
+  color: var(--colorTeal);
+}
+.showcaseOkay {
+  color: var(--colorGold);
+}
+.showcaseSlidt {
+  color: var(--colorRust);
+}
+
+.showcaseBrand {
+  display: block;
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+}
+
+.showcaseName {
+  display: block;
+  margin-top: 5px;
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.showcaseMeta {
+  display: block;
+  margin-top: 3px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--colorSlate);
+}
+
+.showcasePrice {
+  display: block;
+
+  /* pushes the price to the card bottom, so the row shares one price line */
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+/* ================ Listing detail dialog ================ */
+
+.detail {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+}
+
+.detailImage {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radiusControl);
+}
+
+.detailBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.detailBadge {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: var(--borderRadius);
+
+  background-color: var(--colorSand);
+
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.detailTitle {
+  margin: 6px 0 0 0;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: var(--fontWeightHeavy);
+  letter-spacing: -0.02em;
+  color: var(--colorInk);
+}
+
+.detailMeta {
+  margin: 4px 0 0 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--colorSlate);
+}
+
+.detailPrice {
+  margin: 14px 0 0 0;
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: var(--fontWeightHeavy);
+  letter-spacing: -0.02em;
+  color: var(--colorInk);
+}
+
+.detailText {
+  margin: 14px 0 0 0;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--colorGraphite);
+}
+
+/* Buying and messaging sit behind signup, as they would on a real listing */
+.detailActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.detailPrimary,
+.detailSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1 1 auto;
+  min-height: 50px;
+  padding: 0 24px;
+  border-radius: var(--radiusPill);
+
+  font-size: 15px;
+  font-weight: var(--fontWeightBold);
+
+  transition: all var(--transitionStyle);
+}
+
+.detailPrimary {
+  background-color: var(--colorCoral);
+  border: 1px solid var(--colorCoral);
+  color: var(--colorWhite);
+}
+.detailPrimary:hover {
+  background-color: var(--colorCoralDark);
+  border-color: var(--colorCoralDark);
+  text-decoration: none;
+}
+
+.detailSecondary {
+  border: 1px solid var(--colorDivider);
+  color: var(--colorInk);
+}
+.detailSecondary:hover {
+  border-color: var(--colorInk);
+  text-decoration: none;
+}
+
+.detailNote {
+  margin: 16px 0 0 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--colorSlate);
+}
+
+/* ================ Sell banner ================ */
+
+.sellBanner {
+  position: relative;
+
+  /* deep forest, the same dark surface as the hero and the footer */
+  background-color: var(--colorInk);
+  overflow: hidden;
+}
+
+/* Course scenery behind the closing call to action */
+/* Same angled-panel language as the hero collage, so the page bookends itself */
+.courseStrip {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.coursePanel {
+  flex: 1;
+  overflow: hidden;
+  transform: skewX(-8deg);
+}
+
+.coursePanel:first-child {
+  margin-left: -5%;
+}
+.coursePanel:last-child {
+  margin-right: -5%;
+}
+
+.courseImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: skewX(8deg) scale(1.18);
+}
+
+.sellBanner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgba(18, 32, 25, 0.82);
+}
+
+.sellBannerInner {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  width: 100%;
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter);
+}
+
+.sellActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sellTitle {
+  margin: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 34px;
+  line-height: 34px;
+  font-weight: 700;
+
+  /* caps need a touch of positive tracking; the grotesque wanted negative */
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 46px;
+    line-height: 46px;
+  }
+}
+.sellText {
+  max-width: 31em;
+  margin: 16px 0 34px 0;
+  font-size: 17px;
+  line-height: 27px;
+  color: rgba(237, 232, 220, 0.8);
+}
+
+/* ================ Shipping box ================ */
+
+.box {
+  background-color: var(--colorPaper);
+  border-top: 1px solid var(--colorDivider);
+  overflow: hidden;
+}
+
+.boxInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  align-items: center;
+
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter);
+
+  @media (--viewportLarge) {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 44px;
+  }
+}
+
+.boxPanel {
+  padding: 28px 24px;
+
+  background-color: var(--colorInk);
+  border-radius: var(--radiusCard);
+
+  @media (--viewportMedium) {
+    padding: 34px 32px;
+  }
+}
+
+.boxTitle {
+  margin: 10px 0 0 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 30px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 36px;
+    line-height: 38px;
+  }
+}
+
+.boxLead {
+  max-width: 26em;
+  margin: 10px 0 0 0;
+
+  font-size: 15px;
+  line-height: 24px;
+  color: rgba(237, 232, 220, 0.74);
+}
+
+/* ---- Two ways to ship ---- */
+
+.choice {
+  margin-top: 24px;
+}
+
+.choiceTabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-bottom: 1px solid rgba(237, 232, 220, 0.18);
+}
+
+/* Underlined tabs: one less box inside the panel */
+.choiceTab {
+  min-height: 40px;
+  padding: 0 4px 10px 4px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  border-radius: 0;
+
+  background-color: transparent;
+  color: rgba(237, 232, 220, 0.58);
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+
+  transition: color var(--transitionStyle), border-color var(--transitionStyle);
+}
+
+.choiceTab:hover {
+  color: var(--colorOffWhite);
+}
+
+.choiceTabOn {
+  border-bottom-color: var(--colorSage);
+  color: var(--colorPaper);
+}
+
+.choiceList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Hairlines instead of tick icons */
+.choiceItem {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(237, 232, 220, 0.12);
+
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--colorOffWhite);
+}
+
+.choiceItem:last-child {
+  border-bottom: 0;
+}
+
+/* Labels a screen reader needs and a sighted visitor does not */
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- The box, one step at a time ---- */
+
+.walk {
+  display: grid;
+  gap: 16px;
+}
+
+.walkStage {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radiusCard);
+  background-color: var(--colorSand);
+}
+
+.walkImage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+
+  /* the resting state is fully opaque, and the fade only runs towards it, so a
+     photo still shows if animations never run */
+  opacity: 1;
+  animation: walkIn 420ms ease-out;
+}
+
+/* Supplier shots are on white, so they sit inside the frame rather than fill it */
+.walkImageProduct {
+  object-fit: contain;
+  padding: 18px;
+  background-color: #fff;
+}
+
+@keyframes walkIn {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.walkCount {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  padding: 4px 11px;
+  border-radius: var(--radiusPill);
+
+  background-color: rgba(12, 40, 32, 0.78);
+  color: var(--colorOffWhite);
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  font-variant-numeric: tabular-nums;
+}
+
+.walkBody {
+  min-height: 74px;
+}
+
+.walkLabel {
+  display: block;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+}
+
+.walkCaption {
+  margin: 5px 0 0 0;
+
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--colorSlate);
+}
+
+.walkFoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.walkButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  min-height: 46px;
+  padding: 0 22px;
+  border: 1px solid var(--colorInk);
+  border-radius: var(--radiusPill);
+
+  background-color: var(--colorInk);
+  color: var(--colorPaper);
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.01em;
+  cursor: pointer;
+
+  transition: background-color var(--transitionStyle), gap var(--transitionStyle);
+}
+
+.walkButton:hover {
+  background-color: var(--colorForest);
+  border-color: var(--colorForest);
+  gap: 14px;
+}
+
+.walkArrow {
+  flex-shrink: 0;
+  fill: none;
+}
+
+.walkDots {
+  display: flex;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.walkDot {
+  display: block;
+  width: 26px;
+  height: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radiusPill);
+
+  background-color: var(--colorDivider);
+  cursor: pointer;
+
+  transition: background-color var(--transitionStyle);
+}
+
+.walkDot:hover {
+  background-color: var(--colorSage);
+}
+
+.walkDotOn {
+  background-color: var(--colorForest);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .walkImage {
+    animation: none;
+  }
+}
+
+/* ================ Community ================ */
+
+.community {
+  background-color: var(--colorInk);
+  background-image: linear-gradient(150deg, #124c3c 0%, #0c2820 62%);
+}
+
+.communityInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter);
+
+  @media (--viewportLarge) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+    gap: 52px;
+  }
+}
+
+.communityCopy {
+  display: block;
+}
+
+.communityTitle {
+  max-width: 12em;
+  margin: 10px 0 0 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 30px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 36px;
+    line-height: 38px;
+  }
+}
+
+/* Two problems, each on its own line under a hairline */
+.communityPoints {
+  margin: 22px 0 0 0;
+}
+
+.communityPoint {
+  padding: 12px 0;
+  border-top: 1px solid rgba(237, 232, 220, 0.16);
+}
+
+.communityPointTitle {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 15px;
+  line-height: 19px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+}
+
+.communityPointText {
+  margin: 5px 0 0 0;
+
+  font-size: 15px;
+  line-height: 23px;
+  color: rgba(237, 232, 220, 0.78);
+}
+
+.communityActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* ================ Chat thread graphic ================ */
+
+.communityPointTitle {
+  display: inline;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorPaper);
+}
+
+.thread {
+  padding: 18px;
+
+  background-color: rgba(237, 232, 220, 0.06);
+  border: 1px solid rgba(237, 232, 220, 0.14);
+  border-radius: var(--radiusCard);
+  backdrop-filter: blur(2px);
+
+  @media (--viewportMedium) {
+    padding: 22px;
+  }
+}
+
+.threadHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(237, 232, 220, 0.14);
+}
+
+.threadHeadCopy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.threadHeadTitle {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorPaper);
+}
+
+.threadHeadMeta {
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--colorSage);
+}
+
+.threadList {
+  display: grid;
+  gap: 12px;
+  margin: 18px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.msgBuyer,
+.msgSeller {
+  display: flex;
+  align-items: flex-end;
+  gap: 9px;
+  max-width: 88%;
+}
+
+.msgSeller {
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+
+.msgBubble {
+  padding: 10px 14px;
+
+  font-size: 14px;
+  line-height: 20px;
+
+  background-color: rgba(237, 232, 220, 0.12);
+  color: var(--colorOffWhite);
+  border-radius: 14px 14px 14px 4px;
+}
+
+/* The seller's side is the brand green, so the two voices are never confused */
+.msgSeller .msgBubble {
+  background-color: var(--colorSage);
+  color: var(--colorInk);
+  border-radius: 14px 14px 4px 14px;
+}
+
+.threadFoot {
+  margin: 18px 0 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(237, 232, 220, 0.14);
+
+  font-size: 12px;
+  line-height: 18px;
+  text-align: center;
+  color: rgba(237, 232, 220, 0.6);
+}
+
+/* ================ Both sides of the trade ================ */
+
+/* Two quiet cards. The argument is short enough that it needs no figures,
+   no icons and no lists. */
+.fee {
+  background-color: var(--colorInk);
+  background-image: linear-gradient(150deg, #124c3c 0%, #0c2820 62%);
+}
+
+.feeInner {
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter);
+}
+
+.feeTitle {
+  margin: 10px 0 0 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 28px;
+  line-height: 30px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 34px;
+    line-height: 36px;
+  }
+}
+
+.sides {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 28px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+.side {
+  min-width: 0;
+  padding: 24px 22px;
+
+  border: 1px solid rgba(237, 232, 220, 0.16);
+  border-radius: var(--radiusCard);
+
+  @media (--viewportMedium) {
+    padding: 28px 26px;
+  }
+}
+
+.sideWho {
+  display: block;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+}
+
+.sideTitle {
+  margin: 12px 0 0 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 27px;
+  line-height: 29px;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 31px;
+    line-height: 33px;
+  }
+}
+
+.sideText {
+  margin: 6px 0 0 0;
+
+  font-size: 16px;
+  line-height: 25px;
+  color: rgba(237, 232, 220, 0.76);
+}
+
+/* The second promise, set apart by a hairline rather than a tick */
+.sideNote {
+  margin: 16px 0 0 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(237, 232, 220, 0.14);
+
+  font-size: 14px;
+  line-height: 21px;
+  color: var(--colorSage);
+}
+
+.feeFine {
+  margin: 20px 0 0 0;
+
+  font-size: 13px;
+  line-height: 20px;
+  color: rgba(237, 232, 220, 0.5);
+}
+
+/* ================ New listings frame ================ */
+
+/* The frame marks this as the place new listings arrive */
+.showcaseFrame {
+  padding: 28px 20px;
+
+  background-color: var(--colorPaper);
+  border: 1px solid var(--colorDivider);
+  border-radius: var(--radiusCard);
+  box-shadow: 0 18px 40px -34px rgba(12, 40, 32, 0.4);
+
+  @media (--viewportMedium) {
+    padding: 28px 28px;
+  }
+}
+
+.showcaseNew {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  padding: 4px 9px;
+  border-radius: var(--radiusPill);
+
+  background-color: var(--colorSage);
+  color: var(--colorInk);
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ================ Chat: words only ================ */
+
+.msgWho {
+  font-size: 11px;
+  line-height: 15px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(237, 232, 220, 0.5);
+}
