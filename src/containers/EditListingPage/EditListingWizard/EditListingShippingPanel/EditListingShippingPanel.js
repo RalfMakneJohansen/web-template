@@ -41,6 +41,10 @@ const deliveryValues = {
   pickupEnabled: false,
   shippingEnabled: true,
   shippingPriceInSubunitsOneItem: FREIGHT_SUBUNITS,
+  // One parcel, one rate: extra items of the same listing add no freight.
+  // This has to be written explicitly — the line-item calculation rejects a
+  // multi-item order whose additional-items price was never set.
+  shippingPriceInSubunitsAdditionalItems: 0,
 };
 
 const EditListingShippingPanel = props => {

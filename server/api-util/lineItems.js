@@ -40,21 +40,26 @@ const getItemQuantityAndLineItems = (orderData, publicData, currency) => {
   // imported later — carry no shipping price, and would otherwise ship for free
   // with the label coming out of our own pocket. A price the listing does set is
   // still honoured, and only DKK listings get the Danish rate.
+  const isFairwayFreightCurrency = currency === FAIRWAY_FLAT_SHIPPING.currency;
   const hasOwnShippingPrice = shippingPriceInSubunitsOneItem > 0;
   const oneItemShippingPrice = hasOwnShippingPrice
     ? shippingPriceInSubunitsOneItem
-    : currency === FAIRWAY_FLAT_SHIPPING.currency
+    : isFairwayFreightCurrency
     ? FAIRWAY_FLAT_SHIPPING.subunits
     : shippingPriceInSubunitsOneItem;
 
+  // FAIRWAY: the freight is flat per order — one parcel, one rate — so extra
+  // items add nothing. calculateShippingFee throws outright when a quantity
+  // above one meets an unset additional-items price, so a listing that carries
+  // only a one-item price would break checkout for any order of two or more.
+  const additionalItemsShippingPrice =
+    isFairwayFreightCurrency && typeof shippingPriceInSubunitsAdditionalItems !== 'number'
+      ? 0
+      : shippingPriceInSubunitsAdditionalItems;
+
   // Calculate shipping fee if applicable
   const shippingFee = isShipping
-    ? calculateShippingFee(
-        oneItemShippingPrice,
-        shippingPriceInSubunitsAdditionalItems,
-        currency,
-        quantity
-      )
+    ? calculateShippingFee(oneItemShippingPrice, additionalItemsShippingPrice, currency, quantity)
     : null;
 
   // Add line-item for given delivery method.

@@ -776,4 +776,133 @@ describe('transactionLineItems', () => {
       expect(result[0].unitPrice.currency).toBe('USD'); // Uses listing currency
     });
   });
+  // FAIRWAY: flat freight fallback. Listings created before the shipping panel
+  // existed, and any imported later, carry no shipping price. Without a
+  // fallback they ship for free and the label comes out of our own pocket.
+  describe('Fairway flat freight fallback', () => {
+    const dkkListing = overrides => ({
+      attributes: {
+        price: new Money(150000, 'DKK'), // 1.500,00 kr
+        publicData: {
+          unitType: 'item',
+          priceVariationsEnabled: false,
+          ...overrides,
+        },
+      },
+    });
+
+    const shippingOrder = (quantity = 1) => ({
+      stockReservationQuantity: quantity,
+      deliveryMethod: 'shipping',
+      currency: 'DKK',
+    });
+
+    it('charges the flat 50 kr when a DKK listing sets no shipping price', () => {
+      const result = transactionLineItems(dkkListing(), shippingOrder(), null, null);
+
+      expect(result[1]).toEqual({
+        code: 'line-item/shipping-fee',
+        unitPrice: new Money(5000, 'DKK'), // 50,00 kr
+        quantity: 1,
+        includeFor: ['customer', 'provider'],
+      });
+    });
+
+    it('charges the flat 50 kr when the listing shipping price is zero', () => {
+      // A listing that explicitly stored 0 is indistinguishable from one that
+      // never set a price, and must not ship for free either.
+      const listing = dkkListing({ shippingPriceInSubunitsOneItem: 0 });
+
+      const result = transactionLineItems(listing, shippingOrder(), null, null);
+
+      expect(result[1].unitPrice).toEqual(new Money(5000, 'DKK'));
+    });
+
+    it('honours a shipping price the listing does set', () => {
+      const listing = dkkListing({
+        shippingPriceInSubunitsOneItem: 12000, // 120,00 kr
+        shippingPriceInSubunitsAdditionalItems: 0,
+      });
+
+      const result = transactionLineItems(listing, shippingOrder(), null, null);
+
+      expect(result[1].unitPrice).toEqual(new Money(12000, 'DKK'));
+    });
+
+    it('does not apply the Danish rate to a listing priced in another currency', () => {
+      // 50 kr is a rate negotiated in kroner. Applying the bare number to a
+      // EUR listing would charge the buyer EUR 50,00 for the same parcel.
+      const listing = {
+        attributes: {
+          price: new Money(10000, 'EUR'),
+          publicData: { unitType: 'item', priceVariationsEnabled: false },
+        },
+      };
+      const orderData = {
+        stockReservationQuantity: 1,
+        deliveryMethod: 'shipping',
+        currency: 'EUR',
+      };
+
+      const result = transactionLineItems(listing, orderData, null, null);
+
+      const shippingLine = result.find(l => l.code === 'line-item/shipping-fee');
+      expect(shippingLine).toBeUndefined();
+    });
+
+    it('adds no freight at all when the buyer picks the order up', () => {
+      const orderData = {
+        stockReservationQuantity: 1,
+        deliveryMethod: 'pickup',
+        currency: 'DKK',
+      };
+
+      const result = transactionLineItems(dkkListing(), orderData, null, null);
+
+      const shippingLine = result.find(l => l.code === 'line-item/shipping-fee');
+      expect(shippingLine).toBeUndefined();
+    });
+
+    it('keeps the flat rate flat across a multi-item order', () => {
+      // One parcel, one rate. This also guards the throw in calculateShippingFee
+      // that fires when a quantity above one meets an unset additional-items
+      // price — that path used to break checkout outright.
+      const result = transactionLineItems(dkkListing(), shippingOrder(3), null, null);
+
+      expect(result[1].unitPrice).toEqual(new Money(5000, 'DKK'));
+    });
+
+    it('does not throw when a listing carries only a one-item freight price', () => {
+      // Listings written by the shipping panel before it stored an
+      // additional-items rate look exactly like this.
+      const listing = dkkListing({ shippingPriceInSubunitsOneItem: 5000 });
+
+      expect(() => transactionLineItems(listing, shippingOrder(2), null, null)).not.toThrow();
+    });
+
+    // The rate lives in two places: here, and FREIGHT_SUBUNITS in
+    // EditListingShippingPanel.js, which writes it onto every new listing. They
+    // are in different jest projects and module systems, so the panel is read as
+    // text rather than imported. If this fails, the two rates have drifted and
+    // sellers are quoted one price while buyers are charged another.
+    it('pins the server rate to FREIGHT_SUBUNITS in the shipping panel', () => {
+      const fs = require('fs');
+      const path = require('path');
+
+      const panelPath = path.join(
+        __dirname,
+        '../../src/containers/EditListingPage/EditListingWizard',
+        'EditListingShippingPanel/EditListingShippingPanel.js'
+      );
+      const panelSource = fs.readFileSync(panelPath, 'utf8');
+      const panelMatch = panelSource.match(/export const FREIGHT_SUBUNITS = (\d+);/);
+
+      const serverSource = fs.readFileSync(path.join(__dirname, 'lineItems.js'), 'utf8');
+      const serverMatch = serverSource.match(/FAIRWAY_FLAT_SHIPPING = \{[^}]*subunits:\s*(\d+)/);
+
+      expect(panelMatch).not.toBeNull();
+      expect(serverMatch).not.toBeNull();
+      expect(Number(panelMatch[1])).toBe(Number(serverMatch[1]));
+    });
+  });
 });
