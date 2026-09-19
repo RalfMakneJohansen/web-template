@@ -8,6 +8,17 @@ const {
 const { types } = require('sharetribe-flex-sdk');
 const { Money } = types;
 
+// FAIRWAY: the flat freight the buyer pays — 50,00 kr.
+//
+// Currency-bound on purpose. This is a Danish freight rate negotiated in
+// kroner, not an abstract "50 units": applying it to a listing priced in
+// another currency would silently charge €50 or $50 for the same parcel.
+// Anything outside DKK falls through to the template's own behaviour.
+//
+// Must stay in step with FREIGHT_SUBUNITS in EditListingShippingPanel.js,
+// which writes this onto new listings. lineItems.test.js pins the pair.
+const FAIRWAY_FLAT_SHIPPING = { currency: 'DKK', subunits: 5000 };
+
 /**
  * Get quantity and add extra line-items that are related to delivery method
  *
@@ -24,10 +35,22 @@ const getItemQuantityAndLineItems = (orderData, publicData, currency) => {
   const { shippingPriceInSubunitsOneItem, shippingPriceInSubunitsAdditionalItems } =
     publicData || {};
 
+  // FAIRWAY: freight is a flat 50 kr on every order. New listings get it written
+  // in by the shipping panel, but listings created before that rule — and any
+  // imported later — carry no shipping price, and would otherwise ship for free
+  // with the label coming out of our own pocket. A price the listing does set is
+  // still honoured, and only DKK listings get the Danish rate.
+  const hasOwnShippingPrice = shippingPriceInSubunitsOneItem > 0;
+  const oneItemShippingPrice = hasOwnShippingPrice
+    ? shippingPriceInSubunitsOneItem
+    : currency === FAIRWAY_FLAT_SHIPPING.currency
+    ? FAIRWAY_FLAT_SHIPPING.subunits
+    : shippingPriceInSubunitsOneItem;
+
   // Calculate shipping fee if applicable
   const shippingFee = isShipping
     ? calculateShippingFee(
-        shippingPriceInSubunitsOneItem,
+        oneItemShippingPrice,
         shippingPriceInSubunitsAdditionalItems,
         currency,
         quantity
