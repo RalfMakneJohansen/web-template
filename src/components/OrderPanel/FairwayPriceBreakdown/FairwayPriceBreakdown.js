@@ -32,6 +32,23 @@ const LABEL_IDS = {
   [LINE_ITEM_CUSTOMER_COMMISSION]: 'FairwayPriceBreakdown.protection',
 };
 
+/**
+ * The customer-facing lines of a line-item set, and what they add up to.
+ *
+ * Shared so the mobile action bar and this breakdown can never disagree about
+ * what the buyer pays. Returns null when there is nothing to total.
+ */
+export const customerTotal = (lineItems, currency) => {
+  const customerLines = (lineItems || []).filter(
+    item => item.includeFor?.includes('customer') && !item.reversal
+  );
+  if (customerLines.length === 0) {
+    return null;
+  }
+  const subunits = customerLines.reduce((sum, item) => sum + (item.lineTotal?.amount || 0), 0);
+  return { lines: customerLines, total: new Money(subunits, currency) };
+};
+
 const Row = props => {
   const { label, value, muted = false } = props;
   return (
@@ -46,16 +63,13 @@ const FairwayPriceBreakdown = props => {
   const { lineItems, currency, className } = props;
   const intl = useIntl();
 
-  const customerLines = (lineItems || []).filter(
-    item => item.includeFor?.includes('customer') && !item.reversal
-  );
+  const summary = customerTotal(lineItems, currency);
 
-  if (customerLines.length === 0) {
+  if (!summary) {
     return null;
   }
 
-  const totalSubunits = customerLines.reduce((sum, item) => sum + (item.lineTotal?.amount || 0), 0);
-  const total = new Money(totalSubunits, currency);
+  const { lines: customerLines, total } = summary;
 
   const hasProtectionLine = customerLines.some(
     item => item.code === LINE_ITEM_CUSTOMER_COMMISSION

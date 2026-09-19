@@ -39,6 +39,7 @@ import {
 
 import { ModalInMobile, PrimaryButton, AvatarSmall, H1, H2 } from '../../components';
 import PriceVariantPicker from './PriceVariantPicker/PriceVariantPicker';
+import { customerTotal } from './FairwayPriceBreakdown/FairwayPriceBreakdown';
 import SubmitFinePrint from './SubmitFinePrint/SubmitFinePrint';
 
 import css from './OrderPanel.module.css';
@@ -441,6 +442,8 @@ const OrderPanel = props => {
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
 
+  const ctaTotal = customerTotal(lineItems, marketplaceCurrency)?.total;
+
   return (
     <div className={classes}>
       <ModalInMobile
@@ -587,14 +590,26 @@ const OrderPanel = props => {
         ) : null}
       </ModalInMobile>
       <div className={css.openOrderForm}>
-        <PriceMaybe
-          price={price}
-          publicData={publicData}
-          validListingTypes={validListingTypes}
-          intl={intl}
-          marketplaceCurrency={marketplaceCurrency}
-          showCurrencyMismatch
-        />
+        {/* FAIRWAY: once the line items are known, the bar shows what the buyer
+            actually pays rather than the item price — otherwise the bar and the
+            panel quote two different numbers for the same purchase. */}
+        {ctaTotal ? (
+          <div className={css.ctaTotal}>
+            <span className={css.ctaTotalLabel}>
+              <FormattedMessage id="FairwayPriceBreakdown.total" />
+            </span>
+            <span className={css.ctaTotalValue}>{formatMoney(intl, ctaTotal)}</span>
+          </div>
+        ) : (
+          <PriceMaybe
+            price={price}
+            publicData={publicData}
+            validListingTypes={validListingTypes}
+            intl={intl}
+            marketplaceCurrency={marketplaceCurrency}
+            showCurrencyMismatch
+          />
+        )}
 
         {isClosed ? (
           <div className={css.closedListingButton}>
