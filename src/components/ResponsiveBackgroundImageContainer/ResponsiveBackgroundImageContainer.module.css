@@ -17,14 +17,33 @@
   left: 0;
 }
 
-/* Tinted toward the brand green rather than flat black, and light enough that
-   the photo behind it still reads. */
+/* FAIRWAY: a deep forest wash, not a light tint.
+   The brand photography is 600x800 and these pages stretch it across a
+   1000px-plus landscape area, so at native size it is soft and washed out. A
+   light overlay shows every bit of that. A heavy directional one turns the
+   photo into a textured ground instead of a photograph, which reads as art
+   direction rather than a bad JPEG — and it is how the rest of the site
+   already uses the ink green.
+
+   Darkest on the left, where the signup pitch sits, and lifting toward the
+   right so the white form card still has something behind it. */
 .overlay {
-  background: linear-gradient(-45deg, rgba(18, 23, 20, 0.22), rgba(27, 67, 50, 0.48));
+  background: linear-gradient(
+      100deg,
+      rgba(10, 32, 25, 0.93) 0%,
+      rgba(10, 32, 25, 0.8) 34%,
+      rgba(12, 40, 32, 0.52) 66%,
+      rgba(12, 40, 32, 0.36) 100%
+    ),
+    linear-gradient(0deg, rgba(10, 32, 25, 0.5), rgba(10, 32, 25, 0) 55%);
 }
 
 .backgroundImage {
   object-fit: cover;
   width: 100%;
   height: 100%;
+
+  /* A flat photo takes a little contrast and saturation well, and it costs
+     nothing — the wash above hides the noise it would otherwise raise. */
+  filter: saturate(1.14) contrast(1.06);
 }

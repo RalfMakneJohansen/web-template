@@ -25,6 +25,9 @@
   }
 }
 
+/* FAIRWAY: the form is a sheet lying on the photograph, not a white
+   rectangle stamped on it. Same radius and elevation as the buy panel, and
+   without the 8px coloured bottom border the template puts on modals. */
 .content {
   composes: marketplaceModalBaseStyles from global;
   padding-top: 29px;
@@ -33,6 +36,10 @@
     margin-top: 5vh;
     margin-bottom: 7.5vh;
     min-height: 700px;
+
+    border-bottom: none;
+    border-radius: var(--radiusSheet);
+    box-shadow: var(--shadowLifted);
   }
 }
 
