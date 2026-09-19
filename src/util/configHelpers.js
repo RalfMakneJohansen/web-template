@@ -317,12 +317,28 @@ const mergeLayouts = (layoutConfig, defaultLayout) => {
     { variantType: 'carousel' }
   );
 
-  const listingImage = validVariantConfig(
+  const listingImageConfig = validVariantConfig(
     layoutConfig?.listingImage,
     defaultLayout?.listingImage,
     ['cropImage'],
     { variantType: 'cropImage', aspectWidth: 1, aspectHeight: 1, variantPrefix: 'listing-card' }
   );
+
+  // FAIRWAY: the listing card is square, so the image variants must be square
+  // too. This value decides the size the API generates, and Console's layout
+  // asset still asks for 4/3 — and a hosted variant wins over the local
+  // default. The result was that every tile on the site took a 400x300 crop,
+  // squeezed it into a 1/1 box and then cropped it a second time with
+  // object-fit, uncontrolled.
+  //
+  // To revert: set the listing image aspect ratio to 1/1 in Console under
+  // Design, then delete this override.
+  const listingImage = {
+    ...listingImageConfig,
+    aspectRatio: '1/1',
+    aspectWidth: 1,
+    aspectHeight: 1,
+  };
 
   return {
     searchPage,

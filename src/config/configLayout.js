@@ -26,7 +26,13 @@ export const listingImage = {
   // Aspect ratio for listing image variants (width/height)
   // Note: This will be converted to separate aspectWidth and aspectHeight values
   // to make calculations easier.
-  aspectRatio: '4/3',
+  //
+  // FAIRWAY: square, because the card is square. This value decides the size
+  // of the image the API generates, and it was 4/3 while FairwayListingCard
+  // renders a 1/1 box — so every tile took a 400x300 crop, squeezed it into a
+  // square and then cropped it again with object-fit. Two crops, the second
+  // one uncontrolled, on every photo on the site.
+  aspectRatio: '1/1',
   // Listings have custom image variants, which are named here.
   variantPrefix: 'listing-card',
 };
