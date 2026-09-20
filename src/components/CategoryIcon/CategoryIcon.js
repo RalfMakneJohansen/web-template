@@ -8,6 +8,24 @@ import React from 'react';
  * @param {string} props.category category id, e.g. 'driver'
  * @param {string?} props.className
  */
+/**
+ * The ids this component draws a real icon for. Anything else falls through to
+ * the generic mark, which is fine inline but is not enough to justify swapping
+ * a whole select control for a picture grid — so callers that need to know
+ * whether a category set is drawable check against this.
+ */
+export const DRAWN_CATEGORY_IDS = [
+  'driver',
+  'fairway-wood',
+  'hybrid',
+  'jernsaet',
+  'wedge',
+  'putter',
+  'bag',
+  'sko',
+  'andet',
+];
+
 const CategoryIcon = props => {
   const { category, className } = props;
 
@@ -94,12 +112,16 @@ const CategoryIcon = props => {
           <path d="M13 17.5 15 15" />
         </svg>
       );
+    // Tilbehør: a ball on a tee. The question mark that used to be here said
+    // "we do not know what this is", which is not what the category means.
     default:
       return (
         <svg {...svgProps}>
-          <circle cx="16" cy="16" r="11" />
-          <path d="M12.5 13.5a3.5 3.5 0 1 1 4.6 3.3c-.7.3-1.1.9-1.1 1.7v.5" />
-          <path d="M16 23h.01" />
+          <circle cx="16" cy="11" r="6" />
+          <path d="M13.4 9.2h.01M16 8.2h.01M18.6 9.2h.01M14.4 12h.01M17.6 12h.01" />
+          <path d="M13.5 17h5l-2 4.5h-1Z" />
+          <path d="M16 21.5V27" />
+          <path d="M11 27h10" />
         </svg>
       );
   }

@@ -1,8 +1,7 @@
 import React from 'react';
 
 import { useConfiguration } from '../../context/configurationContext';
-import { NamedLink } from '../../components';
-import CATEGORY_IMAGES from '../../config/categoryImages';
+import { CategoryIcon, NamedLink } from '../../components';
 
 import css from './CategoryStrip.module.css';
 
@@ -19,9 +18,7 @@ import css from './CategoryStrip.module.css';
  */
 const CategoryStrip = () => {
   const config = useConfiguration();
-  const categories = (config.categoryConfiguration?.categories || []).filter(
-    c => CATEGORY_IMAGES[c.id]
-  );
+  const categories = config.categoryConfiguration?.categories || [];
 
   if (categories.length === 0) {
     return null;
@@ -45,12 +42,7 @@ const CategoryStrip = () => {
               className={css.link}
             >
               <span className={css.disc}>
-                <img
-                  className={css.image}
-                  src={CATEGORY_IMAGES[category.id]}
-                  alt=""
-                  loading="lazy"
-                />
+                <CategoryIcon className={css.icon} category={category.id} />
               </span>
               <span className={css.name}>{category.name}</span>
             </NamedLink>

@@ -52,27 +52,32 @@
 
 /* The disc does the work: it crops to the head of the club and throws away
    whatever else was in the frame, so uneven photography still reads as a set. */
+/* Fixed size and centred contents, so the grid is dead straight whatever the
+   icon inside happens to be. */
 .disc {
-  display: block;
-  width: 100%;
-  max-width: 78px;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 68px;
+  height: 68px;
+  flex-shrink: 0;
 
   border-radius: 50%;
   background-color: var(--colorSagePale);
+  color: var(--colorForest);
 
-  transition: box-shadow 0.16s var(--easeOut);
+  transition: box-shadow 0.16s var(--easeOut), background-color 0.16s var(--easeOut);
 }
 
-.image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.icon {
+  width: 32px;
+  height: 32px;
 }
 
 .name {
+  min-height: 34px;
+
   font-size: 13px;
   line-height: 17px;
   font-weight: var(--fontWeightMedium);

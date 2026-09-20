@@ -47,7 +47,7 @@ describe('canUseImagePicker', () => {
     expect(canUseImagePicker(nested)).toBe(false);
   });
 
-  it('refuses a category it has no picture for, rather than drawing an empty disc', () => {
+  it('refuses a category it draws no icon for, rather than a generic mark in a disc', () => {
     expect(canUseImagePicker([{ name: 'Trolley', id: 'trolley', subcategories: [] }])).toBe(false);
   });
 
@@ -58,11 +58,11 @@ describe('canUseImagePicker', () => {
 });
 
 describe('CategoryImagePicker', () => {
-  it('shows every category with a picture', () => {
+  it('shows every category with an icon', () => {
     const { container } = renderPicker();
 
     GOLF.forEach(c => expect(screen.getByText(c.name)).toBeInTheDocument());
-    expect(container.querySelectorAll('img')).toHaveLength(GOLF.length);
+    expect(container.querySelectorAll('svg')).toHaveLength(GOLF.length);
   });
 
   it('marks the chosen one as pressed and reports it', async () => {
@@ -93,8 +93,10 @@ describe('CategoryImagePicker', () => {
     expect(putter).toHaveAttribute('aria-pressed', 'true');
   });
 
-  it('leaves the photographs out of the accessibility tree — the name is the label', () => {
+  it('leaves the icons out of the accessibility tree — the name is the label', () => {
     const { container } = renderPicker();
-    container.querySelectorAll('img').forEach(img => expect(img).toHaveAttribute('alt', ''));
+    container
+      .querySelectorAll('svg')
+      .forEach(svg => expect(svg).toHaveAttribute('aria-hidden', 'true'));
   });
 });
