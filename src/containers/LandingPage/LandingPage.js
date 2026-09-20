@@ -26,7 +26,7 @@ import tileSell from '../../assets/tiles/tile-sell.jpg';
 
 import FooterContainer from '../FooterContainer/FooterContainer';
 import BoxWalkthrough from './BoxWalkthrough';
-import FirstListings from './FirstListings';
+import CategoryStrip from './CategoryStrip';
 import ShippingChoice from './ShippingChoice';
 import HeroCollage from './HeroCollage';
 import RotatingHeadline from './RotatingHeadline';
@@ -221,6 +221,35 @@ const ListingRow = props => {
   );
 };
 
+/**
+ * What stands where the listings will be, until there are any.
+ *
+ * This used to be six invented clubs with invented prices, conditions and
+ * descriptions, under real manufacturer names — and one of them credited a
+ * Cobra head to Callaway. On a marketplace whose whole argument is that you
+ * can trust what you are looking at, made-up stock is the one thing that
+ * cannot be on the front page.
+ *
+ * So it says the true thing instead, which is also the better ask: we are
+ * opening, be one of the first to list. It disappears by itself the moment
+ * real listings exist.
+ */
+const BeFirst = () => (
+  <section className={css.beFirst}>
+    <span className={css.beFirstEyebrow}>Vi åbner nu</span>
+    <h2 className={css.beFirstTitle}>Bliv en af de første</h2>
+    <p className={css.beFirstText}>
+      Fairway er lige gået i luften, så der er ikke lagt udstyr op endnu. Det tager to minutter at
+      oprette en annonce, det koster ikke noget, og vi sender dig en gratis kasse, når den er
+      solgt.
+    </p>
+    <NamedLink name="NewListingPage" className={css.beFirstButton}>
+      Opret den første annonce
+      <ArrowIcon />
+    </NamedLink>
+  </section>
+);
+
 export const LandingPageComponent = props => {
   const config = useConfiguration();
   // listings is undefined until the fetch resolves — and the front page must
@@ -338,6 +367,8 @@ export const LandingPageComponent = props => {
           </NamedLink>
         </section>
 
+        <CategoryStrip />
+
         <div className={css.content}>
           {fetchError ? (
             <p className={css.errorState}>
@@ -356,7 +387,7 @@ export const LandingPageComponent = props => {
               />
             </>
           ) : (
-            <FirstListings />
+            <BeFirst />
           )}
         </div>
 

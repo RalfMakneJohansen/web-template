@@ -2,18 +2,7 @@ import React from 'react';
 import { Field } from 'react-final-form';
 import classNames from 'classnames';
 
-// Newer models, shot at 700x700 — used wherever we have one for the category.
-import elyte3Wood from '../../../../assets/klubber/elyte-3wood.jpg';
-import g430Hybrid from '../../../../assets/klubber/g430-hybrid.jpg';
-import gt3Driver from '../../../../assets/klubber/gt3-driver.jpg';
-import puttershot from '../../../../assets/klubber/putter.jpg';
-import vokeyWedges from '../../../../assets/klubber/vokey-wedges.jpg';
-
-// The rest, at 300x300, until there are product shots for them.
-import andet from '../../../../assets/categories/andet.jpg';
-import bag from '../../../../assets/categories/bag.jpg';
-import jernsaet from '../../../../assets/categories/jernsaet.jpg';
-import sko from '../../../../assets/categories/sko.jpg';
+import CATEGORY_IMAGES from '../../../../config/categoryImages';
 
 import css from './CategoryImagePicker.module.css';
 
@@ -32,22 +21,11 @@ import css from './CategoryImagePicker.module.css';
  * Only used for a flat set of categories. Nested categories still need the
  * select, because a grid of pictures cannot show that something has children.
  */
-const IMAGES = {
-  driver: gt3Driver,
-  'fairway-wood': elyte3Wood,
-  hybrid: g430Hybrid,
-  jernsaet,
-  wedge: vokeyWedges,
-  putter: puttershot,
-  bag,
-  sko,
-  andet,
-};
 
 export const canUseImagePicker = categories =>
   Array.isArray(categories) &&
   categories.length > 0 &&
-  categories.every(c => !c.subcategories?.length && IMAGES[c.id]);
+  categories.every(c => !c.subcategories?.length && CATEGORY_IMAGES[c.id]);
 
 const CategoryImagePicker = props => {
   const { name, categories, onChange, intl } = props;
@@ -81,7 +59,7 @@ const CategoryImagePicker = props => {
                     }}
                   >
                     <span className={css.disc}>
-                      <img className={css.image} src={IMAGES[category.id]} alt="" loading="lazy" />
+                      <img className={css.image} src={CATEGORY_IMAGES[category.id]} alt="" loading="lazy" />
                     </span>
                     <span className={css.name}>{category.name}</span>
                   </button>

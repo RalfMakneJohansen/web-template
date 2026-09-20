@@ -1,7 +1,5 @@
 @import '../../styles/customMediaQueries.css';
 
-
-
 .eyebrow,
 .eyebrowOnDark {
   display: block;
@@ -12,10 +10,6 @@
   font-weight: var(--fontWeightSemiBold);
   letter-spacing: 0.2em;
   text-transform: uppercase;
-}
-
-.eyebrow {
-  color: var(--colorBrass);
 }
 
 .eyebrowOnDark {
@@ -647,308 +641,6 @@
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--colorSlate);
-}
-
-/* ================ First listings showcase ================ */
-
-.showcase {
-  padding: 0 0 16px 0;
-}
-
-.showcaseHeader {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 16px;
-
-  margin-bottom: 28px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--colorDivider);
-}
-
-.showcaseTitle {
-  margin: 10px 0 0 0;
-
-  font-family: var(--fontFamilyDisplay);
-  font-size: 25px;
-  line-height: 26px;
-  font-weight: 700;
-
-  /* caps need a touch of positive tracking; the grotesque wanted negative */
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
-  color: var(--colorInk);
-
-  @media (--viewportMedium) {
-    font-size: 30px;
-    line-height: 31px;
-  }
-}
-.showcaseCta {
-  flex-shrink: 0;
-
-  font-size: 12px;
-  font-weight: var(--fontWeightBold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--colorFairway);
-}
-
-.showcaseCta:hover {
-  color: var(--colorForest);
-  text-decoration: none;
-}
-
-.showcaseGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 14px;
-  margin: 0;
-
-  @media (--viewportMedium) {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 28px 18px;
-  }
-  @media (--viewportLarge) {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-}
-
-.showcaseItem {
-  display: flex;
-  min-width: 0;
-}
-
-.showcaseButton {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-
-  padding: 0;
-  border: none;
-  background: none;
-  text-align: left;
-  cursor: pointer;
-}
-
-.showcaseImageWrap {
-  position: relative;
-  position: relative;
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  border-radius: var(--radiusControl);
-  background-color: var(--colorSand);
-}
-
-.showcaseImage {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.showcaseButton:hover .showcaseImage {
-  transform: scale(1.03);
-}
-
-.showcaseBadge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-
-  padding: 4px 10px;
-  border-radius: var(--borderRadius);
-
-  background-color: rgba(255, 255, 255, 0.94);
-
-  font-size: 10px;
-  line-height: 14px;
-  font-weight: var(--fontWeightBold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.showcaseSomNy {
-  color: var(--colorFairway);
-}
-.showcaseGod {
-  color: var(--colorTeal);
-}
-.showcaseOkay {
-  color: var(--colorGold);
-}
-.showcaseSlidt {
-  color: var(--colorRust);
-}
-
-.showcaseBrand {
-  display: block;
-  margin-top: 12px;
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: var(--fontWeightBold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--colorSlate);
-}
-
-.showcaseName {
-  display: block;
-  margin-top: 5px;
-  font-size: 15px;
-  line-height: 21px;
-  font-weight: var(--fontWeightBold);
-  color: var(--colorInk);
-}
-
-.showcaseMeta {
-  display: block;
-  margin-top: 3px;
-  font-size: 13px;
-  line-height: 20px;
-  color: var(--colorSlate);
-}
-
-.showcasePrice {
-  display: block;
-
-  /* pushes the price to the card bottom, so the row shares one price line */
-  margin-top: auto;
-  padding-top: 8px;
-  font-size: 15px;
-  line-height: 21px;
-  font-weight: var(--fontWeightBold);
-  color: var(--colorInk);
-}
-
-/* ================ Listing detail dialog ================ */
-
-.detail {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-
-  @media (--viewportMedium) {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-}
-
-.detailImage {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: var(--radiusControl);
-}
-
-.detailBody {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.detailBadge {
-  display: inline-block;
-  margin-bottom: 14px;
-  padding: 5px 12px;
-  border-radius: var(--borderRadius);
-
-  background-color: var(--colorSand);
-
-  font-size: 10px;
-  line-height: 14px;
-  font-weight: var(--fontWeightBold);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.detailTitle {
-  margin: 6px 0 0 0;
-  font-size: 24px;
-  line-height: 30px;
-  font-weight: var(--fontWeightHeavy);
-  letter-spacing: -0.02em;
-  color: var(--colorInk);
-}
-
-.detailMeta {
-  margin: 4px 0 0 0;
-  font-size: 15px;
-  line-height: 22px;
-  color: var(--colorSlate);
-}
-
-.detailPrice {
-  margin: 14px 0 0 0;
-  font-size: 26px;
-  line-height: 32px;
-  font-weight: var(--fontWeightHeavy);
-  letter-spacing: -0.02em;
-  color: var(--colorInk);
-}
-
-.detailText {
-  margin: 14px 0 0 0;
-  font-size: 15px;
-  line-height: 24px;
-  color: var(--colorGraphite);
-}
-
-/* Buying and messaging sit behind signup, as they would on a real listing */
-.detailActions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  width: 100%;
-  margin-top: 24px;
-}
-
-.detailPrimary,
-.detailSecondary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  flex: 1 1 auto;
-  min-height: 50px;
-  padding: 0 24px;
-  border-radius: var(--radiusPill);
-
-  font-size: 15px;
-  font-weight: var(--fontWeightBold);
-
-  transition: all var(--transitionStyle);
-}
-
-.detailPrimary {
-  background-color: var(--colorCoral);
-  border: 1px solid var(--colorCoral);
-  color: var(--colorWhite);
-}
-.detailPrimary:hover {
-  background-color: var(--colorCoralDark);
-  border-color: var(--colorCoralDark);
-  text-decoration: none;
-}
-
-.detailSecondary {
-  border: 1px solid var(--colorDivider);
-  color: var(--colorInk);
-}
-.detailSecondary:hover {
-  border-color: var(--colorInk);
-  text-decoration: none;
-}
-
-.detailNote {
-  margin: 16px 0 0 0;
-  font-size: 13px;
-  line-height: 20px;
   color: var(--colorSlate);
 }
 
@@ -1640,41 +1332,6 @@
   color: rgba(237, 232, 220, 0.5);
 }
 
-/* ================ New listings frame ================ */
-
-/* The frame marks this as the place new listings arrive */
-.showcaseFrame {
-  padding: 28px 20px;
-
-  background-color: var(--colorPaper);
-  border: 1px solid var(--colorDivider);
-  border-radius: var(--radiusCard);
-  box-shadow: 0 18px 40px -34px rgba(12, 40, 32, 0.4);
-
-  @media (--viewportMedium) {
-    padding: 28px 28px;
-  }
-}
-
-.showcaseNew {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-
-  padding: 4px 9px;
-  border-radius: var(--radiusPill);
-
-  background-color: var(--colorSage);
-  color: var(--colorInk);
-
-  font-family: var(--fontFamilyDisplay);
-  font-size: 11px;
-  line-height: 14px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 /* ================ Chat: words only ================ */
 
 .msgWho {
@@ -1739,6 +1396,100 @@
   .tile:hover,
   .tile:active,
   .walkButton:active {
+    transform: none;
+  }
+}
+
+/* ---- Before there are listings ---- */
+
+.beFirst {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  margin: 8px 0 8px 0;
+  padding: 36px 28px 40px 28px;
+
+  background-color: var(--colorGround);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusSheet);
+
+  @media (--viewportMedium) {
+    padding: 52px 44px 56px 44px;
+  }
+}
+
+.beFirstEyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--colorFairway);
+}
+
+.beFirstTitle {
+  margin: 12px 0 0 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 28px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 34px;
+    line-height: 38px;
+  }
+}
+
+.beFirstText {
+  max-width: 52ch;
+  margin: 12px 0 0 0;
+
+  font-size: 16px;
+  line-height: 25px;
+  color: var(--colorSlate);
+}
+
+.beFirstButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 26px;
+  min-height: 52px;
+  padding: 0 26px;
+
+  background-color: var(--colorInk);
+  border-radius: var(--radiusControl);
+
+  font-size: 15px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorOffWhite);
+  text-decoration: none;
+
+  transition: transform 0.18s var(--easeOut), background-color 0.15s ease;
+}
+
+.beFirstButton:hover {
+  text-decoration: none;
+  color: var(--colorOffWhite);
+  background-color: var(--colorForest);
+}
+
+.beFirstButton:active {
+  transform: translateY(1px);
+  transition-duration: 0.06s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beFirstButton {
+    transition: none;
+  }
+  .beFirstButton:active {
     transform: none;
   }
 }

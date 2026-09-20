@@ -1,0 +1,153 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  width: 100%;
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: var(--sectionY) var(--pageGutter) 0 var(--pageGutter);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 22px;
+}
+
+.title {
+  margin: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 30px;
+    line-height: 34px;
+  }
+}
+
+.all {
+  flex-shrink: 0;
+
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorFairway);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.all:hover {
+  text-decoration: none;
+  color: var(--colorInk);
+}
+
+/* A scroller on a phone and an even row from tablet up. The negative gutters
+   let it bleed to the screen edge while the first disc still lines up with
+   the heading. */
+.strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 84px;
+  gap: 14px;
+
+  margin: 0 calc(var(--pageGutter) * -1);
+  padding: 0 var(--pageGutter) 6px var(--pageGutter);
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+
+  @media (--viewportMedium) {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 10px;
+
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+}
+
+.item {
+  scroll-snap-align: start;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+
+  padding: 8px 2px 10px 2px;
+  border-radius: var(--radiusCard);
+  text-decoration: none;
+
+  transition: background-color 0.16s var(--easeOut), transform 0.2s var(--easeOut);
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .link:hover {
+    background-color: var(--colorGround);
+  }
+
+  .link:hover .disc {
+    transform: translateY(-2px);
+    box-shadow: var(--shadowRaised);
+  }
+}
+
+.link:active .disc {
+  transform: translateY(0);
+  transition-duration: 0.06s;
+}
+
+.disc {
+  display: block;
+  width: 100%;
+  max-width: 76px;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+
+  border-radius: 50%;
+  background-color: var(--colorSagePale);
+
+  transition: transform 0.2s var(--easeOut), box-shadow 0.2s var(--easeOut);
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorInk);
+  text-align: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link,
+  .disc {
+    transition: none;
+  }
+  .link:hover .disc,
+  .link:active .disc {
+    transform: none;
+  }
+}
