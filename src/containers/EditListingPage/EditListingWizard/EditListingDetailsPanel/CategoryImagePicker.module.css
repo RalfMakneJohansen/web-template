@@ -1,69 +1,68 @@
 @import '../../../../styles/customMediaQueries.css';
 
 .root {
-  margin: 0 0 24px 0;
+  margin: 0 0 28px 0;
   padding: 0;
   border: none;
 }
 
 .legend {
   composes: label from global;
-  padding: 0 0 10px 0;
+  padding: 0 0 12px 0;
 }
 
+/* Small and many: the whole range should be one glance, not a scroll */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
 
   @media (--viewportMedium) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
   }
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  padding: 0;
-  overflow: hidden;
+  align-items: center;
+  gap: 8px;
 
-  background-color: var(--colorPaper);
-  border: 1px solid var(--colorDividerWarm);
+  padding: 10px 4px 12px 4px;
+
+  background: none;
+  border: none;
   border-radius: var(--radiusCard);
   cursor: pointer;
-  text-align: left;
 
-  transition: transform 0.2s var(--easeOut), border-color 0.18s var(--easeOut),
-    box-shadow 0.18s var(--easeOut);
+  transition: background-color 0.16s var(--easeOut), transform 0.18s var(--easeOut);
 }
 
 @media (hover: hover) {
   .card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadowRaised);
-    border-color: var(--colorGroundDeep);
+    background-color: var(--colorGround);
   }
 }
 
 .card:active {
-  transform: translateY(0);
+  transform: translateY(1px);
   transition-duration: 0.06s;
 }
 
-/* The chosen club reads as chosen from across the room: forest edge, a ring
-   so it survives on a warm ground, and the name in the brand green. */
-.cardSelected,
-.cardSelected:hover {
-  border-color: var(--colorFairway);
-  box-shadow: 0 0 0 2px var(--colorFairway), var(--shadowRest);
-}
-
-.imageWrap {
+/* The disc does the work: it crops to the head of the club and throws away
+   whatever else was in the frame, so uneven photography still reads as a set. */
+.disc {
   display: block;
-  aspect-ratio: 4 / 3;
+  width: 100%;
+  max-width: 78px;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  background-color: var(--colorSand);
+
+  border-radius: 50%;
+  background-color: var(--colorSagePale);
+
+  transition: box-shadow 0.16s var(--easeOut);
 }
 
 .image {
@@ -74,21 +73,26 @@
 }
 
 .name {
-  display: block;
-  padding: 10px 12px 12px 12px;
-
-  font-size: 14px;
-  line-height: 19px;
-  font-weight: var(--fontWeightSemiBold);
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: var(--fontWeightMedium);
   color: var(--colorInk);
+  text-align: center;
+}
+
+/* Chosen: a ring on the disc rather than a box round the whole tile, so the
+   grid keeps its rhythm. */
+.cardSelected .disc {
+  box-shadow: 0 0 0 2px var(--colorFairway);
 }
 
 .cardSelected .name {
+  font-weight: var(--fontWeightSemiBold);
   color: var(--colorFairway);
 }
 
 .error {
-  margin: 10px 0 0 0;
+  margin: 12px 0 0 0;
   font-size: 14px;
   line-height: 20px;
   color: var(--colorFail);
@@ -98,7 +102,6 @@
   .card {
     transition: none;
   }
-  .card:hover,
   .card:active {
     transform: none;
   }

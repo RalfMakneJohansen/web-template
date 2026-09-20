@@ -2,15 +2,18 @@ import React from 'react';
 import { Field } from 'react-final-form';
 import classNames from 'classnames';
 
+// Newer models, shot at 700x700 — used wherever we have one for the category.
+import elyte3Wood from '../../../../assets/klubber/elyte-3wood.jpg';
+import g430Hybrid from '../../../../assets/klubber/g430-hybrid.jpg';
+import gt3Driver from '../../../../assets/klubber/gt3-driver.jpg';
+import puttershot from '../../../../assets/klubber/putter.jpg';
+import vokeyWedges from '../../../../assets/klubber/vokey-wedges.jpg';
+
+// The rest, at 300x300, until there are product shots for them.
 import andet from '../../../../assets/categories/andet.jpg';
 import bag from '../../../../assets/categories/bag.jpg';
-import driver from '../../../../assets/categories/driver.jpg';
-import fairwayWood from '../../../../assets/categories/fairway-wood.jpg';
-import hybrid from '../../../../assets/categories/hybrid.jpg';
 import jernsaet from '../../../../assets/categories/jernsaet.jpg';
-import putter from '../../../../assets/categories/putter.jpg';
 import sko from '../../../../assets/categories/sko.jpg';
-import wedge from '../../../../assets/categories/wedge.jpg';
 
 import css from './CategoryImagePicker.module.css';
 
@@ -18,23 +21,24 @@ import css from './CategoryImagePicker.module.css';
  * FAIRWAY: pick the club, not a line in a dropdown.
  *
  * The first thing a seller does was choosing "Driver" from a select — the same
- * control you would use to pick a country. For a marketplace that only sells
- * golf equipment, that throws away the one thing that makes the step
- * unmistakable: you can show the thing.
+ * control you would use to pick a country, on a marketplace that sells nothing
+ * but golf equipment.
  *
- * The photographs were already in the repo, one per category, named after the
- * category ids, and nothing was using them.
+ * Laid out the way golf retailers do it: the club in a pale disc with the name
+ * under it, small enough that the whole range is one glance. A disc also
+ * forgives the photography, because it crops to the head of the club and drops
+ * whatever the rest of the frame happened to contain.
  *
  * Only used for a flat set of categories. Nested categories still need the
  * select, because a grid of pictures cannot show that something has children.
  */
 const IMAGES = {
-  driver,
-  'fairway-wood': fairwayWood,
-  hybrid,
+  driver: gt3Driver,
+  'fairway-wood': elyte3Wood,
+  hybrid: g430Hybrid,
   jernsaet,
-  wedge,
-  putter,
+  wedge: vokeyWedges,
+  putter: puttershot,
   bag,
   sko,
   andet,
@@ -76,8 +80,8 @@ const CategoryImagePicker = props => {
                       }
                     }}
                   >
-                    <span className={css.imageWrap}>
-                      <img className={css.image} src={IMAGES[category.id]} alt="" />
+                    <span className={css.disc}>
+                      <img className={css.image} src={IMAGES[category.id]} alt="" loading="lazy" />
                     </span>
                     <span className={css.name}>{category.name}</span>
                   </button>
