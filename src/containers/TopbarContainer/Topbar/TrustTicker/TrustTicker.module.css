@@ -4,6 +4,11 @@
   overflow: hidden;
   width: 100%;
 
+  /* Pinned: the search page reserves exactly this much room for it */
+  height: var(--fairwayTickerHeight);
+  display: flex;
+  align-items: center;
+
   background-color: var(--colorInk);
   border-bottom: 1px solid rgba(237, 232, 220, 0.12);
 }

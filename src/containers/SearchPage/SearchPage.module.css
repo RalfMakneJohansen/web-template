@@ -30,7 +30,13 @@
 
   @media (--viewportMedium) {
     position: relative;
-    padding-top: var(--topbarHeightDesktop);
+
+    /* FAIRWAY: the fixed topbar is three bands tall here — ticker, logo row and
+       category nav — and --topbarHeightDesktop counts only the middle one.
+       Reserving just that hid 87px of the filter rail behind the bar. */
+    padding-top: calc(
+      var(--topbarHeightDesktop) + var(--fairwayTickerHeight) + var(--fairwayCategoryNavHeight)
+    );
     min-height: calc(100vh - var(--topbarHeightDesktop));
     scroll-margin-top: var(--topbarHeightDesktop);
   }

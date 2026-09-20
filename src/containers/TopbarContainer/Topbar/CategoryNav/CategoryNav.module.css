@@ -158,6 +158,12 @@
 .root {
   background-color: var(--colorForest);
   border-bottom: none;
+
+  /* Pinned from tablet up, where the search page fixes the topbar and has to
+     reserve exactly this much room below it. */
+  @media (--viewportMedium) {
+    height: var(--fairwayCategoryNavHeight);
+  }
 }
 
 .link {

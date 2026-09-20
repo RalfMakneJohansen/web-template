@@ -76,7 +76,17 @@ const moveFocusToNextFocusableElement = (formId, direction = 'next') => {
 class FilterPlainComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { isOpen: true };
+
+    // FAIRWAY: closed unless it is in use.
+    //
+    // Every group opened by default, so the rail was a wall: nine categories
+    // and a price slider before you reached the second filter, and on a phone
+    // the results were pushed off the screen entirely. Retail filter rails are
+    // a compact list of headings you open one at a time.
+    //
+    // Closed for every group, the way retail rails are. An applied filter is
+    // not hidden by this: it shows as a chip above the results.
+    this.state = { isOpen: false };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClear = this.handleClear.bind(this);

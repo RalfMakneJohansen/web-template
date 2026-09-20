@@ -235,6 +235,14 @@
   --shadowLifted: 0 4px 8px rgba(12, 40, 32, 0.08), 0 16px 32px rgba(12, 40, 32, 0.1);
   --shadowBar: 0 -2px 10px rgba(12, 40, 32, 0.08), 0 -8px 28px rgba(12, 40, 32, 0.06);
 
+  /* FAIRWAY: the two bands this brand adds above the template topbar.
+     The search page fixes its topbar and reserves space for it with
+     --topbarHeightDesktop, which counts only the logo row — so every pixel
+     added above or below it has to be declared here or content hides behind
+     the bar. Both bands are given these exact heights in their own files. */
+  --fairwayTickerHeight: 35px;
+  --fairwayCategoryNavHeight: 52px;
+
   /* Motion that decelerates, the way a real object comes to rest */
   --easeOut: cubic-bezier(0.2, 0.8, 0.2, 1);
 
