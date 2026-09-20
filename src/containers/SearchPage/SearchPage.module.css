@@ -394,19 +394,52 @@
   background-color: var(--colorGround);
 }
 
-/* The rail is a solid white panel on the warm ground, with the same edge as
-   the cards so the whole page is drawn with one line. */
+/* Flat, the way retail rails are set: no panel and no shadow. The structure
+   comes from a hairline between each group, which is what makes a list of ten
+   filters readable where a card full of them is not. */
 .filterColumnContent {
-  background-color: var(--colorPaper);
-  border-color: var(--colorDividerWarm);
-  box-shadow: var(--shadowRest);
+  padding: 0;
+  margin: 0 28px 24px 0;
+
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  @media (--viewportLarge) {
+    width: 226px;
+    padding: 0;
+    margin: 0 28px 24px 0;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 0;
+    margin: 0 40px 24px 0;
+  }
 }
 
-/* Filter groups get a line between them instead of floating in space */
-.filter + .filter {
-  margin-top: 6px;
-  padding-top: 18px;
+/* The rail says what it is */
+.filterColumnContent::before {
+  content: 'Filtre';
+
+  display: block;
+  padding-bottom: 12px;
+
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+}
+
+/* A rule above every group and below the last, so the set reads as one list */
+.filter {
   border-top: 1px solid var(--colorDividerWarm);
+}
+
+.filter:last-of-type {
+  border-bottom: 1px solid var(--colorDividerWarm);
 }
 
 /* Category options: a warm hover so the rail responds to the pointer */

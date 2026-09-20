@@ -128,3 +128,104 @@
 .isOpen {
   display: block;
 }
+
+/* ============================================================
+   FAIRWAY: the filter row
+
+   Flat with hairline rules and a chevron, the way retail rails are set
+   — not a floating card with plus signs. And it opens by animating its
+   height instead of snapping from display:none, which is the only way
+   to animate it at all.
+   ============================================================ */
+
+.filterHeader {
+  line-height: normal;
+}
+
+.labelButton {
+  display: block;
+  padding: 15px 0;
+
+  transition: color 0.15s ease;
+}
+
+.labelButtonContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.labelWrapper {
+  min-width: 0;
+}
+
+.label,
+.label > span {
+  font-size: 15px;
+  line-height: 21px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--colorInk);
+}
+
+/* A chevron drawn in CSS, so the template's plus icon can go without
+   touching a shared component. */
+.openSign {
+  float: none;
+  flex-shrink: 0;
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+
+.openSign svg {
+  display: none;
+}
+
+.openSign::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 7px;
+  height: 7px;
+
+  border-right: 1.6px solid var(--colorSlate);
+  border-bottom: 1.6px solid var(--colorSlate);
+  transform: rotate(45deg);
+  transform-origin: 70% 70%;
+
+  transition: transform 0.22s var(--easeOut);
+}
+
+.labelButton[aria-expanded='true'] .openSign::after {
+  transform: rotate(-135deg);
+}
+
+.labelButton:hover .openSign::after {
+  border-color: var(--colorInk);
+}
+
+/* Left on the template's display none/block.
+   A grid-rows height animation was tried here and backed out: the panel
+   opened to its padding and nothing else, because the fr row resolved to
+   zero against an auto-height container. A filter that does not open is worse
+   than one that opens without a transition. */
+.plain {
+  @media (--viewportMedium) {
+    padding-bottom: 0;
+  }
+}
+
+.isOpen {
+  padding-bottom: 14px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .openSign::after {
+    transition: none;
+  }
+}
