@@ -175,8 +175,7 @@
   line-height: 34px;
   font-family: var(--fontFamilyDisplay);
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorPaper);
 
   @media (--viewportMedium) {
@@ -266,25 +265,6 @@
   }
 }
 
-/* Decorative stroke over the hero photos. Thin, pink, and well out of the
-   way of the headline — it adds movement, nothing more. Coral stays reserved
-   for calls to action. */
-.heroStroke {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-
-  fill: none;
-  stroke: var(--colorBlush);
-  stroke-width: 2;
-  stroke-linecap: round;
-  opacity: 0.8;
-}
-
 .collage {
   position: relative;
   display: flex;
@@ -295,29 +275,19 @@
   overflow: hidden;
 }
 
+/* Straight panels. They were skewed 8 degrees with the photographs
+   counter-skewed and scaled 1.18 to stay upright inside them — which cost
+   18% of every image to cropping and read as a 2015 sports banner. A plain
+   column of photographs is calmer and shows more of each one. */
 .collagePanel {
   flex: 1;
   overflow: hidden;
-
-  /* Angled panels, as on sports marketplaces */
-  transform: skewX(-8deg);
-}
-
-/* Widen the outer panels so the skew does not leave gaps at the edges */
-.collagePanel:first-child {
-  margin-left: -6%;
-}
-.collagePanel:last-child {
-  margin-right: -6%;
 }
 
 .collageImage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-
-  /* Counter-skew so the photo itself stays straight */
-  transform: skewX(8deg) scale(1.18);
 }
 
 /* Fades the collage into the dark panel on its left edge */
@@ -508,8 +478,7 @@
   font-size: 28px;
   line-height: 28px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
 
   @media (--viewportMedium) {
     font-size: 30px;
@@ -605,8 +574,7 @@
   font-weight: 700;
 
   /* caps need a touch of positive tracking; the grotesque wanted negative */
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 
   @media (--viewportMedium) {
@@ -739,8 +707,7 @@
   font-weight: 700;
 
   /* caps need a touch of positive tracking; the grotesque wanted negative */
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorPaper);
 
   @media (--viewportMedium) {
@@ -798,8 +765,7 @@
   font-size: 30px;
   line-height: 32px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorPaper);
 
   @media (--viewportMedium) {
@@ -970,8 +936,7 @@
   font-size: 22px;
   line-height: 26px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 }
 
@@ -1095,8 +1060,7 @@
   font-size: 30px;
   line-height: 32px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorPaper);
 
   @media (--viewportMedium) {
@@ -1261,8 +1225,7 @@
   font-size: 28px;
   line-height: 30px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorPaper);
 
   @media (--viewportMedium) {
@@ -1314,8 +1277,7 @@
   font-size: 27px;
   line-height: 29px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorPaper);
 
   @media (--viewportMedium) {
@@ -1454,8 +1416,7 @@
   font-size: 28px;
   line-height: 32px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 
   @media (--viewportMedium) {

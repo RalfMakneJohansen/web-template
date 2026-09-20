@@ -46,9 +46,10 @@
   --colorSage: #5dcaa5;
   --colorSagePale: #eaf7f1;
 
-  /* A soft pink, used only for the decorative stroke on the hero. Cool enough
-     that it never reads as the coral call-to-action. */
-  --colorBlush: #f4a6b8;
+  /* FAIRWAY: the palette is deliberately short — ink, the warm grounds, one
+     green, one call-to-action. Anything beyond that has to earn its place.
+     The soft pink that used to live here went with the decorative stroke it
+     was invented for. */
 
   /* Antique brass: the call-to-action colour, and nothing else. Green and
      gold is the oldest pairing in the game — it sits on the deep forest
@@ -209,13 +210,21 @@
 
   /* ================ Border radius ================ */
 
-  --borderRadius: 2px;
-  --borderRadiusMedium: 4px;
+/* FAIRWAY: softer corners.
+     The template ships 2px and 4px, which is the single clearest thing
+     dating an interface — a 2px corner reads as a 2014 form field no matter
+     what colour is on it. Every button, input, card and panel in the app
+     resolves through these four values, so the whole surface moves together.
 
-  /* Fairway radius scale: one step for controls, one for cards, one for pills */
-  --radiusControl: 6px;
-  --radiusCard: 12px;
-  --radiusSheet: 20px;
+     The scale is deliberate rather than uniform: controls stay tighter than
+     cards, and cards tighter than full sheets, so size still reads as
+     hierarchy. */
+  --borderRadius: 8px;
+  --borderRadiusMedium: 10px;
+
+  --radiusControl: 10px;
+  --radiusCard: 16px;
+  --radiusSheet: 24px;
   --radiusPill: 999px;
 
   /* ================ Fairway elevation ================

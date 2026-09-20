@@ -20,14 +20,6 @@ export const CONDITION_LABELS = {
   slidt: 'Slidt',
 };
 
-const conditionClass = condition =>
-  ({
-    'som-ny': css.conditionSomNy,
-    god: css.conditionGod,
-    okay: css.conditionOkay,
-    slidt: css.conditionSlidt,
-  }[condition]);
-
 /**
  * The deciding specs, in the title.
  *
@@ -113,7 +105,7 @@ const FairwayListingCard = props => {
           />
         </AspectRatioWrapper>
         {conditionLabel ? (
-          <span className={classNames(css.conditionBadge, conditionClass(condition))}>
+          <span className={css.conditionBadge}>
             {conditionLabel}
           </span>
         ) : null}

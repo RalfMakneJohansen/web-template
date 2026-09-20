@@ -319,8 +319,7 @@
   font-size: 28px;
   line-height: 32px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 
   @media (--viewportLarge) {

@@ -288,11 +288,6 @@ export const LandingPageComponent = props => {
           </div>
           <div className={css.heroMedia}>
             <HeroCollage />
-
-            {/* a single loose stroke for movement — decoration only */}
-            <svg className={css.heroStroke} viewBox="0 0 420 300" fill="none" aria-hidden={true}>
-              <path d="M-10 268c70-22 96-58 168-56 54 2 78 34 132 20 38-10 62-34 140-40" />
-            </svg>
           </div>
         </section>
 

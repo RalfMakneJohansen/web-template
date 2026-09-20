@@ -16,7 +16,10 @@
      that contrast is what makes a grid read as a shop rather than a
      directory listing. */
   background-color: var(--colorPaper);
-  border: 1px solid var(--colorDividerWarm);
+
+  /* Elevation alone, no outline. A border and a shadow on the same object is
+     the other half of the dated look — it draws the card twice. */
+  border: none;
   border-radius: var(--radiusCard);
   overflow: hidden;
   box-shadow: var(--shadowRest);
@@ -34,8 +37,7 @@
 @media (hover: hover) {
   .root:hover {
     transform: translateY(-3px);
-    box-shadow: var(--shadowRaised);
-    border-color: var(--colorGroundDeep);
+    box-shadow: var(--shadowLifted);
   }
 }
 
@@ -88,18 +90,11 @@
   text-transform: uppercase;
 }
 
-.conditionSomNy {
-  color: var(--colorFairway);
-}
-.conditionGod {
-  color: var(--colorTeal);
-}
-.conditionOkay {
-  color: var(--colorGold);
-}
-.conditionSlidt {
-  color: var(--colorRust);
-}
+/* One badge, one colour.
+   Condition used to be painted in four — green, teal, gold and rust — so a
+   grid of twenty listings carried twenty coloured chips and read as a
+   discount site. The word already says the condition; the colour was saying
+   it a second time, louder. Ink on white for all four. */
 
 /* ---- Text block ---- */
 

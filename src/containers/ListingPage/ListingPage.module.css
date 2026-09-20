@@ -866,8 +866,7 @@
   font-size: 24px;
   line-height: 28px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 }
 
@@ -954,8 +953,7 @@
   font-size: 28px;
   line-height: 32px;
   font-weight: 700;
-  letter-spacing: 0.005em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 
   @media (--viewportLarge) {
@@ -992,8 +990,7 @@
   font-size: 22px;
   line-height: 26px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorInk);
 
   @media (--viewportMedium) {
@@ -1268,8 +1265,7 @@
   font-size: 22px;
   line-height: 26px;
   font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.015em;
   color: var(--colorOffWhite);
 }
 
