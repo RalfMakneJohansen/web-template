@@ -252,7 +252,23 @@ export const formatMoney = (intl, value) => {
   const options = {};
   const numberFormatOptions = getCurrencyFormatting(value.currency, options);
 
-  return intl.formatNumber(valueAsNumber, numberFormatOptions);
+  // FAIRWAY: a whole-krone price prints without the oere.
+  // The template pads every amount to two decimals, so a 4.444 kr. driver was
+  // shown as "4.444,00 kr." on the card, in the buy panel and at checkout.
+  // No Danish shop writes it that way, and the padding is what made the prices
+  // read as a database dump rather than a price tag. Amounts that genuinely
+  // carry oere - a fee, a part refund - still print both digits.
+  //
+  // Danish convention only. Dollars and euros keep their two decimals, because
+  // dropping them there would be the same mistake in the other direction.
+  const divisor = subUnitDivisors[value.currency];
+  const isWholeUnit =
+    value.currency === 'DKK' && divisor > 1 && value.amount % divisor === 0;
+  const formatOptions = isWholeUnit
+    ? { ...numberFormatOptions, minimumFractionDigits: 0, maximumFractionDigits: 0 }
+    : numberFormatOptions;
+
+  return intl.formatNumber(valueAsNumber, formatOptions);
 };
 
 /**

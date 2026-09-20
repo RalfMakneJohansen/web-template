@@ -246,5 +246,38 @@ describe('currency utils', () => {
     // No test for that actual formatting for now. It depends on the
     // locale, and it doesn't really make sense to test the fake intl
     // implementation in the tests.
+
+    // FAIRWAY: the number of decimals is our decision, not the locale's, so
+    // that part is worth pinning. We capture the options handed to intl
+    // rather than the rendered string.
+    const optionsFor = value => {
+      let captured = null;
+      const intl = {
+        formatNumber: (number, options) => {
+          captured = options;
+          return String(number);
+        },
+      };
+      formatMoney(intl, value);
+      return captured;
+    };
+
+    it('drops the decimals on a whole-krone amount', () => {
+      const options = optionsFor(new Money(444400, 'DKK'));
+      expect(options.minimumFractionDigits).toEqual(0);
+      expect(options.maximumFractionDigits).toEqual(0);
+    });
+
+    it('keeps the decimals when there are oere to show', () => {
+      const options = optionsFor(new Money(444450, 'DKK'));
+      expect(options.minimumFractionDigits).toEqual(2);
+      expect(options.maximumFractionDigits).toEqual(2);
+    });
+
+    it('leaves other currencies padded', () => {
+      const options = optionsFor(new Money(1000, 'USD'));
+      expect(options.minimumFractionDigits).toEqual(2);
+      expect(options.maximumFractionDigits).toEqual(2);
+    });
   });
 });
