@@ -380,10 +380,25 @@
   @media (--viewportLarge) {
     display: block;
   }
-  /* Note: panel height might be too much on small viewport - hence min-height */
-  @media (--viewportLarge) and (min-height: 950px) {
+
+  /* FAIRWAY: the buy card follows you down the page.
+     It only stuck on screens taller than 950px, which almost nobody has — so
+     in practice it was never sticky. Measured on this listing: the card is
+     841px and the page is 4424px, meaning the buy button left the screen
+     after the first fold and stayed gone for three more.
+
+     The old height guard existed because a card taller than the window gets
+     its bottom cut off while stuck. Capping the height and letting it scroll
+     inside itself solves that without giving up the sticky, and when the card
+     fits — which it does at this size — nothing about it changes. */
+  @media (--viewportLarge) {
     position: sticky;
-    top: 108px;
+    top: 24px;
+    align-self: flex-start;
+
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    scrollbar-width: thin;
   }
   &.imagesEnabled {
     @media (--viewportLarge) {
