@@ -144,3 +144,46 @@
     text-decoration: none;
   }
 }
+
+/* ============================================================
+   FAIRWAY: the category band
+
+   A deep forest band under the white logo row, the way golf retailers
+   separate browsing from account and search. It is also the largest
+   surface on the site that can carry the brand colour without fighting
+   anything, and it makes the nav unmistakably ours rather than the
+   template's white strip.
+   ============================================================ */
+
+.root {
+  background-color: var(--colorForest);
+  border-bottom: none;
+}
+
+.link {
+  color: var(--colorOffWhite);
+
+  &:hover {
+    color: var(--colorInk);
+    background-color: var(--colorSage);
+  }
+}
+
+.linkOpen {
+  color: var(--colorInk);
+  background-color: var(--colorSage);
+}
+
+/* The active category is marked by weight and a rule under it rather than a
+   fill, so it stays legible next to a hovered sibling. */
+.link:global(.NamedLink_active) {
+  color: var(--colorPaper);
+  font-weight: var(--fontWeightSemiBold);
+}
+
+/* The dropdown is a light sheet hanging off a dark band, so it needs its own
+   edge and lift to separate from it. */
+.panel {
+  border-color: var(--colorDividerWarm);
+  box-shadow: var(--shadowLifted);
+}

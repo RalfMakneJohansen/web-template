@@ -111,26 +111,33 @@
   padding: 13px 14px 15px 14px;
 }
 
+/* Centred, the way a product grid is set: with the photo above and the price
+   below, a left rag on three lines of different lengths reads as untidy. */
+.info {
+  text-align: center;
+}
+
 .brand {
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: var(--fontWeightBold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: var(--fontWeightRegular);
+  letter-spacing: 0.01em;
   color: var(--colorSlate);
 }
 
+/* Name and the deciding specs in one string — this is what the grid is read
+   for, so it gets the weight. Three lines at most: brand, model and two specs
+   run long, and a clamp keeps every price on the same baseline. */
 .title {
-  margin-top: 3px;
+  margin-top: 4px;
 
-  font-size: 15px;
-  line-height: 21px;
+  font-size: 14px;
+  line-height: 20px;
   font-weight: var(--fontWeightSemiBold);
   color: var(--colorInk);
 
-  /* two lines at most, so a long name cannot push the price out of line */
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }

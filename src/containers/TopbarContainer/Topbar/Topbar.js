@@ -27,6 +27,7 @@ import TopbarMobileMenu from './TopbarMobileMenu/TopbarMobileMenu';
 import TopbarDesktop from './TopbarDesktop/TopbarDesktop';
 
 import CategoryNav from './CategoryNav/CategoryNav';
+import TrustTicker from './TrustTicker/TrustTicker';
 
 import css from './Topbar.module.css';
 import { getCurrentUserTypeRoles, showCreateListingLinkForUser } from '../../../util/userHelpers';
@@ -335,6 +336,8 @@ const TopbarComponent = props => {
 
   return (
     <div className={classes}>
+      {/* FAIRWAY: the promise before anything else on the page */}
+      <TrustTicker />
       <Button onClick={handleSkipToMainContent} className={css.skipToMainContent}>
         <FormattedMessage id="Topbar.skipToMainContent" />
         <IconArrowHead direction="right" size="small" rootClassName={css.skiptoMainArrow} />

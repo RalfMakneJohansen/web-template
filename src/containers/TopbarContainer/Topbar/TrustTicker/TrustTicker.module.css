@@ -1,0 +1,85 @@
+@import '../../../../styles/customMediaQueries.css';
+
+.root {
+  overflow: hidden;
+  width: 100%;
+
+  background-color: var(--colorInk);
+  border-bottom: 1px solid rgba(237, 232, 220, 0.12);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+
+  /* Slow. This is a promise, not an advertisement — at ticker speed it reads
+     as a sale banner and people look away from those. */
+  animation: scroll 46s linear infinite;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex-shrink: 0;
+}
+
+.item {
+  padding: 8px 26px;
+  white-space: nowrap;
+
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+
+  @media (--viewportMedium) {
+    font-size: 12px;
+    padding: 9px 32px;
+  }
+}
+
+/* A dot between claims, drawn rather than typed so it never wraps alone */
+.item::after {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 3px;
+  margin-left: 26px;
+  margin-bottom: 3px;
+
+  border-radius: 50%;
+  background-color: rgba(93, 202, 165, 0.5);
+
+  @media (--viewportMedium) {
+    margin-left: 32px;
+  }
+}
+
+@keyframes scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* exactly one copy of the list, so the loop is seamless */
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Motion is decoration here. Without it the first four claims simply sit
+   there, which is still the whole message. */
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

@@ -29,20 +29,24 @@ const conditionClass = condition =>
   }[condition]);
 
 /**
- * The spec line is the difference between a classifieds tile and a product
- * tile: it lets a buyer compare two drivers without opening either.
+ * The deciding specs, in the title.
  *
- * Read off the listing field config rather than hard-coded, so the labels stay
- * correct when an option is renamed, and so a field that does not apply to the
- * category simply drops out.
+ * A grey second line under the name reads as a caption and gets skipped. The
+ * specs that actually decide a used-club purchase — flex, loft, length —
+ * belong in the name itself, so one glance at a grid is enough to compare two
+ * drivers without opening either.
+ *
+ * Ordered the way a golfer says it: flex before loft. Read off the listing
+ * field config rather than hard-coded, so the labels stay correct when an
+ * option is renamed and a field that does not apply to the category drops out.
  */
-const SPEC_KEYS = ['loft', 'wedge_loft', 'shaft_flex', 'putter_length', 'shoe_size', 'dexterity'];
+const SPEC_KEYS = ['shaft_flex', 'loft', 'wedge_loft', 'putter_length', 'shoe_size'];
 
-const specLine = (publicData, listingFields) => {
+const specParts = (publicData, listingFields) => {
   if (!publicData) {
-    return null;
+    return [];
   }
-  const parts = SPEC_KEYS.map(key => {
+  return SPEC_KEYS.map(key => {
     const raw = publicData[key];
     if (raw == null || raw === '') {
       return null;
@@ -50,9 +54,9 @@ const specLine = (publicData, listingFields) => {
     const field = listingFields.find(f => f.key === key);
     const option = field?.enumOptions?.find(o => `${o.option}` === `${raw}`);
     return option?.label || raw;
-  }).filter(Boolean);
-
-  return parts.length > 0 ? parts.slice(0, 3).join(' · ') : null;
+  })
+    .filter(Boolean)
+    .slice(0, 2);
 };
 
 /**
@@ -89,11 +93,12 @@ const FairwayListingCard = props => {
     price && price.currency === config.currency ? formatMoney(intl, price) : null;
 
   const conditionLabel = CONDITION_LABELS[condition];
-  const spec = specLine(publicData, config.listing.listingFields || []);
+  const specs = specParts(publicData, config.listing.listingFields || []);
 
-  // The model is the product name; the title is the seller's own wording and
-  // only stands in when no model was given.
-  const name = model || title;
+  // The title carries the whole name — the wizard composes it from brand and
+  // model, so it reads "Titleist GT4 Driver" rather than just "GT4". Model is
+  // the fallback for listings written before that.
+  const name = title || model;
 
   return (
     <NamedLink className={classNames(css.root, className)} name="ListingPage" params={{ id, slug }}>
@@ -116,8 +121,7 @@ const FairwayListingCard = props => {
 
       <div className={css.info}>
         {brand ? <span className={css.brand}>{brand}</span> : null}
-        <span className={css.title}>{name}</span>
-        {spec ? <span className={css.meta}>{spec}</span> : null}
+        <span className={css.title}>{[name, ...specs].join(' / ')}</span>
         {formattedPrice ? <span className={css.price}>{formattedPrice}</span> : null}
       </div>
     </NamedLink>
