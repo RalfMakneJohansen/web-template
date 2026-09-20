@@ -351,10 +351,13 @@
     margin: 8px 24px 24px 0;
   }
 
+  /* FAIRWAY: narrower than the template default. The rail is a list of
+     headings now, not a list of options, so it needs far less room — and
+     every pixel it gives back goes to the photographs. */
   @media (--viewportLarge) {
-    width: 264px;
-    padding: 24px 22px 28px 22px;
-    margin: 8px 36px 24px 0;
+    width: 226px;
+    padding: 20px 18px 24px 18px;
+    margin: 8px 28px 24px 0;
   }
 
   @media (min-width: 1440px) {

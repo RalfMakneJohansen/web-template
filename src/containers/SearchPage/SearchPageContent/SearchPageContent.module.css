@@ -1,0 +1,119 @@
+@import '../../../styles/customMediaQueries.css';
+
+.root {
+  margin-top: 40px;
+  padding: 44px 0 64px 0;
+  border-top: 1px solid var(--colorDividerWarm);
+
+  @media (--viewportLarge) {
+    margin-top: 56px;
+    padding: 56px 0 80px 0;
+  }
+}
+
+.inner {
+  max-width: 760px;
+}
+
+.title {
+  margin: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--colorInk);
+
+  @media (--viewportMedium) {
+    font-size: 28px;
+    line-height: 32px;
+  }
+}
+
+.paragraph {
+  margin: 14px 0 0 0;
+
+  font-size: 15px;
+  line-height: 25px;
+  color: var(--colorSlate);
+}
+
+.faqTitle {
+  margin: 36px 0 0 0;
+
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+}
+
+.faq {
+  margin-top: 12px;
+}
+
+.item {
+  border-bottom: 1px solid var(--colorDividerWarm);
+}
+
+.question {
+  position: relative;
+  display: block;
+  padding: 15px 40px 15px 0;
+
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorInk);
+  cursor: pointer;
+  list-style: none;
+}
+
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.mark {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+}
+
+.mark::before,
+.mark::after {
+  content: '';
+  position: absolute;
+  background-color: var(--colorFairway);
+}
+
+.mark::before {
+  top: 5.5px;
+  left: 0;
+  width: 12px;
+  height: 1.5px;
+}
+
+.mark::after {
+  top: 0;
+  left: 5.5px;
+  width: 1.5px;
+  height: 12px;
+  transition: transform 0.2s var(--easeOut);
+}
+
+.item[open] .mark::after {
+  transform: rotate(90deg);
+}
+
+.answer {
+  margin: 0;
+  padding: 0 40px 16px 0;
+
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--colorSlate);
+}

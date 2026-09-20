@@ -37,6 +37,15 @@ export const fetchNewestListings = createAsyncThunk(
           'publicData.shipment_type',
           'publicData.pickupEnabled',
           'publicData.shippingEnabled',
+          // FAIRWAY: the card puts flex and loft in its title, and the API
+          // returns no publicData that is not asked for — without these the
+          // front page showed bare names while the search page showed specs.
+          'publicData.categoryLevel1',
+          'publicData.shaft_flex',
+          'publicData.loft',
+          'publicData.wedge_loft',
+          'publicData.putter_length',
+          'publicData.shoe_size',
         ],
         'fields.image': ['variants.listing-card', 'variants.listing-card-2x'],
         ...createImageVariantConfig(`${variantPrefix}`, 400, aspectRatio),

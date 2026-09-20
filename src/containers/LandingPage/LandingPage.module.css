@@ -562,8 +562,27 @@
   padding: var(--sectionY) var(--pageGutter);
 }
 
+/* FAIRWAY: the listings band.
+   White cards on deep forest, the way a retailer sets a "just in" row. The
+   dark ground does two things the warm page cannot: it makes a white card
+   read as a lit object, and it separates the shop from the story above it. */
 .row {
-  padding: 36px 0;
+  width: 100%;
+  padding: 44px 0 52px 0;
+
+  background-color: var(--colorForest);
+
+  @media (--viewportMedium) {
+    padding: 56px 0 64px 0;
+  }
+}
+
+/* The band runs edge to edge; its contents stay on the page's own column. */
+.rowInner {
+  width: 100%;
+  max-width: var(--contentMaxWidthPages);
+  margin: 0 auto;
+  padding: 0 var(--pageGutter);
 }
 
 .rowHeader {
@@ -572,9 +591,9 @@
   justify-content: space-between;
   gap: 16px;
 
-  margin-bottom: 28px;
-  padding-bottom: 18px;
-  border-bottom: 1px solid var(--colorDivider);
+  margin-bottom: 26px;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .rowTitle {
@@ -1492,4 +1511,28 @@
   .beFirstButton:active {
     transform: none;
   }
+}
+
+/* The band is dark now, so its own type has to come up with it */
+
+.rowTitle {
+  color: var(--colorOffWhite);
+}
+
+.rowSubtitle {
+  color: rgba(237, 232, 220, 0.72);
+}
+
+.seeAll {
+  color: var(--colorSage);
+}
+
+.seeAll:hover {
+  color: var(--colorPaper);
+}
+
+/* On the dark ground a card needs no border — the contrast is the edge, and a
+   warm hairline over forest reads as a smudge. */
+.productItem :global([class*='FairwayListingCard_root']) {
+  border-color: transparent;
 }

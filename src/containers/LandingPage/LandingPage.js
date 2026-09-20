@@ -197,6 +197,7 @@ const ListingRow = props => {
 
   return (
     <section className={css.row}>
+      <div className={css.rowInner}>
       <div className={css.rowHeader}>
         <div>
           <h2 className={css.rowTitle}>{title}</h2>
@@ -217,6 +218,7 @@ const ListingRow = props => {
           </li>
         ))}
       </ul>
+      </div>
     </section>
   );
 };
@@ -369,27 +371,31 @@ export const LandingPageComponent = props => {
 
         <CategoryStrip />
 
-        <div className={css.content}>
-          {fetchError ? (
+        {fetchError ? (
+          <div className={css.content}>
             <p className={css.errorState}>
               Vi kunne ikke hente annoncerne lige nu. Prøv at genindlæse siden.
             </p>
-          ) : null}
+          </div>
+        ) : null}
 
-          {hasListings ? (
-            <>
-              <ListingRow title="Lige lagt op" listings={listings.slice(0, 5)} />
-              <ListingRow
-                title="Køller"
-                subtitle="Drivere, jern og wedges fra andre golfspillere."
-                searchParams="?pub_categoryLevel1=driver"
-                listings={listings.slice(5, 10)}
-              />
-            </>
-          ) : (
+        {/* The listing bands are full-width, so they sit outside the page
+            container rather than bleeding out of it with negative margins. */}
+        {hasListings ? (
+          <>
+            <ListingRow title="Lige lagt op" listings={listings.slice(0, 5)} />
+            <ListingRow
+              title="Køller"
+              subtitle="Drivere, jern og wedges fra andre golfspillere."
+              searchParams="?pub_categoryLevel1=driver"
+              listings={listings.slice(5, 10)}
+            />
+          </>
+        ) : (
+          <div className={css.content}>
             <BeFirst />
-          )}
-        </div>
+          </div>
+        )}
 
         <section className={css.community}>
           <SectionWave position="top" />

@@ -26,6 +26,7 @@ import MainPanelHeader from './MainPanelHeader/MainPanelHeader';
 import SearchFiltersMobile from './SearchFiltersMobile/SearchFiltersMobile';
 import SortBy from './SortBy/SortBy';
 import SearchResultsPanel from './SearchResultsPanel/SearchResultsPanel';
+import SearchPageContent from './SearchPageContent/SearchPageContent';
 import NoSearchResultsMaybe from './NoSearchResultsMaybe/NoSearchResultsMaybe';
 import SearchPageAccessWrapper from './SearchPageAccessWrapper';
 import SearchErrors from './SearchErrors';
@@ -319,6 +320,9 @@ export class SearchPageComponent extends Component {
                   listingTypeParam={listingTypePathParam}
                   intl={intl}
                 />
+
+                {/* FAIRWAY: the page used to stop dead after the last card */}
+                <SearchPageContent categoryId={validQueryParams?.pub_categoryLevel1} />
               </div>
             </div>
           </div>
