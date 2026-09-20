@@ -1,20 +1,32 @@
 @import '../../../../styles/customMediaQueries.css';
 
+/* The track is taken out of the flow.
+   overflow:hidden clips children but does not stop an element being widened
+   by them, so the 2938px of scrolling text became the page width on every
+   PageBuilder page — 1513px of sideways scroll. Sizing the root in vw fixed
+   that and introduced the other classic: 100vw includes the scrollbar, so
+   every page gained 15px instead. An absolutely positioned track cannot
+   influence layout at all, which is the only version with no trap in it. */
 .root {
+  position: relative;
   overflow: hidden;
   width: 100%;
 
   /* Pinned: the search page reserves exactly this much room for it */
   height: var(--fairwayTickerHeight);
-  display: flex;
-  align-items: center;
 
   background-color: var(--colorInk);
   border-bottom: 1px solid rgba(237, 232, 220, 0.12);
 }
 
 .track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+
   display: flex;
+  align-items: center;
   width: max-content;
 
   /* Slow. This is a promise, not an advertisement — at ticker speed it reads
