@@ -725,7 +725,7 @@
   "ListingPage.payoutDetailsWarningLink": "Tilføj dine udbetalingsoplysninger",
   "ListingPage.relatedSeeAll": "Se alle",
   "ListingPage.relatedTitle": "Andet du kan kigge på",
-  "ListingPage.relatedTitleCategory": "Flere {category}",
+  "ListingPage.relatedTitleCategory": "Mere i {category}",
   "ListingPage.reviewsError": "Det lykkedes ikke at indlæse anmeldelser.",
   "ListingPage.reviewsTitle": "Anmeldelser ({count})",
   "ListingPage.schemaTitle": "{title} | {marketplaceName}",

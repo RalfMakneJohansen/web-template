@@ -35,9 +35,13 @@ const SectionRelatedListings = props => {
       <div className={css.relatedHead}>
         <h2 className={css.sectionTitle}>
           {categoryLabel ? (
+            // The label is used as it is written. Lower-casing it produced
+            // "Flere driver" — Danish nouns do not pluralise by being made
+            // small, and there is no rule that turns every category name into
+            // a correct plural. "Mere i Driver" is right for all of them.
             <FormattedMessage
               id="ListingPage.relatedTitleCategory"
-              values={{ category: categoryLabel.toLowerCase() }}
+              values={{ category: categoryLabel }}
             />
           ) : (
             <FormattedMessage id="ListingPage.relatedTitle" />

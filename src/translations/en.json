@@ -670,7 +670,7 @@
   "ListingPage.payoutDetailsWarningLink": "Add your payout details",
   "ListingPage.relatedSeeAll": "See all",
   "ListingPage.relatedTitle": "More to look at",
-  "ListingPage.relatedTitleCategory": "More {category}",
+  "ListingPage.relatedTitleCategory": "More in {category}",
   "ListingPage.reviewsError": "Loading reviews failed.",
   "ListingPage.reviewsTitle": "Reviews ({count})",
   "ListingPage.schemaTitle": "{title} | {marketplaceName}",

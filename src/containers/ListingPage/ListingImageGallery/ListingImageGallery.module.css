@@ -229,3 +229,40 @@
 .closeIcon {
   composes: marketplaceModalCloseIcon from global;
 }
+
+/* ============================================================
+   FAIRWAY: the blurred fill behind a photograph
+
+   Club photos are shot portrait on a phone and the frame is wide, so a
+   third of it was flat sand. The fill is the same photo, enlarged and
+   blurred out of legibility, so the frame is always complete and always
+   in the colours of the thing being sold. Held well back with opacity so
+   it reads as a ground, not as a second picture.
+   ============================================================ */
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* Scaled up so the blur's soft edge falls outside the frame rather than
+     leaving a pale rim inside it. */
+  transform: scale(1.3);
+  filter: blur(30px) saturate(1.25) brightness(1.04);
+  opacity: 0.92;
+
+  /* The sharp image sits above this */
+  z-index: 0;
+  pointer-events: none;
+}
+
+.itemCentering {
+  position: relative;
+  z-index: 1;
+}

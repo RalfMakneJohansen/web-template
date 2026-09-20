@@ -89,12 +89,30 @@ const ListingImageGallery = props => {
     ? {}
     : { sizes: `(max-width: 1024px) 100vw, (max-width: 1200px) calc(100vw - 192px), 708px` };
   const renderItem = item => {
+    // FAIRWAY: the frame is filled by the photograph itself.
+    //
+    // A portrait shot of a club in a landscape frame left 152px of flat sand
+    // down each side - a third of the frame saying nothing. Cropping is not
+    // the answer, because a cropped club head is worse than a margin. So the
+    // margin becomes a blurred, enlarged copy of the same photo: the frame is
+    // always full, always in the colours of the item, and never lies about
+    // what is in the picture. It is the thumbnail variant, which the page has
+    // already downloaded, and blur hides that it is small.
+    const backdropUrl = item.thumbnail?.url;
+
     return (
       <AspectRatioWrapper
         width={aspectWidth || 1}
         height={aspectHeight || 1}
         className={isFullscreen ? css.itemWrapperFullscreen : css.itemWrapper}
       >
+        {!isFullscreen && backdropUrl ? (
+          <div
+            className={css.backdrop}
+            style={{ backgroundImage: `url(${backdropUrl})` }}
+            aria-hidden={true}
+          />
+        ) : null}
         <div className={css.itemCentering}>
           <ResponsiveImage
             rootClassName={css.item}
