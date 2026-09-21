@@ -197,9 +197,30 @@ const tabLabelAndSubmit = (intl, tab, isNewListingFlow, isPriceDisabled, process
  * @param {Object} publicData
  * @param {Object} privateData
  */
+/**
+ * FAIRWAY: required fields that a later step collects.
+ *
+ * This check has no idea which step asks for which field — it walks every
+ * required field for the listing type and category at once. `shipment_type`
+ * is required and is asked on the Fragt step, four steps after Detaljer, so
+ * Detaljer could never be completed: the seller pressed Næste, the draft
+ * saved, the wizard moved to Pris, the tab guard found Detaljer incomplete
+ * and sent them straight back. Round and round, with no error shown, and no
+ * listing could be created at all.
+ *
+ * The Fragt tab has its own gate on the same value, so nothing is lost by
+ * leaving it out here, and the field keeps isRequired so the Fragt step
+ * still shows its inline message.
+ */
+const FIELDS_COLLECTED_ON_LATER_STEPS = ['shipment_type'];
+
 const hasValidListingFieldsInExtendedData = (publicData, privateData, config) => {
   const isValidField = (fieldConfig, fieldData) => {
     const { key, schemaType, enumOptions = [], saveConfig = {} } = fieldConfig;
+
+    if (FIELDS_COLLECTED_ON_LATER_STEPS.includes(key)) {
+      return true;
+    }
 
     const schemaOptionKeys = enumOptions.map(o => `${o.option}`);
     const hasValidEnumValue = optionData => {
