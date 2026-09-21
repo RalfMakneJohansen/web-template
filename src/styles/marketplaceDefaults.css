@@ -643,26 +643,35 @@ select {
   width: 100%;
   margin: 0;
 
-  /* 6 + 24 + 4 + borders are divisible by 6 */
-  padding: 6px 12px 4px 12px;
+  /* FAIRWAY: form controls follow the design system.
+     These three rules hard-coded a 6px corner while --radiusControl is 10px,
+     so every field on the site — signup, the wizard, checkout, the message
+     box — was squarer than the buttons and cards beside it. The padding was
+     the other half: 36px tall is a cramped field to tap on a phone.
+     12 + 24 + 10 + 2 borders = 48, still divisible by 6. */
+  padding: 12px 14px 10px 14px;
   background-color: #fff;
 
   /* Borders */
-  border-radius: 6px;
+  border-radius: var(--radiusControl);
   border: 1px solid var(--colorDivider);
   outline: none;
 
   /* Transition */
   transition: all ease-in-out 100ms;
 
-  padding: 6px 24px 4px 12px;
+  /* Overrides the shared padding above, to leave room for the chevron.
+     Kept at the same 48px as the text fields — a 36px select next to a 48px
+     input is worse than both being small. */
+  padding: 12px 34px 10px 14px;
 
   /* Unset user agent styles */
   appearance: none;
 
   /* Background */
   background-image: url("data:image/svg+xml,%3Csvg width='10' height='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%232D4053' stroke='%232D4053' stroke-width='.5' fill-rule='evenodd'%3E%3Cpath d='M4.687 15.315a.443.443 0 0 0 .626 0l3.557-3.556a.446.446 0 0 0-.629-.629L5 14.37l-3.241-3.24a.445.445 0 0 0-.629.63l3.557 3.553v.002ZM5.313 1.13a.443.443 0 0 0-.626 0L1.13 4.685a.446.446 0 0 0 .629.63L5 2.074l3.241 3.24a.445.445 0 0 0 .629-.629L5.313 1.131V1.13Z'/%3E%3C/g%3E%3C/svg%3E");
-  background-position: center right 12px;
+  /* Follows the 14px side padding the fields now carry */
+  background-position: center right 14px;
   background-size: 8px 14px;
 
   &::placeholder {
@@ -704,12 +713,17 @@ textarea {
   width: 100%;
   margin: 0;
 
-  /* 6 + 24 + 4 + borders are divisible by 6 */
-  padding: 6px 12px 4px 12px;
+  /* FAIRWAY: form controls follow the design system.
+     These three rules hard-coded a 6px corner while --radiusControl is 10px,
+     so every field on the site — signup, the wizard, checkout, the message
+     box — was squarer than the buttons and cards beside it. The padding was
+     the other half: 36px tall is a cramped field to tap on a phone.
+     12 + 24 + 10 + 2 borders = 48, still divisible by 6. */
+  padding: 12px 14px 10px 14px;
   background-color: #fff;
 
   /* Borders */
-  border-radius: 6px;
+  border-radius: var(--radiusControl);
   border: 1px solid var(--colorDivider);
   outline: none;
 
@@ -1073,12 +1087,17 @@ textarea {
   width: 100%;
   margin: 0;
 
-  /* 6 + 24 + 4 + borders are divisible by 6 */
-  padding: 6px 12px 4px 12px;
+  /* FAIRWAY: form controls follow the design system.
+     These three rules hard-coded a 6px corner while --radiusControl is 10px,
+     so every field on the site — signup, the wizard, checkout, the message
+     box — was squarer than the buttons and cards beside it. The padding was
+     the other half: 36px tall is a cramped field to tap on a phone.
+     12 + 24 + 10 + 2 borders = 48, still divisible by 6. */
+  padding: 12px 14px 10px 14px;
   background-color: #fff;
 
   /* Borders */
-  border-radius: 6px;
+  border-radius: var(--radiusControl);
   border: 1px solid var(--colorDivider);
   outline: none;
 
