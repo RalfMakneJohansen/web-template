@@ -1246,7 +1246,7 @@
   padding: 26px 24px;
 
   border-radius: var(--radiusCard, 12px);
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   color: var(--colorOffWhite);
 
   @media (--viewportMedium) {

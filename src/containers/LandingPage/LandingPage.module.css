@@ -300,11 +300,14 @@
   inset: 0;
   pointer-events: none;
 
+  /* Fades to the hero's own green. It used to fade to the old dark green,
+     which the hero no longer uses, so the collage ran into a colour that
+     is not on the page any more. */
   background-image: linear-gradient(
     90deg,
-    var(--colorInk) 0%,
-    rgba(12, 40, 32, 0.35) 14%,
-    rgba(12, 40, 32, 0) 34%
+    var(--colorForest) 0%,
+    rgba(15, 110, 86, 0.35) 14%,
+    rgba(15, 110, 86, 0) 34%
   );
 }
 
@@ -972,7 +975,7 @@
   border: 1px solid var(--colorInk);
   border-radius: var(--radiusPill);
 
-  background-color: var(--colorInk);
+  background-color: var(--colorCoral);
   color: var(--colorPaper);
 
   font-family: var(--fontFamily);
@@ -1449,7 +1452,7 @@
   min-height: 52px;
   padding: 0 26px;
 
-  background-color: var(--colorInk);
+  background-color: var(--colorCoral);
   border-radius: var(--radiusControl);
 
   font-size: 15px;

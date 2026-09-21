@@ -84,7 +84,7 @@
 
 .primaryAction {
   border: none;
-  background-color: var(--colorInk);
+  background-color: var(--colorCoral);
   color: var(--colorOffWhite);
 }
 

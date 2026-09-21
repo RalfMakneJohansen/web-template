@@ -2,7 +2,9 @@ import React from 'react';
 
 import { NamedLink } from '../../components';
 
-import wordmark from '../../assets/fairway-wordmark-light.png';
+// The dark mark, same as the topbar: the footer is white now, and the
+// light wordmark was invisible on it.
+import wordmark from '../../assets/fairway-logo-horizontal.png';
 
 import css from './FairwayFooter.module.css';
 
