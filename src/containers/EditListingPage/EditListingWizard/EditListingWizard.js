@@ -362,9 +362,21 @@ const tabsActive = (isNew, listing, tabs, config, options = {}) => {
     const previousTabIndex = tabs.findIndex(t => t === tab) - 1;
     const validTab = previousTabIndex >= 0;
     const hasListingType = !!listing?.attributes?.publicData?.listingType;
-    const prevTabComletedInNewFlow = tabCompleted(tabs[previousTabIndex], listing, config, options);
+
+    // FAIRWAY: every earlier step, not just the one immediately before.
+    //
+    // The original check looked one step back. Beskrivelse is optional here
+    // and so reports itself complete unconditionally — which made Fragt
+    // active even with zero photos, and from there Gennemgang and publish.
+    // The three-photo requirement could be walked straight around by opening
+    // /shipping directly. Requiring the whole prefix closes that and is what
+    // a linear wizard means anyway.
+    const allPreviousTabsCompleted = tabs
+      .slice(0, previousTabIndex + 1)
+      .every(t => tabCompleted(t, listing, config, options));
+
     const isActive =
-      validTab && !isNew ? hasListingType : validTab && isNew ? prevTabComletedInNewFlow : true;
+      validTab && !isNew ? hasListingType : validTab && isNew ? allPreviousTabsCompleted : true;
     return { ...acc, [tab]: isActive };
   }, {});
 };
