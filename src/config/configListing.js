@@ -85,10 +85,68 @@ const FILTER_OFF = (label, group) => ({
   group,
 });
 
+/**
+ * The brands a Danish golfer is actually selling.
+ *
+ * Offered as suggestions on the Mærke field, not enforced: you can still type
+ * a make that is not here, which matters for an old club or a small maker.
+ * The point is that nobody has to spell TaylorMade, and that two listings of
+ * the same brand end up written the same way — free text is how a catalogue
+ * ends up with "ping", "PING" and "Ping" as three different brands.
+ *
+ * Ordered by how often they turn up in a Danish bag, not alphabetically, so
+ * the common ones are the first thing the list shows.
+ */
+const GOLF_BRANDS = [
+  'TaylorMade',
+  'Callaway',
+  'Titleist',
+  'PING',
+  'Mizuno',
+  'Cobra',
+  'Srixon',
+  'Cleveland',
+  'Wilson',
+  'Honma',
+  'PXG',
+  'Bridgestone',
+  'XXIO',
+  'Tour Edge',
+  'Benross',
+  'Yonex',
+  // Putters
+  'Scotty Cameron',
+  'Odyssey',
+  'Bettinardi',
+  'L.A.B. Golf',
+  'Evnroll',
+  // Bags and trolleys
+  'Sun Mountain',
+  'Big Max',
+  'Vessel',
+  'Ogio',
+  'Motocaddy',
+  'PowaKaddy',
+  // Shoes and clothing
+  'FootJoy',
+  'ECCO',
+  'adidas',
+  'Nike',
+  'Puma',
+  'Under Armour',
+  'Skechers',
+  'Galvin Green',
+  // Electronics
+  'Garmin',
+  'Bushnell',
+  'Shot Scope',
+];
+
 export const listingFields = [
   {
     key: 'brand',
     scope: 'public',
+    suggestions: GOLF_BRANDS,
     // shortText, not text: 'text' renders an 84px textarea, and a brand name
     // is one line. The tall box also swallowed Enter on a phone instead of
     // moving the seller on. Same for model, shaft_model and iron_set below.

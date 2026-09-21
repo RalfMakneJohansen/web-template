@@ -96,18 +96,45 @@ const CustomFieldShortText = props => {
   const placeholder =
     placeholderMessage || intl.formatMessage({ id: 'CustomExtendedDataField.placeholderText' });
 
+  const id = formId ? `${formId}.${name}` : name;
+
+  // FAIRWAY: a field can offer the answers without forcing them.
+  //
+  // Typing a brand by hand is how a listing ends up reading "Mærke: r". A
+  // datalist turns the field into a list you pick from — start typing "tay"
+  // and TaylorMade is one tap away — while still accepting anything the list
+  // does not have, which matters for an old club or a small maker. A select
+  // would have taken that away.
+  //
+  // Native HTML, so it costs nothing and works on every phone.
+  const suggestions = fieldConfig?.suggestions;
+  const hasSuggestions = Array.isArray(suggestions) && suggestions.length > 0;
+  const listId = `${id}.suggestions`;
+  const listMaybe = hasSuggestions ? { list: listId } : {};
+
   return (
-    <FieldTextInput
-      className={css.customField}
-      id={formId ? `${formId}.${name}` : name}
-      name={name}
-      type="text"
-      maxLength={70}
-      label={label}
-      helpText={fieldConfig?.helpText}
-      placeholder={placeholder}
-      {...validateMaybe}
-    />
+    <>
+      <FieldTextInput
+        className={css.customField}
+        id={id}
+        name={name}
+        type="text"
+        maxLength={70}
+        label={label}
+        helpText={fieldConfig?.helpText}
+        placeholder={placeholder}
+        autoComplete="off"
+        {...listMaybe}
+        {...validateMaybe}
+      />
+      {hasSuggestions ? (
+        <datalist id={listId}>
+          {suggestions.map(option => (
+            <option key={option} value={option} />
+          ))}
+        </datalist>
+      ) : null}
+    </>
   );
 };
 
