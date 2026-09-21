@@ -89,7 +89,12 @@ export const listingFields = [
   {
     key: 'brand',
     scope: 'public',
-    schemaType: 'text',
+    // shortText, not text: 'text' renders an 84px textarea, and a brand name
+    // is one line. The tall box also swallowed Enter on a phone instead of
+    // moving the seller on. Same for model, shaft_model and iron_set below.
+    // Only the widget changes — both types validate as a string and both are
+    // `text` in the search schema.
+    schemaType: 'shortText',
     showConfig: { label: 'Mærke', isDetail: true },
     saveConfig: {
       label: 'Mærke',
@@ -101,7 +106,7 @@ export const listingFields = [
   {
     key: 'model',
     scope: 'public',
-    schemaType: 'text',
+    schemaType: 'shortText',
     showConfig: { label: 'Model', isDetail: true },
     saveConfig: {
       label: 'Model (valgfri)',
@@ -222,7 +227,7 @@ export const listingFields = [
   {
     key: 'shaft_model',
     scope: 'public',
-    schemaType: 'text',
+    schemaType: 'shortText',
     categoryConfig: { limitToCategoryIds: true, categoryIds: SHAFTED_CATEGORIES },
     showConfig: { label: 'Skaftmodel', isDetail: true },
     saveConfig: {
@@ -294,7 +299,7 @@ export const listingFields = [
   {
     key: 'iron_set',
     scope: 'public',
-    schemaType: 'text',
+    schemaType: 'shortText',
     categoryConfig: { limitToCategoryIds: true, categoryIds: ['jernsaet'] },
     showConfig: { label: 'Sættet indeholder', isDetail: true },
     saveConfig: {
