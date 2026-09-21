@@ -693,7 +693,10 @@ const OrderPanel = props => {
               history,
               location
             )}
-            disabled={isOutOfStock}
+            // FAIRWAY: and the same on the phone. Pressing this on your own
+            // annonce only scrolled the page to the top — a button that looks
+            // live and does nothing. It says what it is now.
+            disabled={isOutOfStock || isOwnListing}
           >
             {isBooking ? (
               <FormattedMessage id="OrderPanel.ctaButtonMessageBooking" />

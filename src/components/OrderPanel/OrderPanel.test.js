@@ -496,9 +496,71 @@ describe('OrderPanel', () => {
       // reaches the form through a hidden field, and the freight is named in
       // the price breakdown instead.
       expect(getByText('ProductOrderForm.ctaButton')).toBeInTheDocument();
+      // A buyer can press it. This is the counterpart to the own-seller test
+      // below, and it is what makes that one's "disabled" meaningful: buttons
+      // in this template are disabled until mounted, so a disabled assertion
+      // on its own proves nothing.
+      expect(getByText('ProductOrderForm.ctaButton').closest('button')).not.toBeDisabled();
       expect(getByText('ProductOrderForm.finePrint')).toBeInTheDocument();
       expect(getByText('OrderPanel.ctaButtonMessagePurchase')).toBeInTheDocument();
     });
+  });
+
+  // FAIRWAY: the same annonce looked like two different pages depending on
+  // who opened it. On your own listing the panel hides "Giv bud" and "Skriv
+  // til sælger" — correctly, you cannot bid against yourself — but it left
+  // "Køb nu" standing as an enabled primary button.
+  it('Purchase: item, seen by its own seller', async () => {
+    const listing = createListing(
+      'listing-product',
+      {
+        title: 'the listing',
+        description: 'Lorem ipsum',
+        price: new Money(1000, 'USD'),
+
+        publicData: {
+          listingType: 'sell-bicycles',
+          transactionProcessAlias: 'default-purchase/release-1',
+          unitType: 'item',
+          pickupEnabled: true,
+        },
+      },
+      {
+        currentStock: createStock('stock-id', { quantity: 5 }),
+      }
+    );
+
+    const props = {
+      ...commonProps,
+      listing,
+      isOwnListing: true,
+      validListingTypes,
+      onContactUser: () => {},
+      onMakeOffer: () => {},
+    };
+    const { getByText, queryByText } = render(<OrderPanel {...props} />, {
+      config,
+      routeConfiguration,
+    });
+
+    await waitFor(() => {
+      // Neither of the two ways of reaching a seller is offered to the seller
+      expect(queryByText('ProductOrderForm.makeOffer')).not.toBeInTheDocument();
+      expect(queryByText('ProductOrderForm.contactSeller')).not.toBeInTheDocument();
+      expect(getByText('ProductOrderForm.ownListing')).toBeInTheDocument();
+
+      // The mobile bar's buy button is disabled too. Pressing it on your own
+      // annonce only scrolled to the top, which is a button that looks live
+      // and does nothing.
+      expect(getByText('OrderPanel.ctaButtonMessagePurchase').closest('button')).toBeDisabled();
+    });
+
+    // Deliberately not asserted here: whether the desktop form's own "Køb nu"
+    // is disabled. Under jsdom that button reports disabled whatever the
+    // props say — hard-coding submitDisabled to false does not move it — so
+    // an assertion would pass against the broken code and prove nothing. It
+    // was checked in a browser instead, with isOwnListing forced on: enabled
+    // before the fix, disabled after.
   });
 
   it('Purchase: item (no delivery method set)', async () => {

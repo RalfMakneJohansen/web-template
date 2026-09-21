@@ -256,7 +256,16 @@ const renderForm = formRenderProps => {
   const quantities = hasStock ? [...Array(selectableStock).keys()].map(i => i + 1) : [];
 
   const submitInProgress = fetchLineItemsInProgress;
-  const submitDisabled = !hasStock;
+  // FAIRWAY: you cannot buy your own listing, so the button does not offer it.
+  //
+  // The panel already hides "Giv bud" and "Skriv til sælger" on your own
+  // annonce — you cannot bid against yourself or message yourself — but it
+  // left "Køb nu" standing as a full-width primary button. So the card hid
+  // the two actions you cannot take and kept the third one you cannot take
+  // either, which is what made the same annonce look different depending on
+  // who opened it. The fine print under the button already says it is your
+  // own listing; now the button agrees with it.
+  const submitDisabled = !hasStock || isOwnListing;
 
   return (
     <Form onSubmit={handleFormSubmit}>
