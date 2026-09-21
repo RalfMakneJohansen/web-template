@@ -187,7 +187,14 @@ const ArrowIcon = () => (
 );
 
 const ListingRow = props => {
-  const { title, subtitle, searchParams, listings = [] } = props;
+  const {
+    title,
+    subtitle,
+    searchParams,
+    listings = [],
+    withTopWave = false,
+    withBottomWave = false,
+  } = props;
   const seeAllTo = searchParams ? { search: searchParams } : {};
 
   if (listings.length === 0) {
@@ -196,6 +203,11 @@ const ListingRow = props => {
 
   return (
     <section className={css.row}>
+      {/* A curve where the green meets a light section. The first row carries
+          the top one and the last row the bottom one — between two rows the
+          green is continuous, and a wave there would cut a light slash
+          through the middle of it. */}
+      {withTopWave ? <SectionWave position="top" /> : null}
       <div className={css.rowInner}>
       <div className={css.rowHeader}>
         <div>
@@ -218,6 +230,7 @@ const ListingRow = props => {
         ))}
       </ul>
       </div>
+      {withBottomWave ? <SectionWave position="bottom" /> : null}
     </section>
   );
 };
@@ -263,6 +276,8 @@ export const LandingPageComponent = props => {
     'Fairway er markedspladsen for brugt golfudstyr i Danmark. Escrow-beskyttet betaling, forsikret fragt og 48 timers inspektion.';
 
   const hasListings = listings.length > 0;
+  // The second row only renders when there are more than five listings.
+  const hasSecondRow = listings.slice(5, 10).length > 0;
 
   return (
     <Page title={title} description={description} scrollingDisabled={scrollingDisabled}>
@@ -319,6 +334,38 @@ export const LandingPageComponent = props => {
           </div>
         </section>
 
+        {fetchError ? (
+          <div className={css.content}>
+            <p className={css.errorState}>
+              Vi kunne ikke hente annoncerne lige nu. Prøv at genindlæse siden.
+            </p>
+          </div>
+        ) : null}
+
+        {/* The listing bands are full-width, so they sit outside the page
+            container rather than bleeding out of it with negative margins. */}
+        {hasListings ? (
+          <>
+            <ListingRow
+              title="Lige lagt op"
+              listings={listings.slice(0, 5)}
+              withTopWave
+              withBottomWave={!hasSecondRow}
+            />
+            <ListingRow
+              title="Køller"
+              subtitle="Drivere, jern og wedges fra andre golfspillere."
+              searchParams="?pub_categoryLevel1=driver"
+              listings={listings.slice(5, 10)}
+              withBottomWave
+            />
+          </>
+        ) : (
+          <div className={css.content}>
+            <BeFirst />
+          </div>
+        )}
+
         <section className={css.tiles}>
           <NamedLink name="SearchPage" className={css.tile}>
             <img className={css.tileImage} src={tileBuy} alt="" />
@@ -362,32 +409,6 @@ export const LandingPageComponent = props => {
             </span>
           </NamedLink>
         </section>
-
-        {fetchError ? (
-          <div className={css.content}>
-            <p className={css.errorState}>
-              Vi kunne ikke hente annoncerne lige nu. Prøv at genindlæse siden.
-            </p>
-          </div>
-        ) : null}
-
-        {/* The listing bands are full-width, so they sit outside the page
-            container rather than bleeding out of it with negative margins. */}
-        {hasListings ? (
-          <>
-            <ListingRow title="Lige lagt op" listings={listings.slice(0, 5)} />
-            <ListingRow
-              title="Køller"
-              subtitle="Drivere, jern og wedges fra andre golfspillere."
-              searchParams="?pub_categoryLevel1=driver"
-              listings={listings.slice(5, 10)}
-            />
-          </>
-        ) : (
-          <div className={css.content}>
-            <BeFirst />
-          </div>
-        )}
 
         <section className={css.community}>
           <SectionWave position="top" />

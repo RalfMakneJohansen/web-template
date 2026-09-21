@@ -34,29 +34,63 @@
   letter-spacing: 0.01em;
 
   transition: background-color var(--transitionStyle), border-color var(--transitionStyle),
-    color var(--transitionStyle);
+    color var(--transitionStyle), transform 0.12s var(--easeOut), box-shadow 0.15s var(--easeOut);
 }
 
-/* Coral is the one call-to-action colour, on light and dark alike */
+/* The arrow slides on hover — the one piece of motion these carry */
+.buttonPrimary .arrow,
+.buttonGhost .arrow {
+  transition: transform 0.18s var(--easeOut);
+}
+.buttonPrimary:hover .arrow,
+.buttonGhost:hover .arrow {
+  transform: translateX(3px);
+}
+
+/* FAIRWAY: a light pill on the green, and an outlined one beside it.
+   Both of these sit on green sections, so the pair is designed for that
+   ground: mint rather than the brass used on light surfaces, and dark ink
+   on it rather than white. Our own mint, not the neon of the reference —
+   it has to look like golf, not like a sports drink. */
 .buttonPrimary {
-  background-color: var(--colorCoral);
-  border: 1px solid var(--colorCoral);
-  color: var(--colorPaper);
+  background-color: var(--colorSagePale);
+  border: 1px solid var(--colorSagePale);
+  color: var(--colorForest);
+
+  /* the bit of app in it: the pill lifts off the band */
+  box-shadow: 0 1px 2px rgba(12, 40, 32, 0.16), 0 6px 16px rgba(12, 40, 32, 0.18);
 }
 .buttonPrimary:hover {
-  background-color: var(--colorCoralDark);
-  border-color: var(--colorCoralDark);
+  background-color: var(--colorPaper);
+  border-color: var(--colorPaper);
   text-decoration: none;
+}
+
+/* Pressed, it goes down and the shadow closes up under it */
+.buttonPrimary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(12, 40, 32, 0.2);
 }
 
 .buttonGhost {
-  border: 1px solid rgba(237, 232, 220, 0.3);
-  color: var(--colorPaper);
+  border: 1px solid var(--colorSagePale);
+  color: var(--colorSagePale);
 }
 .buttonGhost:hover {
   border-color: var(--colorPaper);
-  background-color: rgba(237, 232, 220, 0.06);
+  background-color: rgba(255, 255, 255, 0.14);
+  color: var(--colorPaper);
   text-decoration: none;
+}
+.buttonGhost:active {
+  transform: translateY(1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buttonPrimary:active,
+  .buttonGhost:active {
+    transform: none;
+  }
 }
 
 /* ================ Trust bar ================ */
@@ -512,18 +546,27 @@
   padding: 0 30px;
   border-radius: var(--radiusPill);
 
-  background-color: var(--colorCoral);
-  color: var(--colorPaper);
+  /* Same mint pill as the hero. These sit on dark photographs, which is the
+     same ground the hero buttons sit on, so they get the same treatment. */
+  background-color: var(--colorSagePale);
+  color: var(--colorForest);
+  box-shadow: 0 1px 2px rgba(12, 40, 32, 0.2), 0 6px 16px rgba(12, 40, 32, 0.24);
 
   font-size: 15px;
   font-weight: var(--fontWeightBold);
   letter-spacing: 0.01em;
 
-  transition: background-color var(--transitionStyle), gap var(--transitionStyle);
+  transition: background-color var(--transitionStyle), gap var(--transitionStyle),
+    transform 0.12s var(--easeOut), box-shadow 0.15s var(--easeOut);
+}
+
+.tile:active .tileButton {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(12, 40, 32, 0.24);
 }
 
 .tile:hover .tileButton {
-  background-color: var(--colorCoralDark);
+  background-color: var(--colorPaper);
   gap: 16px;
 }
 
@@ -545,13 +588,18 @@
    dark ground does two things the warm page cannot: it makes a white card
    read as a lit object, and it separates the shop from the story above it. */
 .row {
+  /* the wave at the top is absolutely positioned against this */
+  position: relative;
+
   width: 100%;
-  padding: 44px 0 52px 0;
+
+  /* Room for the wave to sit in before the heading starts */
+  padding: 72px 0 52px 0;
 
   background-color: var(--colorForest);
 
   @media (--viewportMedium) {
-    padding: 56px 0 64px 0;
+    padding: 88px 0 64px 0;
   }
 }
 
