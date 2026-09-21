@@ -70,3 +70,26 @@
 .resultsFound {
   font-variant-numeric: tabular-nums;
 }
+
+/* FAIRWAY: count left, sort right, on one line.
+
+   .sortyByWrapper already asks to be pushed over with margin-left:auto, but
+   it never could: .searchOptions is a flex item of the results panel and,
+   without being told to grow, it shrank to its contents. The two controls
+   ended up bunched together in a 316px huddle on the left of a 1028px column
+   with 712px of nothing beside them, which is the single thing that made the
+   results header look unfinished.
+
+   Centred rather than baseline-aligned, because the count is set in the
+   display face at 20px and the sort menu is a 14px control — sitting them on
+   a shared baseline leaves the menu hanging low. */
+.searchOptions {
+  width: 100%;
+  align-items: center;
+}
+
+.searchResultSummary {
+  /* The margins were doing the vertical spacing that align-items now does */
+  margin-top: 0;
+  margin-bottom: 0;
+}
