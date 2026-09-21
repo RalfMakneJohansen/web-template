@@ -11,6 +11,15 @@
   position: sticky;
   top: 0;
   z-index: var(--zIndexTopbar);
+
+  /* FAIRWAY: the topbar may not decide how wide the page is.
+     As a flex item it was allowed to grow to its own min-content width —
+     777px on a 382px phone — and every page built on this layout (inbox,
+     profil, kontoindstillinger) scrolled sideways by nearly its own width.
+     The scrolling category strip inside does its own overflow handling; it
+     just needs a parent that stops at the viewport. */
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* Container for side and content */

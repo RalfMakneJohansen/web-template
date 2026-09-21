@@ -628,7 +628,7 @@
   "InboxSearchForm.sortLabel": "Sorter efter:",
   "InquiryForm.heading": "Spørg om {listingTitle}",
   "InquiryForm.messageLabel": "Besked til {authorDisplayName}",
-  "InquiryForm.messagePlaceholder": "Hej {authorDisplayName}! Jeg glæder mig til…",
+  "InquiryForm.messagePlaceholder": "Hej {authorDisplayName}! Er den stadig ledig? Jeg har et spørgsmål om…",
   "InquiryForm.messageRequired": "Der kræves en besked",
   "InquiryForm.offerAmountLabel": "Dit bud",
   "InquiryForm.offerAmountRequired": "Skriv hvad du vil byde.",

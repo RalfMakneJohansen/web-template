@@ -1,7 +1,21 @@
+/* FAIRWAY: the sort row has to be told its width.
+   Without one it sizes to its contents, and the select inside asks for
+   width:100% of a container that is sizing itself to that select — so the
+   row settled at 729px and dragged the whole inbox 395px wider than a
+   375px phone, horizontal scrollbar and all. Same fault as the search
+   page's result header. */
 .root {
   display: flex;
   flex-direction: row;
   margin-bottom: 24px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+/* And the select stops being the thing that decides */
+.root select {
+  max-width: 100%;
 }
 
 .sortyByWrapper {
