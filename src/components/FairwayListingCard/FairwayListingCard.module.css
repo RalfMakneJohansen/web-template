@@ -137,14 +137,6 @@
   overflow: hidden;
 }
 
-.meta {
-  margin-top: 3px;
-
-  font-size: 13px;
-  line-height: 19px;
-  color: var(--colorSlate);
-}
-
 /* The price is what the row is scanned for, so it carries the weight and sits
    at the bottom of every tile regardless of how the name wrapped. */
 .price {

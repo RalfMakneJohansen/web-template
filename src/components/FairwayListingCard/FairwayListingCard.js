@@ -113,7 +113,9 @@ const FairwayListingCard = props => {
 
       <div className={css.info}>
         {brand ? <span className={css.brand}>{brand}</span> : null}
-        <span className={css.title}>{[name, ...specs].join(' / ')}</span>
+        {/* filter, not a plain join: a listing with neither title nor model
+            rendered as " / Regular / 21.0°", leading separator and all. */}
+        <span className={css.title}>{[name, ...specs].filter(Boolean).join(' / ')}</span>
         {formattedPrice ? <span className={css.price}>{formattedPrice}</span> : null}
       </div>
     </NamedLink>
