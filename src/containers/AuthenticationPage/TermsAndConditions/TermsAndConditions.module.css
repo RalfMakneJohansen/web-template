@@ -15,10 +15,18 @@
   text-align: left;
 }
 
+/* FAIRWAY: underlined at rest, not only under the pointer.
+   This is the one line on the site where someone is asked to accept a legal
+   document, and the only way to read it first is to notice these two words.
+   A hover-only underline hides that from anyone on a touch screen, where
+   there is no hover at all. */
 .privacyLink,
 .termsLink {
   composes: marketplaceModalHelperLink from global;
   color: var(--marketplaceColor);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
 
   &:hover {
     color: var(--marketplaceColorDark);
