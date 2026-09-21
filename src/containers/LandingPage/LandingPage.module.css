@@ -65,7 +65,7 @@
   position: relative;
   padding-bottom: 48px;
 
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   color: var(--colorOffWhite);
 }
 
@@ -143,8 +143,12 @@
   display: grid;
   grid-template-columns: 1fr;
 
-  background-color: var(--colorInk);
-  background-image: linear-gradient(160deg, #124c3c 0%, #0e3225 48%, #0c2820 100%);
+  /* FAIRWAY: one green on the page.
+     The hero used to fade through three darker greens of its own, so the
+     front page carried two different greens — this gradient and the forest
+     of the nav and the listings band. Flat brand green, the same one as
+     everywhere else. */
+  background-color: var(--colorForest);
 
   @media (--viewportLarge) {
     grid-template-columns: 1.08fr 1fr;
@@ -396,7 +400,9 @@
   width: 100%;
   max-width: var(--contentMaxWidthPages);
   margin: 0 auto;
-  padding: var(--sectionY) var(--pageGutter) 0 var(--pageGutter);
+  /* Bottom padding, not 0: the green band below started flush against the
+     tiles with no air at all, which is what made the join look unfinished. */
+  padding: var(--sectionY) var(--pageGutter);
 
   @media (--viewportMedium) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -637,7 +643,7 @@
   position: relative;
 
   /* deep forest, the same dark surface as the hero and the footer */
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   overflow: hidden;
 }
 
@@ -750,7 +756,7 @@
 .boxPanel {
   padding: 28px 24px;
 
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   border-radius: var(--radiusCard);
 
   @media (--viewportMedium) {
@@ -1028,7 +1034,7 @@
 /* ================ Community ================ */
 
 .community {
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   background-image: linear-gradient(150deg, #124c3c 0%, #0c2820 62%);
 }
 
@@ -1208,7 +1214,7 @@
 /* Two quiet cards. The argument is short enough that it needs no figures,
    no icons and no lists. */
 .fee {
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   background-image: linear-gradient(150deg, #124c3c 0%, #0c2820 62%);
 }
 

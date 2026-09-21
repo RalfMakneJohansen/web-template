@@ -15,7 +15,7 @@
   /* Pinned: the search page reserves exactly this much room for it */
   height: var(--fairwayTickerHeight);
 
-  background-color: var(--colorInk);
+  background-color: var(--colorForest);
   border-bottom: 1px solid rgba(237, 232, 220, 0.12);
 }
 
