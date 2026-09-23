@@ -821,6 +821,7 @@
   "OrderBreakdown.shippingFee": "Shipping",
   "OrderBreakdown.subTotal": "Subtotal",
   "OrderBreakdown.total": "Total price",
+  "OrderPanel.memberSince": "Member since {date}",
   "OrderPanel.author": "{name}",
   "OrderPanel.closedListingButtonText": "Sorry, this listing has been closed.",
   "OrderPanel.ctaAsk": "Ask",

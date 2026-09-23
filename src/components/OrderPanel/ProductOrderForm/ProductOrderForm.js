@@ -342,14 +342,6 @@ const renderForm = formRenderProps => {
           ) : null}
         </div>
 
-        {!isOwnListing && showContactUser ? (
-          <div className={css.askRow}>
-            <SecondaryButton type="button" className={css.askButton} onClick={onClickContactUser}>
-              <FormattedMessage id="ProductOrderForm.contactSeller" />
-            </SecondaryButton>
-          </div>
-        ) : null}
-
         <div className={css.shareRow}>
           <ShareListingButton listingId={listingId} title={listingTitle} />
         </div>

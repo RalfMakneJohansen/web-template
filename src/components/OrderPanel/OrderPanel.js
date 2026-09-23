@@ -468,6 +468,14 @@ const OrderPanel = props => {
 
   const authorDisplayName = userDisplayNameAsString(author, '');
 
+  // Only when the API actually gave us a creation date. Sharetribe's public
+  // user resource carries it, but the entity can arrive sparse, and a card
+  // that throws is worse than a card without a line on it.
+  const authorCreatedAt = author?.attributes?.createdAt;
+  const authorMemberSince = authorCreatedAt
+    ? intl.formatDate(new Date(authorCreatedAt), { year: 'numeric', month: 'long' })
+    : null;
+
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.orderTitle);
 
@@ -512,14 +520,41 @@ const OrderPanel = props => {
         )}
 
         {!hideAuthorInfo && (
+          /* FAIRWAY: the seller card says who you are buying from.
+             It used to be a name in a box. A buyer sending 3.000 kr. to a
+             stranger wants to know who they are, how long they have been
+             here, and how to reach them — so the card carries all three, and
+             the way to write to them sits in it rather than three rows down
+             among the buy actions.
+
+             "Medlem siden" renders only when the API gave us createdAt, so
+             the card degrades to name and avatar rather than breaking if it
+             is not there. */
           <div className={css.author}>
             <AvatarSmall user={author} className={css.providerAvatar} />
-            <span className={css.providerNameLinked}>
-              <FormattedMessage id="OrderPanel.author" values={{ name: authorLink }} />
-            </span>
-            <span className={css.providerNamePlain}>
-              <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
-            </span>
+
+            <div className={css.authorText}>
+              <span className={css.providerNameLinked}>
+                <FormattedMessage id="OrderPanel.author" values={{ name: authorLink }} />
+              </span>
+              <span className={css.providerNamePlain}>
+                <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
+              </span>
+              {authorMemberSince ? (
+                <span className={css.authorMeta}>
+                  <FormattedMessage
+                    id="OrderPanel.memberSince"
+                    values={{ date: authorMemberSince }}
+                  />
+                </span>
+              ) : null}
+            </div>
+
+            {showContactSeller && !isOwnListing ? (
+              <button type="button" className={css.authorContact} onClick={onContactUser}>
+                <FormattedMessage id="ProductOrderForm.contactSeller" />
+              </button>
+            ) : null}
           </div>
         )}
 

@@ -465,3 +465,57 @@
   background-color: var(--colorInk);
   border-color: var(--colorInk);
 }
+
+/* ============================================================
+   FAIRWAY: the seller card
+
+   It was a name in a bordered box. A buyer about to send three thousand
+   kroner to a stranger wants to know who they are, how long they have
+   been here, and how to reach them — so the card carries all three, and
+   the way to write to them sits in it rather than three rows down among
+   the buy actions, which is where Foremarket puts it and they are right.
+   ============================================================ */
+
+.author {
+  align-items: center;
+  gap: 12px;
+}
+
+.authorText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.authorMeta {
+  margin-top: 2px;
+
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorSlate);
+}
+
+/* Reaching the seller belongs with the seller, not under the buy button */
+.authorContact {
+  flex-shrink: 0;
+  padding: 9px 16px;
+
+  border: 1px solid var(--colorForest);
+  border-radius: var(--radiusControl);
+  background-color: var(--colorWhite);
+  cursor: pointer;
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightSemiBold);
+  line-height: 20px;
+  white-space: nowrap;
+  color: var(--colorForest);
+
+  transition: background-color 0.15s ease;
+}
+
+.authorContact:hover {
+  background-color: var(--colorSagePale);
+}

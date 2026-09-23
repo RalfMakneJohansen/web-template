@@ -876,6 +876,7 @@
   "OrderBreakdown.shippingFee": "Forsendelse",
   "OrderBreakdown.subTotal": "Subtotal",
   "OrderBreakdown.total": "Samlet pris",
+  "OrderPanel.memberSince": "Medlem siden {date}",
   "OrderPanel.author": "{name}",
   "OrderPanel.closedListingButtonText": "Beklager, denne annonce er blevet lukket.",
   "OrderPanel.ctaAsk": "Spørg",
