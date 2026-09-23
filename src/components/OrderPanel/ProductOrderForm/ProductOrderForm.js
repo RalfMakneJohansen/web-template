@@ -316,42 +316,37 @@ const renderForm = formRenderProps => {
       <FetchLineItemsError error={fetchLineItemsError} />
 
       <div className={css.submitButton}>
-        <PrimaryButton
-          type="submit"
-          inProgress={submitInProgress}
-          disabled={submitDisabled}
-          onClick={onClickBuy}
-        >
-          {hasStock ? (
-            <FormattedMessage id="ProductOrderForm.ctaButton" />
-          ) : (
-            <FormattedMessage id="ProductOrderForm.ctaButtonNoStock" />
-          )}
-        </PrimaryButton>
+        {/* FAIRWAY: buy and bid as a pair, asking underneath.
+            On a used marketplace most sales start with an offer, so bidding
+            belongs beside buying rather than under it as one of two equal
+            secondaries. Asking a question is the quieter thing and keeps its
+            own full-width row. */}
+        <div className={css.buyRow}>
+          <PrimaryButton
+            type="submit"
+            inProgress={submitInProgress}
+            disabled={submitDisabled}
+            onClick={onClickBuy}
+          >
+            {hasStock ? (
+              <FormattedMessage id="ProductOrderForm.ctaButton" />
+            ) : (
+              <FormattedMessage id="ProductOrderForm.ctaButtonNoStock" />
+            )}
+          </PrimaryButton>
 
-        {/* FAIRWAY: bidding and asking used to be reachable only from the author
-            card far down the page. Both belong next to the buy button — a used
-            marketplace where you cannot negotiate is a shop. */}
-        {!isOwnListing && (showMakeOffer || showContactUser) ? (
-          <div className={css.secondaryActions}>
-            {showMakeOffer ? (
-              <SecondaryButton
-                type="button"
-                className={css.secondaryAction}
-                onClick={onClickMakeOffer}
-              >
-                <FormattedMessage id="ProductOrderForm.makeOffer" />
-              </SecondaryButton>
-            ) : null}
-            {showContactUser ? (
-              <SecondaryButton
-                type="button"
-                className={css.secondaryAction}
-                onClick={onClickContactUser}
-              >
-                <FormattedMessage id="ProductOrderForm.contactSeller" />
-              </SecondaryButton>
-            ) : null}
+          {!isOwnListing && showMakeOffer ? (
+            <SecondaryButton type="button" className={css.bidButton} onClick={onClickMakeOffer}>
+              <FormattedMessage id="ProductOrderForm.makeOffer" />
+            </SecondaryButton>
+          ) : null}
+        </div>
+
+        {!isOwnListing && showContactUser ? (
+          <div className={css.askRow}>
+            <SecondaryButton type="button" className={css.askButton} onClick={onClickContactUser}>
+              <FormattedMessage id="ProductOrderForm.contactSeller" />
+            </SecondaryButton>
           </div>
         ) : null}
 

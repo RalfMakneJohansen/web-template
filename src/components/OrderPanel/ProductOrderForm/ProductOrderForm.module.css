@@ -112,3 +112,85 @@
   display: flex;
   justify-content: center;
 }
+
+/* ============================================================
+   FAIRWAY: buy and bid side by side, in the brand green
+
+   Taken from Foremarket, who put a filled green "Buy now" next to an
+   outlined "Place bid" rather than stacking a primary above two
+   secondaries. Two things it gets right: the buy action is the brand
+   colour rather than a separate accent, and bidding reads as an equal
+   alternative instead of an afterthought — on a used marketplace where
+   most sales start with an offer, that matters.
+
+   Brass stays the action colour on light chrome elsewhere (the topbar's
+   "Opret en ny annonce"). This panel is the one place where the buy
+   action should be unmistakably the brand.
+   ============================================================ */
+
+.buyRow {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 0 24px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+
+  /* Side by side as soon as there is room for two readable labels */
+  @media (min-width: 380px) {
+    grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+/* The buy button in brand green rather than brass */
+.buyRow > button[type='submit'] {
+  background-color: var(--colorForest);
+  border-color: var(--colorForest);
+  min-height: 56px;
+}
+
+.buyRow > button[type='submit']:hover:not(:disabled) {
+  background-color: var(--colorInk);
+  border-color: var(--colorInk);
+}
+
+/* Bidding: outlined in the same green, so the pair reads as one control */
+.bidButton {
+  min-height: 56px;
+  padding: 0 12px;
+
+  border: 1px solid var(--colorForest);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.bidButton:hover {
+  background-color: var(--colorSagePale);
+  border-color: var(--colorForest);
+  color: var(--colorForest);
+}
+
+/* Asking a question is a quieter thing than buying or bidding: full width
+   underneath, not competing with either. */
+.askRow {
+  margin-top: 10px;
+  padding: 0 24px;
+
+  @media (--viewportMedium) {
+    padding: 0;
+  }
+}
+
+.askButton {
+  width: 100%;
+  min-height: 48px;
+
+  font-size: 15px;
+  letter-spacing: 0;
+}

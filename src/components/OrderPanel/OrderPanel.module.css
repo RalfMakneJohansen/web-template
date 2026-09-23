@@ -451,3 +451,17 @@
     transform: none;
   }
 }
+
+/* FAIRWAY: the phone bar's buy button matches the panel's.
+   The desktop panel puts the buy action in the brand green; leaving the
+   mobile bar in brass would mean the same action wore two colours
+   depending on the screen. */
+.openOrderForm > button {
+  background-color: var(--colorForest);
+  border-color: var(--colorForest);
+}
+
+.openOrderForm > button:hover:not(:disabled) {
+  background-color: var(--colorInk);
+  border-color: var(--colorInk);
+}
