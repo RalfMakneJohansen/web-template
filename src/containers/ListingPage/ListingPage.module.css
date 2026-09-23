@@ -1300,3 +1300,50 @@
   background-color: #fff;
   color: var(--colorInk);
 }
+
+/* ============================================================
+   FAIRWAY: the seller's own notices are not charcoal
+
+   The two bars a seller sees on their own annonce — "Dette er din egen
+   annonce" and the payout warning — were var(--colorGrey700) with grey
+   text, a slab of a colour the site uses nowhere else, sitting directly
+   above the photographs.
+
+   They are notices to one person about their own listing, not part of the
+   product, so they read better as a quiet panel on the page's own paper
+   than as a dark band cutting across it. The warning keeps its accent
+   colour and gains a left rule, so the one that matters still stands out
+   from the one that is merely informational.
+   ============================================================ */
+
+.actionBar {
+  color: var(--colorGraphite);
+  background-color: var(--colorGround);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
+}
+
+.ownListingText {
+  color: var(--colorGraphite);
+}
+
+.editListingLink {
+  color: var(--colorForest);
+}
+
+/* The one that needs acting on.
+   --colorAttention is #ffaa00, legible on charcoal and close to unreadable on
+   a warm light ground. --colorGold is the darker rust already in the palette
+   and carries the same meaning at a contrast that works here. */
+.missingPayoutDetailsText,
+.ownListingTextPendingApproval {
+  color: var(--colorGold);
+  font-weight: var(--fontWeightSemiBold);
+}
+
+/* The action beside it was #e5e5e6 — near-white, for the dark bar it used to
+   sit on, and invisible the moment the bar became light. */
+.addPayoutDetails {
+  color: var(--colorForest);
+  font-weight: var(--fontWeightSemiBold);
+}

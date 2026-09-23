@@ -110,3 +110,34 @@
     color: var(--colorGrey100);
   }
 }
+
+/* ============================================================
+   FAIRWAY: the listing card menu
+
+   A charcoal popup with white text — var(--colorGrey700), the template's
+   own grey, on a page that is otherwise sand, white and forest. It is the
+   only dark surface a seller meets while managing their annoncer, and it
+   looked borrowed, because it was.
+
+   A white sheet with a warm edge, matching every other panel on the site.
+   ============================================================ */
+
+.menuContent {
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
+  box-shadow: var(--shadowLifted);
+  overflow: hidden;
+}
+
+.menuItem {
+  color: var(--colorInk);
+  border-radius: 0;
+}
+
+.menuItem:hover,
+.menuItem:focus {
+  background-color: var(--colorSagePale);
+  color: var(--colorForest);
+  text-decoration: none;
+}
