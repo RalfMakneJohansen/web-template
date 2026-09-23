@@ -82,6 +82,38 @@ export const priceForSchemaMaybe = price => {
 };
 
 /**
+ * FAIRWAY: the fields Google needs to treat a listing as a used product.
+ *
+ * The template's Product schema carries name, description, image and an
+ * offer. For a marketplace selling second-hand gear the two that decide
+ * whether a listing can appear as a product result are missing: the brand,
+ * and the condition. Condition is the whole premise of the site — Google
+ * has a vocabulary for it and we were not using it.
+ *
+ * Our four grades map onto the three schema.org conditions. "Som ny" is not
+ * new, so it maps to Refurbished rather than New: claiming New for a used
+ * club would be a false signal to Google and to a buyer reading the result.
+ *
+ * @param {Object} publicData listing's public data
+ * @returns {Object} brand and itemCondition, each only when we know it
+ */
+const SCHEMA_CONDITIONS = {
+  'som-ny': 'https://schema.org/RefurbishedCondition',
+  god: 'https://schema.org/UsedCondition',
+  okay: 'https://schema.org/UsedCondition',
+  slidt: 'https://schema.org/UsedCondition',
+};
+
+export const productDetailsForSchema = (publicData = {}) => {
+  const { brand, condition } = publicData;
+  const brandMaybe = brand ? { brand: { '@type': 'Brand', name: brand } } : {};
+  const conditionMaybe = SCHEMA_CONDITIONS[condition]
+    ? { itemCondition: SCHEMA_CONDITIONS[condition] }
+    : {};
+  return { ...brandMaybe, ...conditionMaybe };
+};
+
+/**
  * Get category's label.
  *
  * @param {Array} categories array of category objects (key & label)

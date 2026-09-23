@@ -46,6 +46,7 @@ import {
   handleNavigateToRequestQuotePage,
   handleSubmit,
   priceForSchemaMaybe,
+  productDetailsForSchema,
   getDerivedRenderData,
 } from './ListingPage.shared';
 import Notifications from './Notifications/Notifications';
@@ -274,8 +275,11 @@ export const ListingPageComponent = props => {
         '@context': 'http://schema.org',
         '@type': 'Product',
         description: description,
-        name: schemaTitle,
+        // The product's own name. schemaTitle carries the marketplace suffix,
+        // which belongs in the page title and not in a product record.
+        name: title,
         image: schemaImages,
+        ...productDetailsForSchema(publicData),
         offers: {
           '@type': 'Offer',
           url: productURL,
