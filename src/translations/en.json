@@ -305,6 +305,7 @@
   "EditListingPage.screenreader.removeImage": "Remove image - current position {currentPosition}.",
   "EditListingPage.titleCreateListing": "Post a new listing | {panelHeading}",
   "EditListingPage.titleEditListing": "Edit listing | {panelHeading}",
+  "EditListingPhotosForm.minImagesRequired": "You have {count, plural, one {# photo} other {# photos}}. Add {remaining, plural, one {# more} other {# more}} to continue.",
   "EditListingPhotosForm.addImagesTip": "Tip: Upload 2-3 good-quality photos from different angles.",
   "EditListingPhotosForm.chooseImage": "+ Add a photo…",
   "EditListingPhotosForm.coverImageBadge": "Cover",

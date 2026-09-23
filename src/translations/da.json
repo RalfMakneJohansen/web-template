@@ -324,7 +324,7 @@
   "EditListingPhotosForm.imageTypes": ".JPG eller .PNG. Maks. 20 MB",
   "EditListingPhotosForm.imageUploadFailed.uploadFailed": "Det lykkedes ikke at uploade billedet. Tjek, at billedfilen ikke var for stor, og prøv igen.",
   "EditListingPhotosForm.imageUploadFailed.uploadOverLimit": "Den maksimale filstørrelse er 20 MB. Prøv igen.",
-  "EditListingPhotosForm.minImagesRequired": "Du mangler {min, plural, one {# billede} other {# billeder}} — du har uploadet {count}. Tilføj flere for at komme videre.",
+  "EditListingPhotosForm.minImagesRequired": "Du har {count, plural, one {# billede} other {# billeder}}. Tilføj {remaining, plural, one {# mere} other {# mere}} for at komme videre.",
   "EditListingPhotosForm.publishListingFailed": "Det lykkedes ikke at udgive en ny annonce.",
   "EditListingPhotosForm.savedImageAltText": "Gemt annoncebillede",
   "EditListingPhotosForm.showListingFailed": "Det lykkedes ikke at hente annoncedata.",

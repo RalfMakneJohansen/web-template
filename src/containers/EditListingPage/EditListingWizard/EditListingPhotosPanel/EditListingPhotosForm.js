@@ -520,7 +520,7 @@ export const EditListingPhotosForm = props => {
               <p className={css.arrayError}>
                 <FormattedMessage
                   id="EditListingPhotosForm.minImagesRequired"
-                  values={{ min: minImages, count: images.length }}
+                  values={{ remaining: minImages - images.length, count: images.length }}
                 />
               </p>
             ) : null}

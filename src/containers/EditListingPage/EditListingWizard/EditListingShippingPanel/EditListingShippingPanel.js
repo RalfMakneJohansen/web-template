@@ -103,7 +103,7 @@ const EditListingShippingPanel = props => {
           });
         }}
         render={formRenderProps => {
-          const { handleSubmit, invalid, pristine, values } = formRenderProps;
+          const { handleSubmit, invalid, pristine, values, submitFailed } = formRenderProps;
           const { updateListingError, showListingsError } = errors || {};
           const submitReady = (panelUpdated && pristine) || ready;
           const submitInProgress = updateInProgress;
@@ -148,7 +148,10 @@ const EditListingShippingPanel = props => {
                 ))}
               </div>
 
-              {!values.shipment_type ? (
+              {/* Only after the seller has tried to move on. It used to appear
+                  the moment the step loaded, so they were told off for not
+                  answering a question they had only just been asked. */}
+              {submitFailed && !values.shipment_type ? (
                 <p className={css.requiredNote}>
                   <FormattedMessage id="EditListingShippingPanel.required" />
                 </p>
