@@ -93,3 +93,32 @@
   color: var(--colorBlack);
   opacity: 0.3;
 }
+
+/* ============================================================
+   FAIRWAY: the account tab bar joins the green nav
+
+   The dark skin was charcoal — var(--colorGrey700) — so profil, konto and
+   "Dine annoncer" sat under a band in a colour the site does not use
+   anywhere else. On the brand green it reads as a second row of the nav
+   above it, which is what it is, and a hairline keeps the two rows apart
+   rather than melting them into one tall block.
+   ============================================================ */
+
+.darkSkin {
+  background-color: var(--colorForest);
+  border-top: 1px solid rgba(237, 232, 220, 0.16);
+}
+
+.tabContentDarkSkin {
+  color: rgba(237, 232, 220, 0.72);
+
+  &:hover,
+  &:focus {
+    color: var(--colorWhite);
+  }
+}
+
+.selectedTabContentDarkSkin {
+  border-bottom-color: var(--colorSage);
+  color: var(--colorWhite);
+}
