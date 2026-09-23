@@ -266,3 +266,38 @@
   position: relative;
   z-index: 1;
 }
+
+/* ============================================================
+   FAIRWAY: the unselected thumbnails step back
+
+   Every thumbnail was at full strength, so the only thing marking the one
+   you are looking at was a thin border — easy to lose in a row of six
+   photographs of the same club from slightly different angles.
+
+   Foremarket greys and fades the ones you are not on. It costs nothing and
+   makes the current frame unmistakable. Colour and full strength return on
+   hover, so you can see what you are about to click before you click it.
+   ============================================================ */
+
+:global(.image-gallery-thumbnail) img {
+  filter: grayscale(0.85);
+  opacity: 0.5;
+  transition: filter 0.2s var(--easeOut), opacity 0.2s var(--easeOut);
+}
+
+:global(.image-gallery-thumbnail):hover img,
+:global(.image-gallery-thumbnail.active) img {
+  filter: none;
+  opacity: 1;
+}
+
+/* The active one also gets a stronger edge than a hover does */
+:global(.image-gallery-thumbnail.active) {
+  border-color: var(--colorForest);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(.image-gallery-thumbnail) img {
+    transition: none;
+  }
+}
