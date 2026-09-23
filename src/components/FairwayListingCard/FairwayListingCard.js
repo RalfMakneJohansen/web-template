@@ -85,6 +85,21 @@ const FairwayListingCard = props => {
     price && price.currency === config.currency ? formatMoney(intl, price) : null;
 
   const conditionLabel = CONDITION_LABELS[condition];
+
+  // The brand as the maker spells it, not as the seller typed it.
+  //
+  // Mærke is free text, so a grid filled up with "titleist", "ping" and
+  // "Taylormade" — three spellings of two brands, and the row reads as
+  // unfinished. The brand field carries the list of makes we offer as
+  // suggestions, so a case-insensitive hit against that list gives the
+  // canonical spelling. A make that is not on the list is left exactly as
+  // it was written: we do not know better than the seller there, and
+  // title-casing blindly would turn PING into Ping.
+  const brandSuggestions =
+    (config.listing.listingFields || []).find(f => f.key === 'brand')?.suggestions || [];
+  const canonicalBrand =
+    brandSuggestions.find(b => b.toLowerCase() === String(brand || '').trim().toLowerCase()) ||
+    brand;
   const specs = specParts(publicData, config.listing.listingFields || []);
 
   // The title carries the whole name — the wizard composes it from brand and
@@ -112,7 +127,7 @@ const FairwayListingCard = props => {
       </div>
 
       <div className={css.info}>
-        {brand ? <span className={css.brand}>{brand}</span> : null}
+        {canonicalBrand ? <span className={css.brand}>{canonicalBrand}</span> : null}
         {/* filter, not a plain join: a listing with neither title nor model
             rendered as " / Regular / 21.0°", leading separator and all. */}
         <span className={css.title}>{[name, ...specs].filter(Boolean).join(' / ')}</span>

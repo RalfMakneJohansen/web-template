@@ -34,11 +34,18 @@ const getConfig = () => {
     saveConfig: { required: false },
   });
 
+  // The hosted config already has a `brand` field, so the suggestions are
+  // added to that one rather than appended as a second. A duplicate key is
+  // rejected by validListingFields and the whole field disappears — which is
+  // exactly what happened the first time these tests were written.
+  const withBrandSuggestions = f =>
+    f.key === 'brand' ? { ...f, suggestions: ['TaylorMade', 'Titleist', 'PING'] } : f;
+
   return {
     ...hosted,
     listingFields: {
       listingFields: [
-        ...hosted.listingFields.listingFields,
+        ...hosted.listingFields.listingFields.map(withBrandSuggestions),
         field('shaft_flex', 'Flex', [
           { option: 'regular', label: 'Regular' },
           { option: 'stiff', label: 'Stiff' },
@@ -91,6 +98,46 @@ describe('FairwayListingCard', () => {
     render(<FairwayListingCard listing={listing} />, { config: getConfig() });
 
     expect(screen.getByText('GT4 / Stiff')).toBeInTheDocument();
+  });
+
+  // Mærke is free text, so the same make arrives spelled three ways. The card
+  // shows the maker's own spelling when it recognises one.
+  it('shows a known brand the way the maker spells it', () => {
+    const listing = createListing(
+      'listing1',
+      { title: 'GT4', publicData: { brand: 'titleist' } },
+      { author }
+    );
+
+    render(<FairwayListingCard listing={listing} />, { config: getConfig() });
+
+    expect(screen.getByText('Titleist')).toBeInTheDocument();
+    expect(screen.queryByText('titleist')).not.toBeInTheDocument();
+  });
+
+  it('does not lower-case a brand that is written in capitals', () => {
+    // The trap in any title-casing approach: PING would become Ping.
+    const listing = createListing(
+      'listing1',
+      { title: 'G440', publicData: { brand: 'ping' } },
+      { author }
+    );
+
+    render(<FairwayListingCard listing={listing} />, { config: getConfig() });
+
+    expect(screen.getByText('PING')).toBeInTheDocument();
+  });
+
+  it('leaves a brand it does not know exactly as written', () => {
+    const listing = createListing(
+      'listing1',
+      { title: 'Blade', publicData: { brand: 'Lille Smedje' } },
+      { author }
+    );
+
+    render(<FairwayListingCard listing={listing} />, { config: getConfig() });
+
+    expect(screen.getByText('Lille Smedje')).toBeInTheDocument();
   });
 
   it('shows the condition in Danish', () => {
