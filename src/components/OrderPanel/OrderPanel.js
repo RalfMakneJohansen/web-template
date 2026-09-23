@@ -37,7 +37,7 @@ import {
   resolveLatestProcessName,
 } from '../../transactions/transaction';
 
-import { ModalInMobile, PrimaryButton, AvatarSmall, H1, H2 } from '../../components';
+import { ModalInMobile, PrimaryButton, AvatarSmall, H2 } from '../../components';
 import PriceVariantPicker from './PriceVariantPicker/PriceVariantPicker';
 import { customerTotal } from './FairwayPriceBreakdown/FairwayPriceBreakdown';
 import SubmitFinePrint from './SubmitFinePrint/SubmitFinePrint';
@@ -490,7 +490,9 @@ const OrderPanel = props => {
         usePortal
       >
         <div className={css.modalHeading}>
-          <H1 className={css.heading}>{title}</H1>
+          {/* H2, not H1 — this is the mobile order sheet's heading. The
+              listing page owns the page-level h1. */}
+          <H2 className={css.heading}>{title}</H2>
         </div>
 
         {showListingImage && (

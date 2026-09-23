@@ -350,7 +350,11 @@ export const ListingPageComponent = props => {
               }
               title={<FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />}
               titleDesktop={
-                <H4 as="h1" className={css.orderPanelTitle}>
+                /* Not an h1: this is the buy panel's own title, and the page
+                   already has one above the gallery. Three h1 elements with
+                   the same text is a diluted signal, and two of them are
+                   hidden at any given viewport. */
+                <H4 className={css.orderPanelTitle}>
                   <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
                 </H4>
               }
