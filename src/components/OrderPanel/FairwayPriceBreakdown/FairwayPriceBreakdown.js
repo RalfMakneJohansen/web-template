@@ -96,10 +96,11 @@ const FairwayPriceBreakdown = props => {
         );
       })}
 
-      {/* The 10% is currently taken from the seller's payout, so the buyer is
-          charged nothing for it. Say so plainly rather than hiding the line —
-          it is the strongest thing on the page. If a customer commission is
-          switched on in Console, the real line above replaces this. */}
+      {/* A fallback for as long as no customer commission exists in Console.
+          The decided model is 4,99% paid by the buyer, which arrives as a real
+          line above and replaces this one automatically — no code change. Until
+          then the fee comes off the seller's payout and the buyer is charged
+          nothing for it, so saying "included" is true rather than convenient. */}
       {hasProtectionLine ? null : (
         <Row
           label={<FormattedMessage id="FairwayPriceBreakdown.protection" />}

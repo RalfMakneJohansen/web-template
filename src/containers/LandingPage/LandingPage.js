@@ -288,7 +288,7 @@ export const LandingPageComponent = props => {
             <RotatingHeadline />
             <p className={css.heroText}>
               {/* The seller pays neither box nor freight — the buyer pays a flat
-                  50 kr. Only our 10% comes off the sale. */}
+                  50 kr., and our 4.99% on top of it. Nothing comes off the seller. */}
               Vi sender kassen direkte til dig — du betaler først noget, når den er solgt.
             </p>
             <div className={css.heroActions}>
@@ -496,7 +496,7 @@ export const LandingPageComponent = props => {
             </div>
 
             <p className={css.feeFine}>
-              Vores fee er 10% af salget og betales af køber.
+              Vores gebyr er 4,99% af prisen og betales af køber.
             </p>
           </div>
         </section>

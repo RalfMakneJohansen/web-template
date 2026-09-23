@@ -114,21 +114,36 @@ they need an integration client before they do anything.
 
 ---
 
-## 3. Commission — decided, not yet applied
+## 3. Commission — decided, yours to apply
 
-The decision was **the buyer pays 10%**. The server currently does the
-opposite: it returns `provider-commission −10%` and no customer commission, so
-the seller is paying it.
+**The buyer pays 4,99% on top of the price.** The seller is paid their full
+asking price and pays nothing.
 
-Console → Transactions → Commission: set a **customer commission of 10%** and
-remove the provider commission.
+Console → Transactions → Commission: set a **customer commission of 4.99%**
+and **remove the provider commission**. Both halves matter — leaving the
+provider commission on charges the fee twice, once from each side.
 
-The listing page's price breakdown reads the real line items, so it follows
-this by itself — "Køberbeskyttelse — Inkluderet" becomes a real charged line the
-moment you change it. What does **not** follow automatically is the written
-copy, which still says selling costs 10%. Tell me when it is flipped and I
-change those strings in the same pass, so the site is never telling two stories
-at once.
+The percentage lives in Console, not in this repo. The server reads it as an
+asset (`fetchCommission` in `server/api/transaction-line-items.js`), so there
+is no code change and no deploy when you change it.
+
+What a buyer sees once it is on, for a 3.333 kr. listing:
+
+| | |
+|---|---|
+| Pris | 3.333 kr. |
+| Fragt | 50 kr. |
+| Køberbeskyttelse | 166 kr. |
+| **I alt** | **3.549 kr.** |
+
+The breakdown is built from the real line items, so it follows by itself: the
+"Køberbeskyttelse — Inkluderet" fallback disappears the moment a real
+customer-commission line exists.
+
+The written copy already says 4,99% paid by the buyer. That means the site is
+briefly ahead of Console — until you flip it, the pages say the buyer pays
+while the server still takes it from the seller. Flip it before anyone real
+transacts.
 
 ---
 
