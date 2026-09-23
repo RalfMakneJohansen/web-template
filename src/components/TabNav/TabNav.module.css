@@ -88,3 +88,48 @@
   color: var(--colorGrey300);
   text-decoration: none;
 }
+
+
+/* ============================================================
+   FAIRWAY: the selected tab is marked next to its label
+
+   The template marks tabs with an inline SVG background — a 4×32 bar
+   positioned against the right edge of a link as wide as the whole column.
+   On the inbox that put a stray line 240px away from the word it belonged
+   to, in pure black, a colour the site does not otherwise use. The
+   unselected links carry the same bar in grey and slide it into view on
+   hover, so the effect repeated on every tab touched.
+
+   A left border in the brand green sits against the label, where a marker
+   belongs, and needs no image at all. Both states keep the same total
+   inset — 3px border + 13px padding against 16px — so the label does not
+   shift as the selection moves.
+   ============================================================ */
+
+.link {
+  background-image: none;
+
+  @media (--viewportLarge) {
+    padding-left: 16px;
+
+    &:hover {
+      background-image: none;
+      color: var(--colorForest);
+    }
+  }
+}
+
+.selectedLink {
+  border-bottom-color: var(--colorForest);
+  color: var(--colorInk);
+
+  @media (--viewportLarge) {
+    background-image: none;
+    border-left: 3px solid var(--colorForest);
+    padding-left: 13px;
+
+    &:hover {
+      background-image: none;
+    }
+  }
+}

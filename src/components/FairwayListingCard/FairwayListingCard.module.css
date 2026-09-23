@@ -106,18 +106,28 @@
   padding: 13px 14px 15px 14px;
 }
 
-/* Centred, the way a product grid is set: with the photo above and the price
-   below, a left rag on three lines of different lengths reads as untidy. */
+/* Left, the way a catalogue is set.
+
+   This was centred, on the argument that three lines of different lengths rag
+   badly. They do — but centring rags on BOTH edges, and it turns every cell
+   into its own small poster. Left-aligned, the brand, the name and the price
+   stack on one line down the column and the eye can run down four of them at
+   once. It is what WePlayAgain, SidelineSwap and Vinted all do, and it is the
+   single thing that most separates a catalogue from a gallery. */
 .info {
-  text-align: center;
+  text-align: left;
 }
 
+/* The brand anchors the card. It is the first thing scanned in a grid of used
+   gear, and at 12px light grey it was barely there. Small caps with tracking
+   reads as a label rather than as a stray word above the name. */
 .brand {
-  font-size: 12px;
-  line-height: 17px;
-  font-weight: var(--fontWeightRegular);
-  letter-spacing: 0.01em;
-  color: var(--colorSlate);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--colorForest);
 }
 
 /* Name and the deciding specs in one string — this is what the grid is read
