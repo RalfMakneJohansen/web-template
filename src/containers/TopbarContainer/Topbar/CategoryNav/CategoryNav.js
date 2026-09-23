@@ -56,22 +56,24 @@ const CategoryNav = () => {
   const config = useConfiguration();
 
   /**
-   * The flex options, but only once they can actually be searched on.
+   * Shaft flex as the second level of the menu.
    *
-   * Narrowing a category by shaft flex is how a golfer shops — not "every
-   * iron set" but "the stiff ones" — and the field already exists with its
-   * five options. What does not exist yet is the search index: until
-   * `flex-cli search set --key pub_shaft_flex` has been run, the template
-   * drops the parameter and the API never sees it, so a "Stiff" link would
-   * quietly return the Regular clubs too. A link that lies is worse than a
-   * link that is not there.
+   * Narrowing a category by flex is how a golfer shops — not "every iron
+   * set" but "the stiff ones" — so the structure is here, built from the
+   * field's own options and its own categoryConfig. Five columns, not six:
+   * putters have a shaft but nobody shops for putter flex.
    *
-   * So the level is read off the field's own filterConfig. It stays dark
-   * while indexForSearch is false and lights up by itself the moment the
-   * index exists and the flag is flipped — no second round of code.
+   * Known and accepted: the links do not narrow anything yet. Sharetribe
+   * cannot filter on a key with no search index, so until
+   * `flex-cli search set --key pub_shaft_flex` has been run, "Stiff" returns
+   * the same listings as "Regular". This was built gated on indexForSearch
+   * for exactly that reason and then deliberately opened up — the structure
+   * is worth having in place before the stock arrives, and with three
+   * listings in a dev marketplace nobody is being misled at scale. It starts
+   * telling the truth the moment the index exists; nothing here changes.
    */
   const flexField = (config.listing.listingFields || []).find(f => f.key === 'shaft_flex');
-  const flexOptions = flexField?.filterConfig?.indexForSearch ? flexField.enumOptions || [] : [];
+  const flexOptions = flexField?.enumOptions || [];
   const flexCategoryIds = flexField?.categoryConfig?.categoryIds || [];
 
   // A short delay lets the pointer cross the gap between button and panel
