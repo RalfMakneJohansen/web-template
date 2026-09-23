@@ -193,3 +193,88 @@
   border-color: var(--colorDividerWarm);
   box-shadow: var(--shadowLifted);
 }
+
+/* ============================================================
+   FAIRWAY: the mega panel, for when flex can be searched on
+
+   A single column of category names is enough while that is all there is.
+   Once shaft flex is indexed, each club becomes a column with its flex
+   options under it — the whole set visible at once rather than a third
+   level of hover, which is fragile on a wide menu and impossible on a
+   touch screen.
+
+   These rules are inert until CategoryNav renders the wide variant, which
+   it only does when the field's filterConfig says the index exists.
+   ============================================================ */
+
+.panelWide {
+  composes: panel;
+  min-width: auto;
+  padding: 20px 24px 22px 24px;
+}
+
+.panelColumns {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(118px, auto);
+  gap: 0 28px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.panelColumn {
+  min-width: 0;
+}
+
+/* The category itself, above its own flex options */
+.panelHeading {
+  display: block;
+  padding: 0 0 10px 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--colorDividerWarm);
+
+  font-family: var(--fontFamily);
+  font-size: 12px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--colorSlate);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--colorForest);
+    text-decoration: none;
+  }
+}
+
+.flexList {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flexLink {
+  display: block;
+  padding: 7px 10px;
+  margin-left: -10px;
+  border-radius: var(--radiusControl);
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightMedium);
+  line-height: 20px;
+  white-space: nowrap;
+  color: var(--colorInk);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--colorForest);
+    background-color: var(--colorSagePale);
+    text-decoration: none;
+  }
+}

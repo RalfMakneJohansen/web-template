@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { NamedLink } from '../../../../components';
+import { useConfiguration } from '../../../../context/configurationContext';
 
 import css from './CategoryNav.module.css';
 
@@ -36,6 +37,12 @@ const LEAVES = GROUPS.flatMap(group => group.children || [group]);
 
 const searchTo = id => ({ search: `?pub_categoryLevel1=${id}` });
 
+// A category narrowed by shaft flex, the way a golfer actually shops: not
+// "show me every iron set" but "show me the stiff ones".
+const flexSearchTo = (categoryId, flex) => ({
+  search: `?pub_categoryLevel1=${categoryId}&pub_shaft_flex=${flex}`,
+});
+
 const Chevron = () => (
   <svg className={css.chevron} width="10" height="6" viewBox="0 0 10 6" aria-hidden={true}>
     <path d="m1 1 4 4 4-4" />
@@ -46,6 +53,26 @@ const CategoryNav = () => {
   const [openId, setOpenId] = useState(null);
   const rootRef = useRef(null);
   const closeTimer = useRef(null);
+  const config = useConfiguration();
+
+  /**
+   * The flex options, but only once they can actually be searched on.
+   *
+   * Narrowing a category by shaft flex is how a golfer shops — not "every
+   * iron set" but "the stiff ones" — and the field already exists with its
+   * five options. What does not exist yet is the search index: until
+   * `flex-cli search set --key pub_shaft_flex` has been run, the template
+   * drops the parameter and the API never sees it, so a "Stiff" link would
+   * quietly return the Regular clubs too. A link that lies is worse than a
+   * link that is not there.
+   *
+   * So the level is read off the field's own filterConfig. It stays dark
+   * while indexForSearch is false and lights up by itself the moment the
+   * index exists and the flag is flipped — no second round of code.
+   */
+  const flexField = (config.listing.listingFields || []).find(f => f.key === 'shaft_flex');
+  const flexOptions = flexField?.filterConfig?.indexForSearch ? flexField.enumOptions || [] : [];
+  const flexCategoryIds = flexField?.categoryConfig?.categoryIds || [];
 
   // A short delay lets the pointer cross the gap between button and panel
   const open = id => {
@@ -133,20 +160,41 @@ const CategoryNav = () => {
               </button>
 
               {isOpen ? (
-                <div className={css.panel}>
-                  <ul className={css.panelList}>
-                    {group.children.map(child => (
-                      <li key={child.id}>
-                        <NamedLink
-                          name="SearchPage"
-                          to={searchTo(child.id)}
-                          className={css.panelLink}
-                          onClick={() => setOpenId(null)}
-                        >
-                          {child.label}
-                        </NamedLink>
-                      </li>
-                    ))}
+                <div className={flexOptions.length ? css.panelWide : css.panel}>
+                  <ul className={flexOptions.length ? css.panelColumns : css.panelList}>
+                    {group.children.map(child => {
+                      const childFlex = flexCategoryIds.includes(child.id) ? flexOptions : [];
+
+                      return (
+                        <li key={child.id} className={css.panelColumn}>
+                          <NamedLink
+                            name="SearchPage"
+                            to={searchTo(child.id)}
+                            className={childFlex.length ? css.panelHeading : css.panelLink}
+                            onClick={() => setOpenId(null)}
+                          >
+                            {child.label}
+                          </NamedLink>
+
+                          {childFlex.length ? (
+                            <ul className={css.flexList}>
+                              {childFlex.map(option => (
+                                <li key={option.option}>
+                                  <NamedLink
+                                    name="SearchPage"
+                                    to={flexSearchTo(child.id, option.option)}
+                                    className={css.flexLink}
+                                    onClick={() => setOpenId(null)}
+                                  >
+                                    {option.label}
+                                  </NamedLink>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               ) : null}
