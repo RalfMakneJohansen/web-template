@@ -64,11 +64,18 @@
    :actions [{:name :action/stripe-create-payout}],
    :from :state/delivered,
    :to :state/received}
+  ;; FAIRWAY: 48 hours from delivery, which is what the site promises.
+  ;;
+  ;; The template shipped P14D here. That made the whole "48 timers
+  ;; inspektion" claim untrue in both directions: a seller waited up to two
+  ;; weeks for payout rather than two days, and a buyer who was told they had
+  ;; 48 hours to object in fact had fourteen. The promise is stated in
+  ;; thirteen places across the site, so the process is what had to move.
   {:name :transition/auto-mark-received,
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/delivered]}
-     {:fn/period ["P14D"]}]},
+     {:fn/period ["PT48H"]}]},
    :actions [{:name :action/stripe-create-payout}],
    :from :state/delivered,
    :to :state/received}
@@ -223,12 +230,18 @@
    :on :transition/operator-mark-delivered,
    :to :actor.role/provider,
    :template :purchase-order-operator-marked-as-delivered}
+  ;; FAIRWAY: halfway through the window, not two days before a fortnight.
+  ;;
+  ;; This was P12D, set against the old 14-day auto-complete. With the window
+  ;; at 48 hours the transaction has already closed itself long before day
+  ;; twelve, so the reminder would never have reached anyone. At 24 hours the
+  ;; buyer still has a day left to look at the club and say something.
   {:name :notification/purchase-mark-order-received-reminder,
    :on :transition/mark-delivered,
    :at
    {:fn/plus
     [{:fn/timepoint [:time/first-entered-state :state/delivered]}
-     {:fn/period ["P12D"]}]},
+     {:fn/period ["PT24H"]}]},
    :to :actor.role/customer,
    :template :purchase-mark-order-received-reminder}
   {:name :notification/order-marked-as-received-from-purchased,
