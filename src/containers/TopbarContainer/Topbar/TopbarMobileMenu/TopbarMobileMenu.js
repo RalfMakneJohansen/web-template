@@ -116,22 +116,22 @@ const TopbarMobileMenu = props => {
       </NamedLink>
     );
 
-    const signupOrLogin = (
-      <span className={css.authenticationLinks}>
-        <FormattedMessage
-          id="TopbarMobileMenu.signupOrLogin"
-          values={{ lineBreak: <br />, signup, login }}
-        />
-      </span>
-    );
+    // FAIRWAY: a welcome and two buttons, the way an app's menu greets a
+    // guest, instead of a headline sentence with two green words in it.
     return (
       <nav className={css.root}>
         <div className={css.content}>
-          <div className={css.authenticationGreeting}>
-            <FormattedMessage
-              id="TopbarMobileMenu.unauthorizedGreeting"
-              values={{ lineBreak: <br />, signupOrLogin }}
-            />
+          <div className={css.welcome}>
+            <p className={css.welcomeTitle}>
+              <FormattedMessage id="TopbarMobileMenu.welcomeTitle" />
+            </p>
+            <p className={css.welcomeText}>
+              <FormattedMessage id="TopbarMobileMenu.welcomeText" />
+            </p>
+            <div className={css.authenticationLinks}>
+              {signup}
+              {login}
+            </div>
           </div>
 
           <MobileMenuCategories />

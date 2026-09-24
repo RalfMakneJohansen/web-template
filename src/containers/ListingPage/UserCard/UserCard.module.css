@@ -152,3 +152,18 @@
   composes: a from global;
   font-weight: var(--fontWeightMedium);
 }
+
+/* FAIRWAY: on a phone the seller's avatar is a face, not a poster.
+   At 96px with a 36px gap it took a third of the width and pushed the name
+   and links into a narrow column beside a large green disc. */
+@media (max-width: 767px) {
+  .content {
+    align-items: center;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    margin-right: 16px;
+  }
+}

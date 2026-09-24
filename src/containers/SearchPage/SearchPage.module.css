@@ -447,3 +447,11 @@
   background-color: var(--colorGround);
   border-radius: var(--radiusControl);
 }
+
+/* FAIRWAY: the mobile results bar runs to the screen edges (see
+   SearchFiltersMobile.module.css) */
+.searchFiltersMobileList {
+  margin-left: -24px;
+  margin-right: -24px;
+  padding: 16px 24px;
+}

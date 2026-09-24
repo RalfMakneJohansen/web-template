@@ -24,3 +24,13 @@
   align-items: center;
   justify-content: center;
 }
+
+/* FAIRWAY: the page column is the screen, not the longest line.
+   Both grids had an implicit auto column, which sizes to its content's
+   widest unbroken line — on a phone the terms and privacy text set it to
+   777px and those pages scrolled sideways. minmax(0, 1fr) pins the column
+   to the available width and lets the text wrap inside it. */
+.layout,
+.main {
+  grid-template-columns: minmax(0, 1fr);
+}

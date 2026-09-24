@@ -1370,6 +1370,8 @@
   "TopbarMobileMenu.signupLink": "Opret konto",
   "TopbarMobileMenu.signupOrLogin": "{signup} eller {login}",
   "TopbarMobileMenu.unauthorizedGreeting": "Hej,{lineBreak}vil du {signupOrLogin}?",
+  "TopbarMobileMenu.welcomeText": "Køb og sælg brugt golfudstyr — trygt, med pengene holdt hos os til varen er godkendt.",
+  "TopbarMobileMenu.welcomeTitle": "Velkommen til Fairway",
   "TopbarMobileMenu.yourListingsLink": "Dine annoncer",
   "TopbarSearchForm.placeholder": "Søg i annoncer…",
   "TopbarSimplified.goToLandingPage": "Gå til forsiden",

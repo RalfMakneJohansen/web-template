@@ -1315,6 +1315,8 @@
   "TopbarMobileMenu.signupLink": "Sign up",
   "TopbarMobileMenu.signupOrLogin": "{signup} or {login}",
   "TopbarMobileMenu.unauthorizedGreeting": "Hello there,{lineBreak}would you like to {signupOrLogin}?",
+  "TopbarMobileMenu.welcomeText": "Buy and sell used golf gear — safely, with the money held by us until the item is approved.",
+  "TopbarMobileMenu.welcomeTitle": "Welcome to Fairway",
   "TopbarMobileMenu.yourListingsLink": "Your listings",
   "TopbarSearchForm.placeholder": "Search listings…",
   "TopbarSimplified.goToLandingPage": "Go to the homepage",

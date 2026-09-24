@@ -1347,3 +1347,20 @@
   color: var(--colorForest);
   font-weight: var(--fontWeightSemiBold);
 }
+
+/* FAIRWAY: the gutter on a phone.
+   Below tablet width the product column has no padding of its own — the
+   gallery is meant to run edge to edge — and each section brings its own
+   24px. The breadcrumb and the specs table did not, so the path sat against
+   the left edge of the glass and the spec values ran into the right. */
+@media (max-width: 767px) {
+  .breadcrumb {
+    margin-top: 12px;
+    padding: 0 24px;
+  }
+
+  .specs {
+    margin-left: 24px;
+    margin-right: 24px;
+  }
+}
