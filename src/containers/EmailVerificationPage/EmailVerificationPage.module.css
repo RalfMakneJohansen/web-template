@@ -23,3 +23,27 @@
 .error {
   composes: marketplaceModalPasswordMargins from global;
 }
+
+/* ============================================================
+   FAIRWAY: the same app screen as sign-in
+   On a phone this was a white slab from the nav to the footer with a
+   20px paragraph. Like the sign-in page it is now a card on the brand
+   ground, and the text is body size.
+   ============================================================ */
+
+.layoutWrapperMain {
+  @media (max-width: 767px) {
+    min-height: 0;
+  }
+}
+
+.content {
+  @media (max-width: 767px) {
+    flex-grow: 0;
+    margin: 16px 12px 28px 12px;
+    padding: 24px 20px 28px 20px;
+
+    border-radius: var(--radiusSheet);
+    box-shadow: var(--shadowLifted);
+  }
+}

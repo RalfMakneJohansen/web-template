@@ -65,3 +65,15 @@
     margin-top: 64px;
   }
 }
+
+/* FAIRWAY: the search field as a pill, like search everywhere else on the
+   site, instead of a box with a thick green underline. overflow keeps the
+   input's square corners inside the pill. */
+.searchForm {
+  margin-top: 40px;
+  overflow: hidden;
+
+  border-bottom: 0;
+  border-radius: var(--radiusPill);
+  box-shadow: 0 0 0 1px rgba(10, 40, 30, 0.08), var(--shadowRest);
+}
