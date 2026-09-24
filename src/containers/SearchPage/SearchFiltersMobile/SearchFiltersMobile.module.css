@@ -116,14 +116,15 @@
 /* FAIRWAY: the sticky results bar is part of the page, not a grey box.
    It was template grey on the warm ground, stopping 24px short of each
    edge, so it read as a panel floating in the page. Now it runs edge to
-   edge in the page colour, frosted so the cards scroll softly under it,
-   with a hairline only once there is something beneath. */
+   edge in the page colour, with a hairline under it.
+
+   No backdrop-filter: it makes this bar the containing block for
+   position: fixed descendants, and the filter modal lives inside it — the
+   modal was squeezed into the 110px bar instead of covering the screen. */
 .root {
   /* Edge to edge: the negative margin and matching padding are set on
      SearchPage's .searchFiltersMobileList, which owns this bar's padding */
-  background-color: rgba(247, 244, 238, 0.92);
-  -webkit-backdrop-filter: saturate(1.4) blur(12px);
-  backdrop-filter: saturate(1.4) blur(12px);
+  background-color: var(--colorGround);
   border-bottom: 1px solid rgba(10, 40, 30, 0.06);
 }
 
