@@ -21,9 +21,25 @@ const app = express();
 
 // NOTE: CORS is only needed in this dev API server because it's
 // running in a different port than the main app.
+// FAIRWAY: also the same frontend opened from another machine on the local
+// network (http://192.168.x.x:3000), so the site can be shown on a second
+// computer while this one runs it. Private-range addresses on the frontend's
+// port only — this is the dev server, and nothing outside the LAN matches.
+const rootUrl = process.env.REACT_APP_MARKETPLACE_ROOT_URL;
+const frontendPort = (() => {
+  try {
+    return new URL(rootUrl).port;
+  } catch (e) {
+    return '3000';
+  }
+})();
+const LAN_ORIGIN = new RegExp(
+  `^http://(192\\.168\\.\\d+\\.\\d+|10\\.\\d+\\.\\d+\\.\\d+|172\\.(1[6-9]|2\\d|3[01])\\.\\d+\\.\\d+):${frontendPort}$`
+);
+
 app.use(
   cors({
-    origin: process.env.REACT_APP_MARKETPLACE_ROOT_URL,
+    origin: [rootUrl, LAN_ORIGIN],
     credentials: true,
   })
 );

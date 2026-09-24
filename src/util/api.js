@@ -10,9 +10,14 @@ export const apiBaseUrl = marketplaceRootURL => {
   const port = process.env.REACT_APP_DEV_API_SERVER_PORT;
   const useDevApiServer = process.env.NODE_ENV === 'development' && !!port;
 
-  // In development, the dev API server is running in a different port
+  // In development, the dev API server is running in a different port.
+  // FAIRWAY: on the same host the page was loaded from, not a hard-coded
+  // localhost — opened from another machine on the network as
+  // http://192.168.x.x:3000, "localhost" is that other machine, and every
+  // call through our own server (line items, checkout) went nowhere.
   if (useDevApiServer) {
-    return `http://localhost:${port}`;
+    const host = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+    return `http://${host}:${port}`;
   }
 
   // Otherwise, use the given marketplaceRootURL parameter or the same domain and port as the frontend
