@@ -71,15 +71,14 @@ const CLUB_CATEGORIES = ['driver', 'fairway-wood', 'hybrid', 'jernsaet', 'wedge'
 const SHAFTED_CATEGORIES = ['driver', 'fairway-wood', 'hybrid', 'jernsaet', 'wedge'];
 
 /**
- * Every one of these is worth filtering on, but none of them can be queried
- * until the key has a search index in Sharetribe:
- *   flex-cli search set --key pub_<key> --type enum --scope public -m <id>
- * Until then the filter stays hidden — a filter that errors is worse than no
- * filter. Flip both booleans once the indexes exist.
+ * A filter on the search page. Each key has a search index in Sharetribe
+ * (set 2026-09-24 on fairway2-dev by scripts/fairway-search-indexes.sh); a
+ * filter on a key without one is silently ignored and returns everything, so
+ * run that script on every new environment, Live included, before launch.
  */
-const FILTER_OFF = (label, group) => ({
-  indexForSearch: false,
-  showFilter: false,
+const FILTER = (label, group) => ({
+  indexForSearch: true,
+  showFilter: true,
   filterType: 'SelectMultipleFilter',
   label,
   group,
@@ -182,17 +181,7 @@ export const listingFields = [
       { option: 'okay', label: 'Okay' },
       { option: 'slidt', label: 'Slidt' },
     ],
-    // Off until the search index exists in Sharetribe. Querying an unindexed
-    // key makes the API reject the search, so the filter stays hidden until:
-    //   flex-cli search set --key pub_condition --type enum -m <marketplace>
-    // Then set indexForSearch and showFilter to true here.
-    filterConfig: {
-      indexForSearch: false,
-      showFilter: false,
-      filterType: 'SelectMultipleFilter',
-      label: 'Stand',
-      group: 'primary',
-    },
+    filterConfig: FILTER('Stand', 'primary'),
     showConfig: { label: 'Stand', isDetail: true },
     saveConfig: {
       label: 'Stand',
@@ -213,14 +202,7 @@ export const listingFields = [
       // freight and escrow. Re-adding it here also needs pickup enabled on the
       // listing type in Console, or the buyer hits a dead end at checkout.
     ],
-    // Same as condition: needs pub_shipment_type indexed before it can filter.
-    filterConfig: {
-      indexForSearch: false,
-      showFilter: false,
-      filterType: 'SelectMultipleFilter',
-      label: 'Levering',
-      group: 'secondary',
-    },
+    filterConfig: FILTER('Levering', 'secondary'),
     showConfig: { label: 'Levering', isDetail: true },
     saveConfig: {
       label: 'Hvordan vil du sende varen?',
@@ -241,7 +223,7 @@ export const listingFields = [
       { option: 'right', label: 'Højrehåndet' },
       { option: 'left', label: 'Venstrehåndet' },
     ],
-    filterConfig: FILTER_OFF('Hånd', 'primary'),
+    filterConfig: FILTER('Hånd', 'primary'),
     showConfig: { label: 'Hånd', isDetail: true },
     saveConfig: {
       label: 'Højre- eller venstrehåndet',
@@ -261,7 +243,7 @@ export const listingFields = [
       { option: 'stiff', label: 'Stiff' },
       { option: 'extra-stiff', label: 'Extra-Stiff' },
     ],
-    filterConfig: FILTER_OFF('Flex', 'primary'),
+    filterConfig: FILTER('Flex', 'primary'),
     showConfig: { label: 'Flex', isDetail: true },
     saveConfig: {
       label: 'Flex',
@@ -278,7 +260,7 @@ export const listingFields = [
       { option: 'steel', label: 'Stål' },
       { option: 'graphite', label: 'Grafit' },
     ],
-    filterConfig: FILTER_OFF('Skaft', 'secondary'),
+    filterConfig: FILTER('Skaft', 'secondary'),
     showConfig: { label: 'Skaftmateriale', isDetail: true },
     saveConfig: { label: 'Skaft' },
   },
@@ -321,7 +303,7 @@ export const listingFields = [
       { option: '24-0', label: '24.0°' },
       { option: '27-0', label: '27.0°' },
     ],
-    filterConfig: FILTER_OFF('Loft', 'primary'),
+    filterConfig: FILTER('Loft', 'primary'),
     showConfig: { label: 'Loft', isDetail: true },
     saveConfig: {
       label: 'Loft',
@@ -346,7 +328,7 @@ export const listingFields = [
       { option: '62', label: '62°' },
       { option: '64', label: '64°' },
     ],
-    filterConfig: FILTER_OFF('Loft', 'primary'),
+    filterConfig: FILTER('Loft', 'primary'),
     showConfig: { label: 'Loft', isDetail: true },
     saveConfig: {
       label: 'Loft',
@@ -374,7 +356,7 @@ export const listingFields = [
       { option: 'blade', label: 'Blade' },
       { option: 'mallet', label: 'Mallet' },
     ],
-    filterConfig: FILTER_OFF('Puttertype', 'primary'),
+    filterConfig: FILTER('Puttertype', 'primary'),
     showConfig: { label: 'Type', isDetail: true },
     saveConfig: { label: 'Puttertype' },
   },
@@ -390,7 +372,7 @@ export const listingFields = [
       { option: '35', label: '35"' },
       { option: '36', label: '36"' },
     ],
-    filterConfig: FILTER_OFF('Længde', 'secondary'),
+    filterConfig: FILTER('Længde', 'secondary'),
     showConfig: { label: 'Længde', isDetail: true },
     saveConfig: { label: 'Længde' },
   },
@@ -412,7 +394,7 @@ export const listingFields = [
       { option: '47', label: '47' },
       { option: '48', label: '48' },
     ],
-    filterConfig: FILTER_OFF('Størrelse (EU)', 'primary'),
+    filterConfig: FILTER('Størrelse (EU)', 'primary'),
     showConfig: { label: 'Størrelse (EU)', isDetail: true },
     saveConfig: { label: 'Størrelse (EU)' },
   },
