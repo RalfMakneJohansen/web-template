@@ -372,3 +372,11 @@
 .content .tabs {
   overflow: visible;
 }
+
+/* On a desktop the card was held at 700px while the form now needs less,
+   leaving a white band under the button */
+.content {
+  @media (--viewportMedium) {
+    min-height: 0;
+  }
+}

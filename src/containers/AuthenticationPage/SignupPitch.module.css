@@ -76,3 +76,11 @@
   line-height: 20px;
   color: rgba(237, 232, 220, 0.76);
 }
+
+/* Above the photo's darkening overlay, which is positioned and so painted
+   over anything static — the pitch was there, readable only to a screen
+   reader. The form card beside it is positioned already. */
+.root {
+  position: relative;
+  z-index: 1;
+}
