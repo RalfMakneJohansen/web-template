@@ -9,7 +9,6 @@
 
 .contentContainer {
   composes: marketplaceModalRootStyles from global;
-  min-height: calc(100vh - 60px);
   height: auto;
 
   @media (--viewportMedium) {
@@ -267,4 +266,109 @@
 }
 
 .confirmInfoText {
+}
+
+/* ============================================================
+   FAIRWAY: the sign-in screen as an app screen
+
+   On a phone the form was a white slab from the nav to the footer, with a
+   third of it empty under the button, and the two tabs were headings of
+   different weights with an underline — read as a title and a stray word
+   rather than a choice. Now the form is a card floating on the brand
+   ground, and "Opret konto / Log ind" is a segmented switch: one pill,
+   the side you are on lifted in white.
+   ============================================================ */
+
+.content {
+  @media (max-width: 767px) {
+    flex-grow: 0;
+    margin: 16px 12px 28px 12px;
+    padding: 20px 20px 28px 20px;
+
+    border-radius: var(--radiusSheet);
+    box-shadow: var(--shadowLifted);
+  }
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+
+  background-color: var(--colorSagePale);
+  overflow: visible;
+  border-radius: 999px;
+
+  & > div {
+    margin-left: 0;
+  }
+
+  & a {
+    height: auto;
+    padding: 0;
+    border-bottom: none;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: none;
+    }
+  }
+}
+
+.tabs .tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 12px;
+
+  font-family: var(--fontFamily);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0;
+  color: var(--colorGrey600);
+  text-align: center;
+
+  border-radius: 999px;
+  transition: background-color 0.2s var(--easeOut), color 0.2s var(--easeOut),
+    box-shadow 0.2s var(--easeOut);
+
+  @media (--viewportMedium) {
+    min-height: 48px;
+    font-size: 16px;
+  }
+}
+
+.tabs a:hover .tab {
+  color: var(--colorForest);
+}
+
+/* The side you are on: h1 is the selected tab's heading */
+.tabs h1.tab {
+  background-color: var(--colorWhite);
+  color: var(--colorForest);
+  box-shadow: 0 1px 2px rgba(10, 40, 30, 0.08), 0 2px 8px rgba(10, 40, 30, 0.08);
+}
+
+.loginForm,
+.signupForm {
+  @media (max-width: 767px) {
+    flex-basis: auto;
+    margin-top: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tabs .tab {
+    transition: none;
+  }
+}
+
+/* The tab bar's own root scrolls sideways; here that only clipped the
+   lifted pill's shadow and drew a scrollbar beside it */
+.content .tabs {
+  overflow: visible;
 }

@@ -30,3 +30,32 @@
 .recoveryLinkInfo {
   composes: marketplaceModalHelperText from global;
 }
+
+/* FAIRWAY: "glemt adgangskode" sits under the password it is about, left
+   aligned with the fields, and the button follows closely instead of
+   60px further down. */
+.bottomWrapper {
+  margin-top: 16px;
+  text-align: left;
+
+  @media (--viewportMedium) {
+    margin-top: 32px;
+  }
+}
+
+.bottomWrapperText {
+  margin-top: 0;
+  padding-bottom: 20px;
+}
+
+.recoveryLinkInfo {
+  line-height: 20px;
+}
+
+/* A link that looks like the sentence around it is not found on a phone */
+.recoveryLink {
+  color: var(--colorForest);
+  font-weight: var(--fontWeightSemiBold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

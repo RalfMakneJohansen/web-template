@@ -59,3 +59,23 @@
     padding: 8px 0;
   }
 }
+
+/* FAIRWAY: first and last name get the same width — at a third, "Fornavn"
+   was barely wider than its placeholder. The gap before the terms and the
+   button was 60px of nothing on a phone. */
+.firstNameRoot,
+.lastNameRoot {
+  width: calc(50% - 6px);
+}
+
+.name {
+  gap: 12px;
+}
+
+.bottomWrapper {
+  margin-top: 28px;
+
+  @media (--viewportMedium) {
+    margin-top: 48px;
+  }
+}
