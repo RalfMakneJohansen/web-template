@@ -24,7 +24,8 @@ const SectionBuilder = loadable(
   }
 );
 
-import FallbackPage, { fallbackSections } from './FallbackPage';
+import FallbackPage from './FallbackPage';
+import { fairwayTermsSections } from './fairwayTerms';
 import { ASSET_NAME } from './TermsOfServicePage.duck';
 
 // This "content-only" component can be used in modals etc.
@@ -44,8 +45,8 @@ const TermsOfServiceContent = props => {
 
   const CustomHeading1 = props => <H1 as="h2" {...props} />;
 
-  const hasData = error === null && data;
-  const sectionsData = hasData ? data : fallbackSections;
+  // FAIRWAY: our own text, not the Console asset (still Sharetribe's placeholder)
+  const sectionsData = fairwayTermsSections;
 
   return (
     <SectionBuilder
@@ -67,7 +68,8 @@ const TermsOfServicePageComponent = props => {
 
   return (
     <PageBuilder
-      pageAssetsData={pageAssetsData?.[camelize(ASSET_NAME)]?.data}
+      // FAIRWAY: our own text, not the Console asset (still Sharetribe's placeholder)
+      pageAssetsData={fairwayTermsSections}
       inProgress={inProgress}
       error={error}
       fallbackPage={<FallbackPage />}

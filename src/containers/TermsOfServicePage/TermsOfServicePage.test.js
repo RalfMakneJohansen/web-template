@@ -8,19 +8,25 @@ import { TermsOfServicePageComponent } from './TermsOfServicePage';
 const { waitFor } = testingLibrary;
 
 describe('TermsOfServicePage', () => {
-  it('renders the Fallback page on error', async () => {
+  // FAIRWAY: the page renders our own text, so a failed Console fetch no
+  // longer leaves the visitor on an error page
+  it('renders the Fairway text even when the asset fetch fails', async () => {
     const errorMessage = 'TermsOfServicePage failed';
     let e = new Error(errorMessage);
     e.type = 'error';
     e.name = 'Test';
 
-    const { getByText } = render(
+    const { getByText, getByRole } = render(
       <TermsOfServicePageComponent pageAssetsData={null} inProgress={false} error={e} />
     );
 
-    await waitFor(() => {
-      expect(getByText('Terms of Service')).toBeInTheDocument();
-      expect(getByText('An error occurred')).toBeInTheDocument();
-    });
-  });
+    // The full text is long, so give the markdown time to render
+    await waitFor(
+      () => {
+        expect(getByRole('heading', { level: 1, name: 'Handelsbetingelser' })).toBeInTheDocument();
+        expect(getByText('5. Betaling og køberbeskyttelse')).toBeInTheDocument();
+      },
+      { timeout: 20000 }
+    );
+  }, 30000);
 });

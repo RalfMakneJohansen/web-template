@@ -13,7 +13,8 @@ import { fetchFeaturedListings } from '../../ducks/featuredListings.duck';
 import { getListingsById } from '../../ducks/marketplaceData.duck';
 
 import { H1 } from '../PageBuilder/Primitives/Heading';
-import FallbackPage, { fallbackSections } from './FallbackPage';
+import FallbackPage from './FallbackPage';
+import { fairwayPrivacySections } from './fairwayPrivacy';
 import { ASSET_NAME } from './PrivacyPolicyPage.duck';
 
 const PageBuilder = loadable(() =>
@@ -43,8 +44,8 @@ const PrivacyPolicyContent = props => {
 
   const CustomHeading1 = props => <H1 as="h2" {...props} />;
 
-  const hasData = error === null && data;
-  const sectionsData = hasData ? data : fallbackSections;
+  // FAIRWAY: our own text, not the Console asset (still Sharetribe's placeholder)
+  const sectionsData = fairwayPrivacySections;
 
   return (
     <SectionBuilder
@@ -66,7 +67,8 @@ const PrivacyPolicyPageComponent = props => {
 
   return (
     <PageBuilder
-      pageAssetsData={pageAssetsData?.[camelize(ASSET_NAME)]?.data}
+      // FAIRWAY: our own text, not the Console asset (still Sharetribe's placeholder)
+      pageAssetsData={fairwayPrivacySections}
       inProgress={inProgress}
       error={error}
       fallbackPage={<FallbackPage />}
