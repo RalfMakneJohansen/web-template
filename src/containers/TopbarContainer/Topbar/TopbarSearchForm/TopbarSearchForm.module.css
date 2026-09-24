@@ -222,3 +222,9 @@
     stroke-width: 2px;
   }
 }
+
+/* FAIRWAY: the phone search field is a tinted pill (Topbar.module.css);
+   the icon's white box showed as a stripe inside it */
+.mobileIcon {
+  background-color: transparent;
+}

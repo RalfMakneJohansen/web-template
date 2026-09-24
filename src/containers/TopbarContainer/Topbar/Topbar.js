@@ -17,6 +17,7 @@ import {
   LinkedLogo,
   Modal,
   ModalMissingInformation,
+  NamedLink,
 } from '../../../components';
 import { getSearchPageResourceLocatorStringParams } from '../../SearchPage/SearchPage.shared';
 
@@ -419,9 +420,26 @@ const TopbarComponent = props => {
               isMobile
               appConfig={config}
             />
-            <p className={css.mobileHelp}>
-              <FormattedMessage id="Topbar.mobileSearchHelp" />
-            </p>
+            {/* FAIRWAY: somewhere to go without typing — the categories as
+                chips, the way an app's search screen opens */}
+            <div className={css.mobileHelp}>
+              <p className={css.mobileHelpHeading}>
+                <FormattedMessage id="Topbar.mobileSearchHelp" />
+              </p>
+              <ul className={css.mobileSearchChips}>
+                {(config.categoryConfiguration?.categories || []).map(category => (
+                  <li key={category.id}>
+                    <NamedLink
+                      className={css.mobileSearchChip}
+                      name="SearchPage"
+                      to={{ search: `?pub_categoryLevel1=${category.id}` }}
+                    >
+                      {category.name}
+                    </NamedLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ) : null}
       </Modal>
