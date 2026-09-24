@@ -2,9 +2,17 @@ import React from 'react';
 import '@testing-library/jest-dom';
 
 import { renderWithProviders as render, testingLibrary } from '../../../../util/testHelpers';
-import { createOwnListing } from '../../../../util/testData';
+import { createCurrentUser, createOwnListing } from '../../../../util/testData';
+import { updateProfile } from '../../../ProfileSettingsPage/ProfileSettingsPage.duck';
 
+import { normalisePhone } from '../../../../util/fairwayContact';
 import EditListingShippingPanel from './EditListingShippingPanel';
+
+// The sender address is saved on the seller's profile through this thunk.
+// Stubbed so the tests do not need an SDK; each test sees the call it caused.
+jest.mock('../../../ProfileSettingsPage/ProfileSettingsPage.duck', () => ({
+  updateProfile: jest.fn(),
+}));
 
 const { screen, userEvent, waitFor } = testingLibrary;
 
@@ -14,7 +22,33 @@ const UpdatePageTitle = () => null;
 // FAIRWAY: the shipping step is the only place a seller answers shipment_type,
 // and the payload it submits is what the box-and-label automation and the
 // line-item calculation both read. These tests pin that payload.
+// A seller who has shipped before: the sender address is on their profile
+const sellerWithSender = createCurrentUser('seller', {
+  profile: {
+    firstName: 'Mette',
+    lastName: 'Jensen',
+    displayName: 'Mette J',
+    abbreviatedName: 'MJ',
+    protectedData: {
+      phoneNumber: '+45 12 34 56 78',
+      senderAddress: {
+        name: 'Mette Jensen',
+        line1: 'Vejnavn 12',
+        postalCode: '2100',
+        city: 'København Ø',
+        country: 'DK',
+      },
+    },
+  },
+});
+const withSender = { initialState: { user: { currentUser: sellerWithSender } } };
+
 describe('EditListingShippingPanel', () => {
+  // The project resets mock implementations between tests, so set it each time
+  beforeEach(() => {
+    updateProfile.mockImplementation(() => () => Promise.resolve({ payload: {} }));
+  });
+
   const panelProps = (listing, overrides = {}) => ({
     listing,
     disabled: false,
@@ -62,7 +96,7 @@ describe('EditListingShippingPanel', () => {
 
   it('enables submit once a shipment type is picked', async () => {
     const user = userEvent.setup();
-    render(<EditListingShippingPanel {...panelProps(publishedListing())} />);
+    render(<EditListingShippingPanel {...panelProps(publishedListing())} />, withSender);
 
     await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' }));
 
@@ -75,7 +109,10 @@ describe('EditListingShippingPanel', () => {
   it('submits the shipment type together with the derived delivery values', async () => {
     const user = userEvent.setup();
     const onSubmit = jest.fn();
-    render(<EditListingShippingPanel {...panelProps(publishedListing(), { onSubmit })} />);
+    render(
+      <EditListingShippingPanel {...panelProps(publishedListing(), { onSubmit })} />,
+      withSender
+    );
 
     await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' }));
     await user.click(screen.getByRole('button', { name: 'Save shipping' }));
@@ -93,6 +130,63 @@ describe('EditListingShippingPanel', () => {
         shippingPriceInSubunitsAdditionalItems: 0,
       },
     });
+
+    // The sender address is stored on the profile before the listing moves on
+    expect(updateProfile).toHaveBeenCalledWith({
+      protectedData: {
+        senderAddress: {
+          name: 'Mette Jensen',
+          line1: 'Vejnavn 12',
+          postalCode: '2100',
+          city: 'København Ø',
+          country: 'DK',
+        },
+        phoneNumber: '+45 12 34 56 78',
+      },
+    });
+  });
+
+  it('asks a first-time seller for a sender address before moving on', async () => {
+    const user = userEvent.setup();
+    const onSubmit = jest.fn();
+    render(<EditListingShippingPanel {...panelProps(publishedListing(), { onSubmit })} />);
+
+    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' }));
+
+    // Shipping chosen, but no address yet: the step cannot be finished
+    expect(screen.getByRole('button', { name: 'Save shipping' })).toBeDisabled();
+
+    await user.type(screen.getByLabelText('EditListingShippingPanel.senderName'), 'Ole Hansen');
+    await user.type(screen.getByLabelText('EditListingShippingPanel.senderLine1'), 'Gade 3');
+    await user.type(screen.getByLabelText('EditListingShippingPanel.senderPostal'), '8000');
+    await user.type(screen.getByLabelText('EditListingShippingPanel.senderCity'), 'Aarhus C');
+    await user.type(screen.getByLabelText('EditListingShippingPanel.senderPhone'), '87654321');
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'Save shipping' })).not.toBeDisabled();
+    });
+    await user.click(screen.getByRole('button', { name: 'Save shipping' }));
+
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
+    expect(updateProfile).toHaveBeenCalledWith({
+      protectedData: {
+        senderAddress: {
+          name: 'Ole Hansen',
+          line1: 'Gade 3',
+          postalCode: '8000',
+          city: 'Aarhus C',
+          country: 'DK',
+        },
+        phoneNumber: '+45 87 65 43 21',
+      },
+    });
+  });
+
+  it('writes every accepted phone format the same way', () => {
+    expect(normalisePhone('12345678')).toBe('+45 12 34 56 78');
+    expect(normalisePhone('12 34 56 78')).toBe('+45 12 34 56 78');
+    expect(normalisePhone('+4512345678')).toBe('+45 12 34 56 78');
+    expect(normalisePhone('45 12 34 56 78')).toBe('+45 12 34 56 78');
   });
 
   it('preselects the choice already stored on the listing', () => {

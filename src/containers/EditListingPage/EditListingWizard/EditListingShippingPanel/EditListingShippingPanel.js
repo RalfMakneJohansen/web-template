@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import { Form as FinalForm } from 'react-final-form';
 
 import { FormattedMessage, useIntl } from '../../../../util/reactIntl';
 import { LISTING_STATE_DRAFT } from '../../../../util/types';
-import { required } from '../../../../util/validators';
+import { composeValidators, required } from '../../../../util/validators';
+import {
+  DANISH_PHONE,
+  DANISH_POSTCODE,
+  matches,
+  normalisePhone,
+} from '../../../../util/fairwayContact';
+import { updateProfile } from '../../../ProfileSettingsPage/ProfileSettingsPage.duck';
 
-import { Button, FieldRadioButton, Form, H3, ListingLink } from '../../../../components';
+import {
+  Button,
+  FieldRadioButton,
+  FieldTextInput,
+  Form,
+  H3,
+  ListingLink,
+} from '../../../../components';
 
 import css from './EditListingShippingPanel.module.css';
 
@@ -47,6 +62,34 @@ const deliveryValues = {
   shippingPriceInSubunitsAdditionalItems: 0,
 };
 
+// FAIRWAY: where the parcel is collected from.
+//
+// A freight label needs a sender: name, street address, postcode, town and a
+// phone number the carrier can text. Nothing in the template collects that
+// from a seller, so the first sale would have reached Shipmondo without a
+// sender address. It is asked for here, on the step that is about shipping,
+// and saved on the seller's own profile (protectedData, which only the seller
+// and our backend can read) rather than on the listing — one address for all
+// of their listings, filled in once and prefilled after that.
+//
+// Stored as protectedData.senderAddress plus the template's standard
+// protectedData.phoneNumber, which the contact details page also edits.
+// The postcode and phone rules are shared with checkout (util/fairwayContact).
+
+const senderInitialValues = currentUser => {
+  const protectedData = currentUser?.attributes?.profile?.protectedData || {};
+  const sender = protectedData.senderAddress || {};
+  const { firstName, lastName } = currentUser?.attributes?.profile || {};
+  const fallbackName = [firstName, lastName].filter(Boolean).join(' ');
+  return {
+    senderName: sender.name || fallbackName || undefined,
+    senderLine1: sender.line1,
+    senderPostal: sender.postalCode,
+    senderCity: sender.city,
+    senderPhone: protectedData.phoneNumber,
+  };
+};
+
 const EditListingShippingPanel = props => {
   const {
     className,
@@ -63,6 +106,11 @@ const EditListingShippingPanel = props => {
   } = props;
 
   const intl = useIntl();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(state => state.user?.currentUser);
+  const [senderSaveFailed, setSenderSaveFailed] = useState(false);
+  const [senderSaveInProgress, setSenderSaveInProgress] = useState(false);
+  const msg = id => intl.formatMessage({ id });
   const classes = classNames(rootClassName || css.root, className);
   const isPublished = listing?.id && listing?.attributes?.state !== LISTING_STATE_DRAFT;
   const publicData = listing?.attributes?.publicData || {};
@@ -92,21 +140,58 @@ const EditListingShippingPanel = props => {
       </H3>
 
       <FinalForm
-        initialValues={{ shipment_type: publicData.shipment_type }}
+        initialValues={{
+          shipment_type: publicData.shipment_type,
+          ...senderInitialValues(currentUser),
+        }}
         onSubmit={values => {
           const shipmentType = values.shipment_type;
-          onSubmit({
-            publicData: {
-              shipment_type: shipmentType,
-              ...deliveryValues,
-            },
-          });
+          const saveListing = () =>
+            onSubmit({
+              publicData: {
+                shipment_type: shipmentType,
+                ...deliveryValues,
+              },
+            });
+
+          // The sender goes on the seller's profile first; the listing step
+          // only moves on once the address is safely stored.
+          setSenderSaveFailed(false);
+          setSenderSaveInProgress(true);
+          return Promise.resolve(
+            dispatch(
+              updateProfile({
+                protectedData: {
+                  senderAddress: {
+                    name: values.senderName.trim(),
+                    line1: values.senderLine1.trim(),
+                    postalCode: values.senderPostal.trim(),
+                    city: values.senderCity.trim(),
+                    country: 'DK',
+                  },
+                  phoneNumber: normalisePhone(values.senderPhone),
+                },
+              })
+            )
+          )
+            .then(result => {
+              setSenderSaveInProgress(false);
+              if (result?.error) {
+                setSenderSaveFailed(true);
+                return;
+              }
+              saveListing();
+            })
+            .catch(() => {
+              setSenderSaveInProgress(false);
+              setSenderSaveFailed(true);
+            });
         }}
         render={formRenderProps => {
           const { handleSubmit, invalid, pristine, values, submitFailed } = formRenderProps;
           const { updateListingError, showListingsError } = errors || {};
           const submitReady = (panelUpdated && pristine) || ready;
-          const submitInProgress = updateInProgress;
+          const submitInProgress = updateInProgress || senderSaveInProgress;
           const submitDisabled = invalid || disabled || submitInProgress;
 
           return (
@@ -147,6 +232,84 @@ const EditListingShippingPanel = props => {
                   </div>
                 ))}
               </div>
+
+              <section className={css.sender}>
+                <h2 className={css.senderTitle}>
+                  <FormattedMessage id="EditListingShippingPanel.senderTitle" />
+                </h2>
+                <p className={css.senderHint}>
+                  <FormattedMessage id="EditListingShippingPanel.senderHint" />
+                </p>
+
+                <FieldTextInput
+                  className={css.senderField}
+                  id="senderName"
+                  name="senderName"
+                  type="text"
+                  autoComplete="name"
+                  label={msg('EditListingShippingPanel.senderName')}
+                  validate={required(msg('EditListingShippingPanel.senderNameRequired'))}
+                />
+                <FieldTextInput
+                  className={css.senderField}
+                  id="senderLine1"
+                  name="senderLine1"
+                  type="text"
+                  autoComplete="address-line1"
+                  label={msg('EditListingShippingPanel.senderLine1')}
+                  placeholder={msg('EditListingShippingPanel.senderLine1Placeholder')}
+                  validate={required(msg('EditListingShippingPanel.senderLine1Required'))}
+                />
+                <div className={css.senderRow}>
+                  <FieldTextInput
+                    className={css.senderPostal}
+                    id="senderPostal"
+                    name="senderPostal"
+                    type="text"
+                    inputMode="numeric"
+                    autoComplete="postal-code"
+                    label={msg('EditListingShippingPanel.senderPostal')}
+                    placeholder="2100"
+                    validate={composeValidators(
+                      required(msg('EditListingShippingPanel.senderPostalRequired')),
+                      matches(DANISH_POSTCODE, msg('EditListingShippingPanel.senderPostalInvalid'))
+                    )}
+                  />
+                  <FieldTextInput
+                    className={css.senderCity}
+                    id="senderCity"
+                    name="senderCity"
+                    type="text"
+                    autoComplete="address-level2"
+                    label={msg('EditListingShippingPanel.senderCity')}
+                    placeholder="København Ø"
+                    validate={required(msg('EditListingShippingPanel.senderCityRequired'))}
+                  />
+                </div>
+                <FieldTextInput
+                  className={css.senderField}
+                  id="senderPhone"
+                  name="senderPhone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  label={msg('EditListingShippingPanel.senderPhone')}
+                  placeholder="12 34 56 78"
+                  validate={composeValidators(
+                    required(msg('EditListingShippingPanel.senderPhoneRequired')),
+                    matches(DANISH_PHONE, msg('EditListingShippingPanel.senderPhoneInvalid'))
+                  )}
+                />
+                <p className={css.senderPrivacy}>
+                  <FormattedMessage id="EditListingShippingPanel.senderPrivacy" />
+                </p>
+              </section>
+
+              {senderSaveFailed ? (
+                <p className={css.error}>
+                  <FormattedMessage id="EditListingShippingPanel.senderSaveFailed" />
+                </p>
+              ) : null}
 
               {/* Only after the seller has tried to move on. It used to appear
                   the moment the step loaded, so they were told off for not

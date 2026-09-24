@@ -153,12 +153,15 @@ describe('CheckoutPage', () => {
     const shippingHeading = 'ShippingDetails.title';
     expect(screen.getByRole('heading', { name: shippingHeading })).toBeInTheDocument();
     expect(getTextbox('ShippingDetails.recipientNameLabel')).toBeInTheDocument();
-    expect(getTextbox('ShippingDetails.recipientPhoneNumberLabel')).toBeInTheDocument();
+    // FAIRWAY: a required mobile number, since the carrier texts the recipient
+    expect(getTextbox('ShippingDetails.recipientMobileLabel')).toBeInTheDocument();
     expect(getTextbox('ShippingDetails.addressLine1Label')).toBeInTheDocument();
     expect(getTextbox('ShippingDetails.addressLine2Label')).toBeInTheDocument();
     expect(getTextbox('ShippingDetails.postalCodeLabel')).toBeInTheDocument();
     expect(getTextbox('ShippingDetails.cityLabel')).toBeInTheDocument();
-    expect(getTextbox('ShippingDetails.stateLabel')).toBeInTheDocument();
+    // FAIRWAY: no US-style state line, and the country is fixed to Denmark
+    expect(screen.queryByRole('textbox', { name: 'ShippingDetails.stateLabel' })).toBeNull();
+    expect(screen.getByRole('combobox', { name: 'ShippingDetails.countryLabel' })).toHaveValue('DK');
 
     const paymentHeading = 'StripePaymentForm.paymentHeading';
     expect(screen.getByRole('heading', { name: paymentHeading })).toBeInTheDocument();

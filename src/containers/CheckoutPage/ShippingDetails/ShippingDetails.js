@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { FormattedMessage, intlShape } from '../../../util/reactIntl';
 import * as validators from '../../../util/validators';
-import getCountryCodes from '../../../translations/countryCodes';
+import { DANISH_PHONE, DANISH_POSTCODE, matches } from '../../../util/fairwayContact';
 
 import { FieldSelect, FieldTextInput, Heading } from '../../../components';
 
@@ -30,8 +30,9 @@ const ShippingDetails = props => {
     id: 'ShippingDetails.optionalText',
   });
 
-  // Use the language set in config.localization.locale to get the correct translations of the country names
-  const countryCodes = getCountryCodes(locale);
+  // FAIRWAY: we ship inside Denmark only, at one flat rate. The country is
+  // fixed, the US-style "state" line is gone, and the phone number is required
+  // because the carrier texts the recipient about the parcel.
 
   return (
     <div className={classes}>
@@ -59,15 +60,15 @@ const ShippingDetails = props => {
         name="recipientPhoneNumber"
         disabled={disabled}
         className={css.fieldFullWidth}
-        type="text"
-        autoComplete="shipping phoneNumber"
-        label={intl.formatMessage(
-          { id: 'ShippingDetails.recipientPhoneNumberLabel' },
-          { optionalText: optionalText }
+        type="tel"
+        inputMode="tel"
+        autoComplete="shipping tel"
+        label={intl.formatMessage({ id: 'ShippingDetails.recipientMobileLabel' })}
+        placeholder="12 34 56 78"
+        validate={validators.composeValidators(
+          validators.required(intl.formatMessage({ id: 'ShippingDetails.recipientMobileRequired' })),
+          matches(DANISH_PHONE, intl.formatMessage({ id: 'ShippingDetails.recipientMobileInvalid' }))
         )}
-        placeholder={intl.formatMessage({
-          id: 'ShippingDetails.recipientPhoneNumberPlaceholder',
-        })}
         onUnmount={() => formApi.change('recipientPhoneNumber', undefined)}
       />
       <div className={css.formRow}>
@@ -112,13 +113,15 @@ const ShippingDetails = props => {
           disabled={disabled}
           className={css.field}
           type="text"
+          inputMode="numeric"
           autoComplete="shipping postal-code"
           label={intl.formatMessage({ id: 'ShippingDetails.postalCodeLabel' })}
           placeholder={intl.formatMessage({
             id: 'ShippingDetails.postalCodePlaceholder',
           })}
-          validate={validators.required(
-            intl.formatMessage({ id: 'ShippingDetails.postalCodeRequired' })
+          validate={validators.composeValidators(
+            validators.required(intl.formatMessage({ id: 'ShippingDetails.postalCodeRequired' })),
+            matches(DANISH_POSTCODE, intl.formatMessage({ id: 'ShippingDetails.postalCodeInvalid' }))
           )}
           onUnmount={() => formApi.change('recipientPostal', undefined)}
         />
@@ -136,44 +139,17 @@ const ShippingDetails = props => {
           onUnmount={() => formApi.change('recipientCity', undefined)}
         />
       </div>
-      <div className={css.formRow}>
-        <FieldTextInput
-          id={`${fieldId}.recipientState`}
-          name="recipientState"
-          disabled={disabled}
-          className={css.field}
-          type="text"
-          autoComplete="shipping address-level1"
-          label={intl.formatMessage(
-            { id: 'ShippingDetails.stateLabel' },
-            { optionalText: optionalText }
-          )}
-          placeholder={intl.formatMessage({ id: 'ShippingDetails.statePlaceholder' })}
-          onUnmount={() => formApi.change('recipientState', undefined)}
-        />
-
-        <FieldSelect
-          id={`${fieldId}.recipientCountry`}
-          name="recipientCountry"
-          disabled={disabled}
-          className={css.field}
-          label={intl.formatMessage({ id: 'ShippingDetails.countryLabel' })}
-          validate={validators.required(
-            intl.formatMessage({ id: 'ShippingDetails.countryRequired' })
-          )}
-        >
-          <option disabled value="">
-            {intl.formatMessage({ id: 'ShippingDetails.countryPlaceholder' })}
-          </option>
-          {countryCodes.map(country => {
-            return (
-              <option key={country.code} value={country.code}>
-                {country.name}
-              </option>
-            );
-          })}
-        </FieldSelect>
-      </div>
+      <FieldSelect
+        id={`${fieldId}.recipientCountry`}
+        name="recipientCountry"
+        disabled={disabled}
+        className={css.fieldFullWidth}
+        label={intl.formatMessage({ id: 'ShippingDetails.countryLabel' })}
+        defaultValue="DK"
+        validate={validators.required(intl.formatMessage({ id: 'ShippingDetails.countryRequired' }))}
+      >
+        <option value="DK">Danmark</option>
+      </FieldSelect>
     </div>
   );
 };

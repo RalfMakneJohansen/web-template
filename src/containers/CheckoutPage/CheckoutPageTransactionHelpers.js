@@ -4,6 +4,7 @@ import { ensureStripeCustomer, ensureTransaction } from '../../util/data';
 import { formatMoney } from '../../util/currency';
 import { NEGOTIATION_PROCESS_NAME, resolveLatestProcessName } from '../../transactions/transaction';
 import { storeData } from './CheckoutPageSessionHelpers';
+import { normalisePhone } from '../../util/fairwayContact';
 
 /**
  * Extract relevant transaction type data from listing type
@@ -105,7 +106,8 @@ export const getShippingDetailsMaybe = formValues => {
     ? {
         shippingDetails: {
           name: recipientName,
-          phoneNumber: recipientPhoneNumber,
+          // FAIRWAY: one format for the label service
+          phoneNumber: recipientPhoneNumber ? normalisePhone(recipientPhoneNumber) : undefined,
           address: {
             city: recipientCity,
             country: recipientCountry,
