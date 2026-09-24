@@ -1554,3 +1554,193 @@
 .productItem :global([class*='FairwayListingCard_root']) {
   border-color: transparent;
 }
+
+/* ============================================================
+   FAIRWAY: the app layer
+
+   Same palette, same type, same structure. What changes is how the
+   surfaces behave: a website lays content out in flat bands with rules
+   between things; an app puts it on objects — rounded, slightly raised,
+   each one something you could tap. Three places on this page were still
+   flat text on a ground, and they are the three that get lifted here.
+   ============================================================ */
+
+/* ---- 1. The two promises become two cards ---- */
+
+.offerLine {
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 16px;
+
+  padding: 18px 20px;
+  background-color: var(--colorSagePale);
+  border-radius: var(--radiusCard);
+
+  font-size: 16px;
+  line-height: 23px;
+
+  transition: transform 0.2s var(--easeOut), box-shadow 0.2s var(--easeOut);
+
+  @media (--viewportMedium) {
+    padding: 22px 24px;
+    font-size: 17px;
+    line-height: 25px;
+  }
+}
+
+@media (hover: hover) {
+  .offerLine:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadowRaised);
+  }
+}
+
+/* The icon sits in a white disc, the way an app list row carries its glyph */
+.offerIcon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  background-color: var(--colorWhite);
+  color: var(--colorForest);
+  box-shadow: var(--shadowRest);
+}
+
+/* Label above the line rather than beside it, so a phone gets two clean
+   rows instead of a wrapped sentence */
+.offerCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.offerWho {
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.12em;
+
+  @media (--viewportMedium) {
+    font-size: 14px;
+  }
+}
+
+/* ---- 2. The trust claims become chips ---- */
+
+.trustBarList {
+  gap: 10px;
+
+  @media (--viewportMedium) {
+    gap: 12px;
+  }
+}
+
+.trustBarItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 9px 16px 9px 12px;
+  border-left: none;
+  border: 1px solid rgba(237, 232, 220, 0.16);
+  border-radius: var(--radiusPill);
+
+  /* frosted: a lighter pane over the green rather than a line on it */
+  background-color: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(6px);
+
+  color: var(--colorOffWhite);
+}
+
+.trustBarItem::before {
+  content: '';
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+
+  background-color: var(--colorSage);
+  /* a tick cut out of the sage disc */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23fff'/%3E%3Cpath d='m4.6 8.2 2.2 2.2 4.6-4.6' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='16' height='16' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cdefs%3E%3Cmask id='m'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23fff'/%3E%3Cpath d='m4.6 8.2 2.2 2.2 4.6-4.6' stroke='%23000' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/mask%3E%3C/defs%3E%3Crect width='16' height='16' fill='%23fff' mask='url(%23m)'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/* ---- 3. The hero photographs become floating cards ---- */
+
+.collage {
+  gap: 10px;
+  padding: 0 var(--pageGutter) 28px var(--pageGutter);
+  overflow: visible;
+
+  @media (--viewportLarge) {
+    padding: 36px 36px 36px 0;
+  }
+}
+
+.collagePanel {
+  border-radius: var(--radiusCard);
+  box-shadow: 0 2px 6px rgba(8, 24, 16, 0.25), 0 14px 30px rgba(8, 24, 16, 0.28);
+  transition: transform 0.35s var(--easeOut);
+}
+
+/* A slight stagger, so the row reads as a hand of cards rather than a fence */
+.collagePanel:nth-child(even) {
+  transform: translateY(14px);
+}
+
+@media (hover: hover) {
+  .collagePanel:hover {
+    transform: translateY(-4px);
+  }
+  .collagePanel:nth-child(even):hover {
+    transform: translateY(10px);
+  }
+}
+
+/* The edge fade was for panels running flush into the text column; with
+   rounded, spaced cards it would only smudge the first one. */
+.collageScrim {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .offerLine,
+  .collagePanel {
+    transition: none;
+  }
+  .offerLine:hover,
+  .collagePanel:hover,
+  .collagePanel:nth-child(even),
+  .collagePanel:nth-child(even):hover {
+    transform: none;
+  }
+}
+
+/* sanitize.css gives every svg fill: currentColor, which turns these line
+   icons into solid blobs; the attribute alone cannot win against it. */
+.offerIcon svg {
+  fill: none;
+}
+
+/* Room between the second card and the wave that cuts into the band below */
+.offerInner {
+  padding-bottom: 36px;
+
+  @media (--viewportMedium) {
+    padding-bottom: 44px;
+  }
+}
+
+/* The photo cards' shadows reach below the hero, and the trust band that
+   follows painted over them and cut them off in a hard horizontal line.
+   Lifting the media above the band lets the shadow fall onto it. */
+.heroMedia {
+  z-index: 1;
+}

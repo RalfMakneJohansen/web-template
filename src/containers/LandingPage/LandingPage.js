@@ -324,12 +324,28 @@ export const LandingPageComponent = props => {
         <section className={css.offer}>
           <div className={css.offerInner}>
             <p className={css.offerLine}>
-              <span className={css.offerWho}>Sælger du</span>
-              vi sender dig en kasse
+              <span className={css.offerIcon} aria-hidden={true}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5v-9Z" />
+                  <path d="m3.5 7.5 8.5 4.5 8.5-4.5M12 12v9" />
+                </svg>
+              </span>
+              <span className={css.offerCopy}>
+                <span className={css.offerWho}>Sælger du</span>
+                vi sender dig en kasse
+              </span>
             </p>
             <p className={css.offerLine}>
-              <span className={css.offerWho}>Køber du</span>
-              vi sikrer dig med køberbeskyttelse
+              <span className={css.offerIcon} aria-hidden={true}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 3 5 5.8v5.5c0 4.3 3 8 7 9.7 4-1.7 7-5.4 7-9.7V5.8L12 3Z" />
+                  <path d="m9 12.2 2.2 2.2L15.5 10" />
+                </svg>
+              </span>
+              <span className={css.offerCopy}>
+                <span className={css.offerWho}>Køber du</span>
+                vi sikrer dig med køberbeskyttelse
+              </span>
             </p>
           </div>
         </section>
