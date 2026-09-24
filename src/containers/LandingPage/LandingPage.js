@@ -91,14 +91,6 @@ const THREAD = [
   { from: 'seller', text: 'Ja, det kan jeg godt.' },
 ];
 
-// Buyer protection in the plainest words we have. The same three lines run on
-// the listing page, so a buyer meets one promise rather than three wordings.
-const TRUST_ITEMS = [
-  'Pengene holdes hos Fairway',
-  'Forsikret fragt til døren',
-  '48 timer til at godkende',
-];
-
 const COURSE_IMAGES = [course1, course2, course3, course4];
 
 // The whole trade, from listing to payout, with Fairway in the middle.
@@ -306,18 +298,9 @@ export const LandingPageComponent = props => {
           </div>
         </section>
 
+        {/* The hero's wave into the page. The three trust chips that sat here
+            were removed; the same promises run in the ticker above the nav. */}
         <div className={css.trustBar}>
-          <div className={css.trustBarInner}>
-            <span className={css.trustBarLabel}>Tryghed er indbygget</span>
-            <ul className={css.trustBarList}>
-              {TRUST_ITEMS.map(item => (
-                <li key={item} className={css.trustBarItem}>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <SectionWave position="bottom" />
         </div>
 
