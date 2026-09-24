@@ -26,6 +26,7 @@ import tileSell from '../../assets/tiles/tile-sell.jpg';
 
 import FooterContainer from '../FooterContainer/FooterContainer';
 import BoxWalkthrough from './BoxWalkthrough';
+import DealerCompare from './DealerCompare';
 import ShippingChoice from './ShippingChoice';
 import HeroCollage from './HeroCollage';
 import RotatingHeadline from './RotatingHeadline';
@@ -425,6 +426,9 @@ export const LandingPageComponent = props => {
             </span>
           </NamedLink>
         </section>
+
+        {/* Dealer trade-in against a sale here, as money in a bar */}
+        <DealerCompare />
 
         <section className={css.community}>
           <SectionWave position="top" />
