@@ -68,24 +68,20 @@ Two ways forward. Either is fine; do not do both.
 they are and only become searchable. One command each, then I flip `FILTER_OFF`
 to on in `configListing.js`:
 
-flex-cli is not installed on this machine, so the first two lines are part of
-the job. The marketplace id below is Fairway **Dev**, not Live.
+flex-cli 1.16 is installed. Log in yourself with your own API key, then run the
+script with the marketplace's **ident** — the short name in the Console URL
+(`console.sharetribe.com/o/<organisation>/m/<ident>/…`, for example
+`fairway-dev`). Not the UUID: `-m` takes the ident. Dev first, then Live.
 
 ```bash
-npm install -g flex-cli
 flex-cli login
-
-flex-cli search set --key pub_condition      --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_dexterity      --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_shaft_flex     --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_shaft_material --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_loft           --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_wedge_loft     --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_putter_type    --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_putter_length  --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_shoe_size      --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
-flex-cli search set --key pub_shipment_type  --type enum --scope public -m 6a8d8ee7-27af-4c85-b3d9-07860d28cbe1
+bash scripts/fairway-search-indexes.sh <marketplace-ident>
 ```
+
+The script sets the ten enum filters and text indexes on `brand` and `model`.
+Keys go in without the `pub_` prefix (`--key condition --scope public`); an
+earlier version of this page had `--key pub_condition`, which would have
+created `pub_pub_condition`.
 
 `pub_categoryLevel1` is deliberately not in that list: Sharetribe indexes it
 itself as part of the category feature, so creating the nine categories in
@@ -100,7 +96,9 @@ no change in this repo can reach it: the filtering happens on Sharetribe's
 servers, not in the app.
 
 `brand` and `model` are free text, so they are found by the keyword search
-rather than by a filter. They need no index.
+rather than by a filter. Keyword search only reads extended data that has a
+`text` schema, so the script gives them one: a search for "Vokey" then finds
+the wedge even when the seller left the model out of the title.
 
 **(b) Recreate them in Console.** More work, but then an operator can change
 options without a developer. If you go this way the keys, types and options
