@@ -334,3 +334,35 @@
     margin-bottom: 24px;
   }
 }
+
+/* ============================================================
+   FAIRWAY: the seller's listings in the same grid as search
+   The profile used the template card one to a row on a phone — a
+   full-width photograph per listing and a green price — while search and
+   the front page use the Fairway card two to a row. Same card, same grid.
+   ============================================================ */
+
+.listings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+  padding: 0;
+  list-style: none;
+
+  @media (--viewportMedium) {
+    gap: 20px;
+  }
+
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.listing,
+.listing:first-of-type,
+.listing:nth-of-type(odd),
+.listing:nth-of-type(even) {
+  width: auto;
+  margin: 0;
+}

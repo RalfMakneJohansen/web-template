@@ -38,7 +38,7 @@ import {
   Page,
   AvatarLarge,
   NamedLink,
-  ListingCard,
+  FairwayListingCard,
   Reviews,
   ButtonTabNavHorizontal,
   LayoutSideNavigation,
@@ -51,6 +51,9 @@ import FooterContainer from '../../containers/FooterContainer/FooterContainer';
 import NotFoundPage from '../../containers/NotFoundPage/NotFoundPage';
 
 import css from './ProfilePage.module.css';
+
+// FAIRWAY: two cards a row on a phone, three from desktop widths
+const PROFILE_CARD_SIZES = '(max-width: 1023px) 50vw, 280px';
 
 const MAX_MOBILE_SCREEN_WIDTH = 768;
 const MIN_LENGTH_FOR_LONG_WORDS = 20;
@@ -312,7 +315,7 @@ export const MainContent = props => {
           <ul className={css.listings}>
             {listings.map(l => (
               <li className={css.listing} key={l.id.uuid}>
-                <ListingCard listing={l} showAuthorInfo={false} />
+                <FairwayListingCard listing={l} renderSizes={PROFILE_CARD_SIZES} />
               </li>
             ))}
           </ul>

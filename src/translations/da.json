@@ -1013,7 +1013,7 @@
   "ProfilePage.detailsTitle": "Detaljer",
   "ProfilePage.editProfileLinkDesktop": "Rediger profil",
   "ProfilePage.editProfileLinkMobile": "Rediger",
-  "ProfilePage.listingsTitle": "Mine annoncer ({count})",
+  "ProfilePage.listingsTitle": "Annoncer ({count})",
   "ProfilePage.loadingDataFailed": "Ups, noget gik galt. Prøv igen.",
   "ProfilePage.loadingReviewsFailed": "Det lykkedes ikke at indlæse anmeldelser.",
   "ProfilePage.mobileHeading": "{name}",

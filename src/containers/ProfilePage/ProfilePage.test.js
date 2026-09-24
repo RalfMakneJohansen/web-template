@@ -166,7 +166,8 @@ describe('ProfilePage', () => {
 
     expect(screen.getByText('ProfilePage.listingsTitle')).toBeInTheDocument();
     expect(screen.getByText('l1 title')).toBeInTheDocument();
-    expect(screen.getByText('ListingCard.price')).toBeInTheDocument();
+    // The Fairway card links the whole card to the listing
+    expect(screen.getByText('l1 title').closest('a')).toBeInTheDocument();
   });
 
   it('Check that review information is shown correctly', async () => {
