@@ -1742,9 +1742,13 @@ const mergeMapConfig = (hostedMapConfig, defaultMapConfig) => {
 
   const hasApiAccess =
     mapProviderPicked === 'googleMaps' ? !!googleMapsAPIKeyPicked : !!mapboxAccessTokenPicked;
-  if (!hasApiAccess && !isTestEnvironment) {
-    console.error(
-      `The access tokens are not in place for the selected map provider (${mapProviderPicked})`
+  // FAIRWAY: maps are optional here — search is by keyword and listings carry
+  // no location — so a missing token is not an error. It was logged as one
+  // on every page load, in every visitor's console. Kept as a development
+  // warning, in case a map is added later.
+  if (!hasApiAccess && !isTestEnvironment && process.env.NODE_ENV !== 'production') {
+    console.warn(
+      `No access token for the selected map provider (${mapProviderPicked}). Maps will not load.`
     );
   }
 

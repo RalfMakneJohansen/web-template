@@ -1364,3 +1364,13 @@
     margin-right: 24px;
   }
 }
+
+/* FAIRWAY: delivery under the title on phones; the order panel has it on
+   desktop, where the panel is always in view */
+.deliveryInfoMobile {
+  margin: 12px 24px 12px 24px;
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}

@@ -15,6 +15,7 @@ import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 
 // Shared components
 import {
+  DeliveryInfo,
   H2,
   H3,
   H4,
@@ -329,6 +330,9 @@ export const ListingPageComponent = props => {
                 </H3>
               )}
             </div>
+            {/* FAIRWAY: on a phone the order panel only opens on "Køb nu", so how
+                and how fast the item arrives is shown here, under the title */}
+            <DeliveryInfo className={css.deliveryInfoMobile} publicData={publicData} />
             {showDescription && <SectionText text={description} showAsIngress />}
 
             {/* FAIRWAY: one specification table instead of a details list plus
