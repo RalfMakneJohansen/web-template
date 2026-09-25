@@ -54,8 +54,10 @@
   /* Antique brass: the call-to-action colour, and nothing else. Green and
      gold is the oldest pairing in the game — it sits on the deep forest
      without shouting, and it reads on white too. */
-  --colorCoral: #8f6a2b;
-  --colorCoralDark: #745521;
+  /* FAIRWAY: the last of the brass. Every action button is Fairway green;
+     the dark step is the hover. */
+  --colorCoral: #0f6e56;
+  --colorCoralDark: #0a4f3d;
   --colorCoralPale: #f4eedf;
 
   /* Kept as aliases so older rules resolve; both point at the green accent */
@@ -125,7 +127,7 @@
    */
   --colorPrimaryButton: var(--colorCoral);
   --colorPrimaryButtonDark: var(--colorCoralDark);
-  --colorPrimaryButtonLight: #f58170;
+  --colorPrimaryButtonLight: #14876a;
 
   --colorPrimaryButtonText: var(--colorPaper);
 
