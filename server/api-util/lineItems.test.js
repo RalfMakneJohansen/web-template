@@ -901,4 +901,63 @@ describe('transactionLineItems', () => {
       expect(Number(panelMatch[1])).toBe(Number(serverMatch[1]));
     });
   });
+
+  // FAIRWAY: a seller who asks for a Fairway box pays 59 kr for it, taken from
+  // the payout at the sale. The buyer's total must not change.
+  describe('Fairway box fee', () => {
+    const listing = (price, shipment_type) => ({
+      attributes: {
+        price: new Money(price, 'DKK'),
+        publicData: { unitType: 'item', priceVariationsEnabled: false, shipment_type },
+      },
+    });
+    const order = deliveryMethod => ({
+      stockReservationQuantity: 1,
+      deliveryMethod,
+      currency: 'DKK',
+    });
+    const boxItem = items => items.find(i => i.code === 'line-item/fairway-box');
+
+    it('takes 59 kr from the seller when the listing ships in a Fairway box', () => {
+      const result = transactionLineItems(listing(150000, 'box'), order('shipping'), null, null);
+
+      expect(boxItem(result)).toEqual({
+        code: 'line-item/fairway-box',
+        unitPrice: new Money(-5900, 'DKK'),
+        quantity: 1,
+        includeFor: ['provider'],
+      });
+    });
+
+    it('does not charge sellers who pack in their own box, or for pickup', () => {
+      const own = transactionLineItems(listing(150000, 'own'), order('shipping'), null, null);
+      const pickup = transactionLineItems(listing(150000, 'box'), order('pickup'), null, null);
+
+      expect(boxItem(own)).toBeUndefined();
+      expect(boxItem(pickup)).toBeUndefined();
+    });
+
+    it('never takes more than the price, so the payout stays at zero or above', () => {
+      const result = transactionLineItems(listing(3000, 'box'), order('shipping'), null, null);
+
+      expect(boxItem(result).unitPrice).toEqual(new Money(-3000, 'DKK'));
+    });
+
+    it('pins the server box fee to BOX_FEE_SUBUNITS in the client fee helper', () => {
+      const fs = require('fs');
+      const path = require('path');
+
+      const clientSource = fs.readFileSync(
+        path.join(__dirname, '../../src/util/fairwayFees.js'),
+        'utf8'
+      );
+      const clientMatch = clientSource.match(/export const BOX_FEE_SUBUNITS = (\d+);/);
+      const serverSource = fs.readFileSync(path.join(__dirname, 'lineItems.js'), 'utf8');
+      const serverMatch = serverSource.match(/FAIRWAY_BOX_FEE = \{[^}]*subunits:\s*(\d+)/);
+
+      expect(clientMatch).not.toBeNull();
+      expect(serverMatch).not.toBeNull();
+      expect(Number(clientMatch[1])).toBe(Number(serverMatch[1]));
+    });
+  });
 });

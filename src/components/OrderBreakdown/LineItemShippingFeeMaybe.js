@@ -15,10 +15,15 @@ import css from './OrderBreakdown.module.css';
  * @returns {JSX.Element}
  */
 const LineItemShippingFeeMaybe = props => {
-  const { lineItems, intl } = props;
+  const { lineItems, userRole, intl } = props;
 
+  // FAIRWAY: freight is paid by the buyer and kept by Fairway for the label, so
+  // it is customer-only and must not show in the seller's breakdown.
   const shippingFeeLineItem = lineItems.find(
-    item => item.code === LINE_ITEM_SHIPPING_FEE && !item.reversal
+    item =>
+      item.code === LINE_ITEM_SHIPPING_FEE &&
+      !item.reversal &&
+      (!userRole || !item.includeFor || item.includeFor.includes(userRole))
   );
 
   return shippingFeeLineItem ? (

@@ -43,7 +43,7 @@ const DEALER_POINTS = [
 const FAIRWAY_POINTS = [
   { good: true, text: 'Du sætter selv prisen' },
   { good: true, text: 'Pengene går ind på din konto' },
-  { good: true, text: 'Gratis kasse, når varen er solgt' },
+  { good: true, text: 'Betalt fragtlabel, når varen er solgt' },
   { good: true, text: '0 kr. i gebyr for dig som sælger' },
 ];
 

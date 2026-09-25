@@ -40,10 +40,10 @@ Fairway er en platform, der forbinder købere og sælgere. Købsaftalen om en va
 - Kopivarer, stjålne varer og varer, der ikke er golfudstyr, må ikke sælges.
 - Du sætter selv prisen. Når en køber har betalt, er du forpligtet til at sælge varen til den aftalte pris.
 - For at modtage penge skal du oprette en udbetalingskonto hos vores betalingspartner Stripe og gennemføre deres identitetskontrol.
-- Du vælger, hvordan varen kommer til køber: Du sender den i din egen kasse, du får tilsendt en kasse fra Fairway, eller køber henter den hos dig. Kasse og fragtlabel er gratis for dig.
+- Du vælger, hvordan varen kommer til køber: Du sender den i din egen kasse, du får tilsendt en kasse fra Fairway, eller køber henter den hos dig. Sender du varen, får du en betalt fragtlabel eller QR-kode og afleverer pakken i en pakkeshop. Fragtlabelen er gratis for dig. Vælger du en kasse fra Fairway, koster den 59 kr., som trækkes fra din udbetaling, når varen er solgt.
 - Sender du varen, skal du pakke den forsvarligt og sende den hurtigst muligt og senest inden for 14 dage efter købet.
 - Ved afhentning aftaler I tid og sted i beskederne på ordren. Betalingen går stadig gennem Fairway.
-- Det koster ikke noget at oprette annoncer eller at sælge på Fairway.
+- Det koster ikke noget at oprette annoncer eller at sælge på Fairway. Den eneste udgift er kassen, hvis du vælger at få en tilsendt.
 
 ## 4. Når du køber
 

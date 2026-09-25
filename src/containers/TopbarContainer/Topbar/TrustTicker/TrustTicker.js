@@ -19,7 +19,7 @@ const CLAIMS = [
   'Pengene holdes hos Fairway til du har godkendt varen',
   'Forsikret fragt med track & trace',
   '48 timers inspektion',
-  'Gratis kasse til sælger',
+  'Fragtlabel betalt for sælger',
 ];
 
 const Marks = props => (

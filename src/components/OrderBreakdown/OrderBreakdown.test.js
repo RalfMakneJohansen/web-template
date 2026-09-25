@@ -229,4 +229,50 @@ describe('OrderBreakdown', () => {
     const totalPayIn = within(providerTotal.parentNode.parentNode);
     expect(totalPayIn.getByText('18')).toBeInTheDocument();
   });
+
+  // FAIRWAY: freight is the buyer's and Fairway keeps it for the label, and a
+  // seller who asked for a box pays 59 kr for it out of the payout.
+  it('shows the seller the box deduction but not the buyer freight', () => {
+    render(
+      <OrderBreakdownComponent
+        userRole="provider"
+        currency="DKK"
+        marketplaceName={marketplaceName}
+        transaction={exampleTransaction({
+          payinTotal: new Money(155000, 'DKK'),
+          payoutTotal: new Money(144100, 'DKK'),
+          lineItems: [
+            {
+              code: 'line-item/item',
+              includeFor: ['customer', 'provider'],
+              quantity: new Decimal(1),
+              lineTotal: new Money(150000, 'DKK'),
+              unitPrice: new Money(150000, 'DKK'),
+              reversal: false,
+            },
+            {
+              code: 'line-item/shipping-fee',
+              includeFor: ['customer'],
+              quantity: new Decimal(1),
+              unitPrice: new Money(5000, 'DKK'),
+              lineTotal: new Money(5000, 'DKK'),
+              reversal: false,
+            },
+            {
+              code: 'line-item/fairway-box',
+              includeFor: ['provider'],
+              quantity: new Decimal(1),
+              unitPrice: new Money(-5900, 'DKK'),
+              lineTotal: new Money(-5900, 'DKK'),
+              reversal: false,
+            },
+          ],
+        })}
+        intl={fakeIntl}
+      />
+    );
+
+    expect(screen.queryByText('OrderBreakdown.shippingFee')).not.toBeInTheDocument();
+    expect(screen.getByText('Fairway box')).toBeInTheDocument();
+  });
 });

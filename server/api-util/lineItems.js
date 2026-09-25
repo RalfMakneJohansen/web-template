@@ -19,14 +19,22 @@ const { Money } = types;
 // which writes this onto new listings. lineItems.test.js pins the pair.
 const FAIRWAY_FLAT_SHIPPING = { currency: 'DKK', subunits: 5000 };
 
+// FAIRWAY: what a seller pays for a Fairway box — 59,00 kr. — when the listing
+// is sold with shipment_type 'box'. It is taken from the payout, so it is a
+// provider-only line item with a negative price, and the marketplace keeps it.
+// Must stay in step with BOX_FEE_SUBUNITS in src/util/fairwayFees.js.
+const FAIRWAY_BOX_FEE = { currency: 'DKK', subunits: 5900 };
+const FAIRWAY_BOX_FEE_CODE = 'line-item/fairway-box';
+
 /**
  * Get quantity and add extra line-items that are related to delivery method
  *
  * @param {Object} orderData should contain stockReservationQuantity and deliveryMethod
  * @param {*} publicData should contain shipping prices
  * @param {*} currency should point to the currency of listing's price.
+ * @param {Money} [unitPrice] the price of one item; caps the Fairway box fee
  */
-const getItemQuantityAndLineItems = (orderData, publicData, currency) => {
+const getItemQuantityAndLineItems = (orderData, publicData, currency, unitPrice) => {
   // Check delivery method and shipping prices
   const quantity = orderData ? orderData.stockReservationQuantity : null;
   const deliveryMethod = orderData && orderData.deliveryMethod;
@@ -78,7 +86,28 @@ const getItemQuantityAndLineItems = (orderData, publicData, currency) => {
       ]
     : [];
 
-  return { quantity, extraLineItems: deliveryLineItem };
+  // FAIRWAY: the seller asked us to send them a box, so its price comes off
+  // their payout — never more than the order is worth, so the payout can't go
+  // below zero. Pickup orders need no box, so nothing is charged for them.
+  const orderSubunits = (unitPrice?.amount || 0) * (quantity || 0);
+  const boxFeeSubunits = Math.min(FAIRWAY_BOX_FEE.subunits, orderSubunits);
+  const isBoxOrder =
+    isShipping &&
+    publicData?.shipment_type === 'box' &&
+    currency === FAIRWAY_BOX_FEE.currency &&
+    boxFeeSubunits > 0;
+  const boxLineItem = isBoxOrder
+    ? [
+        {
+          code: FAIRWAY_BOX_FEE_CODE,
+          unitPrice: new Money(-boxFeeSubunits, currency),
+          quantity: 1,
+          includeFor: ['provider'],
+        },
+      ]
+    : [];
+
+  return { quantity, extraLineItems: [...deliveryLineItem, ...boxLineItem] };
 };
 
 const getOfferQuantityAndLineItems = orderData => {
@@ -216,7 +245,7 @@ exports.transactionLineItems = (listing, orderData, providerCommission, customer
   // E.g. by default, "shipping-fee" is tied to 'item' aka buying products.
   const quantityAndExtraLineItems =
     unitType === 'item'
-      ? getItemQuantityAndLineItems(orderData, publicData, currency)
+      ? getItemQuantityAndLineItems(orderData, publicData, currency, unitPrice)
       : unitType === 'file'
       ? getDigitalItemQuantityAndLineItems(orderData)
       : unitType === 'fixed'

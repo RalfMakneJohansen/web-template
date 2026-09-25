@@ -16,7 +16,7 @@ import css from './LandingPage.module.css';
 const INTERVAL_MS = 5000;
 
 const PHRASES = [
-  { lead: 'Sælg dit udstyr —', accent: 'modtag gratis kasse', tail: '!' },
+  { lead: 'Sælg dit udstyr —', accent: 'fragten er betalt', tail: '!' },
   { lead: 'Køb brugt udstyr', accent: 'med sikkerhed', tail: '' },
 ];
 

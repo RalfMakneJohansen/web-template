@@ -21,7 +21,7 @@ const GENERAL = {
   title: 'Brugt golfudstyr, uden risikoen',
   body: [
     'Fairway er markedspladsen for brugt golfudstyr i Danmark. Du handler med andre golfspillere, men aldrig direkte: pengene står hos os, indtil køberen har fået varen og sagt god for den.',
-    'Sælger du, sender vi kassen og fragtlabelen. Køber du, har du 48 timer til at tjekke, at udstyret er som beskrevet — passer det ikke, går pengene retur.',
+    'Sælger du, sender vi fragtlabelen. Køber du, har du 48 timer til at tjekke, at udstyret er som beskrevet — passer det ikke, går pengene retur.',
   ],
 };
 
@@ -104,7 +104,7 @@ const SearchPageContent = props => {
             {
               q: 'Hvad koster det at sælge?',
               a:
-                'Det er gratis at oprette en annonce, og du får en kasse tilsendt, når varen er solgt.',
+                'Det er gratis at oprette en annonce. Når varen er solgt, får du en betalt fragtlabel, og mangler du en kasse, sender vi en for 59 kr.',
             },
           ].map(item => (
             <details key={item.q} className={css.item}>

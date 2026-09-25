@@ -14,12 +14,12 @@ const OPTIONS = [
   {
     id: 'box',
     tab: 'Jeg mangler en kasse',
-    items: ['Kasse i den rigtige størrelse', 'Fragtlabel, porto betalt', 'Aflever i pakkeshoppen'],
+    items: ['Kasse i den rigtige størrelse, 59 kr.', 'Label eller QR-kode, porto betalt', 'Aflever i pakkeshoppen'],
   },
   {
     id: 'own',
     tab: 'Jeg har selv en kasse',
-    items: ['Brug den kasse, du har', 'Fragtlabel, porto betalt', 'Send af sted med det samme'],
+    items: ['Brug den kasse, du har', 'Label eller QR-kode, porto betalt', 'Aflever i pakkeshoppen'],
   },
 ];
 

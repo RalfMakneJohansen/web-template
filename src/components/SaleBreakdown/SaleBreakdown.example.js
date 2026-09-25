@@ -11,3 +11,9 @@ export const Pickup = {
   props: { priceSubunits: 249500, shipmentType: 'meetup' },
   group: 'fairway',
 };
+
+export const FairwayBox = {
+  component: SaleBreakdown,
+  props: { priceSubunits: 120000, shipmentType: 'box' },
+  group: 'fairway',
+};

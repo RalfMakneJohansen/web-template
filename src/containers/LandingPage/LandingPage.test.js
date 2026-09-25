@@ -18,7 +18,7 @@ describe('LandingPage', () => {
     render(<LandingPageComponent scrollingDisabled={false} />);
 
     expect(screen.getByText('Brugt golfudstyr · Danmark')).toBeInTheDocument();
-    expect(screen.getByText('Vi sender kassen')).toBeInTheDocument();
+    expect(screen.getByText('Vi sender labelen')).toBeInTheDocument();
     expect(screen.getByText('Klar til at sælge?')).toBeInTheDocument();
   });
 

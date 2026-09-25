@@ -1,4 +1,4 @@
-import { saleBreakdown, isShipped, FREIGHT_SUBUNITS } from './fairwayFees';
+import { saleBreakdown, isShipped, FREIGHT_SUBUNITS, BOX_FEE_SUBUNITS } from './fairwayFees';
 
 describe('saleBreakdown', () => {
   it('gives the seller the whole price and adds fee and freight for the buyer', () => {
@@ -8,13 +8,27 @@ describe('saleBreakdown', () => {
       price: 120000,
       buyerFee: 5988,
       freight: FREIGHT_SUBUNITS,
+      boxFee: 0,
       buyerTotal: 130988,
       sellerPayout: 120000,
     });
   });
 
-  it('charges the same freight for a Fairway box', () => {
+  it('charges the buyer the same freight for a Fairway box', () => {
     expect(saleBreakdown(120000, 'box').freight).toBe(5000);
+    expect(saleBreakdown(120000, 'box').buyerTotal).toBe(130988);
+  });
+
+  it('takes the box from the seller payout', () => {
+    const b = saleBreakdown(120000, 'box');
+    expect(b.boxFee).toBe(BOX_FEE_SUBUNITS);
+    expect(b.sellerPayout).toBe(120000 - 5900);
+    expect(saleBreakdown(120000, 'own').boxFee).toBe(0);
+    expect(saleBreakdown(120000, 'meetup').boxFee).toBe(0);
+  });
+
+  it('never takes more for the box than the price', () => {
+    expect(saleBreakdown(3000, 'box').sellerPayout).toBe(0);
   });
 
   it('charges no freight for a meetup', () => {

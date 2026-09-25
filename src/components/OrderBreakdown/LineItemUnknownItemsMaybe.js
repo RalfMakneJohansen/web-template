@@ -39,10 +39,13 @@ const LineItemUnknownItemsMaybe = props => {
       {items.map((item, i) => {
         const quantity = item.quantity;
 
-        const label =
-          quantity && quantity > 1
-            ? `${humanizeLineItemCode(item.code)} x ${quantity}`
-            : humanizeLineItemCode(item.code);
+        // FAIRWAY: a custom line item can have its own translation under
+        // OrderBreakdown.<code without "line-item/">, e.g. OrderBreakdown.fairway-box
+        const messageId = `OrderBreakdown.${item.code.replace('line-item/', '')}`;
+        const name = intl.messages?.[messageId]
+          ? intl.formatMessage({ id: messageId })
+          : humanizeLineItemCode(item.code);
+        const label = quantity && quantity > 1 ? `${name} x ${quantity}` : name;
 
         const formattedTotal = formatMoney(intl, item.lineTotal);
         return (

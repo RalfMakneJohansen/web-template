@@ -36,10 +36,17 @@ const isCommission = lineItem => {
 };
 
 /**
- * Returns non-commission, non-reversal line items
+ * Returns non-commission, non-reversal line items that count for the given role.
+ * FAIRWAY: freight is customer-only and the box fee provider-only, so each
+ * side's subtotal adds up only its own lines.
  */
-const nonCommissionNonReversalLineItems = lineItems => {
-  return lineItems.filter(item => !isCommission(item) && !item.reversal);
+const nonCommissionNonReversalLineItems = (lineItems, userRole) => {
+  return lineItems.filter(
+    item =>
+      !isCommission(item) &&
+      !item.reversal &&
+      (!userRole || !item.includeFor || item.includeFor.includes(userRole))
+  );
 };
 
 /**
@@ -77,7 +84,7 @@ const LineItemSubTotalMaybe = props => {
   const showSubTotal = hasCommission(lineItems, userRole) || refund;
 
   // all non-reversal, non-commission line items
-  const subTotalLineItems = nonCommissionNonReversalLineItems(lineItems);
+  const subTotalLineItems = nonCommissionNonReversalLineItems(lineItems, userRole);
   // line totals of those line items combined
   const subTotal = lineItemsTotal(subTotalLineItems, marketplaceCurrency);
 

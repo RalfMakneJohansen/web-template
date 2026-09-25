@@ -25,7 +25,7 @@ const COLUMNS = [
     links: [
       { label: 'Opret annonce', name: 'NewListingPage' },
       { label: 'Sådan pakker du udstyret', name: 'CMSPage', params: { pageId: 'saadan-pakker-du' } },
-      { label: 'Gratis forsendelseskasse', name: 'CMSPage', params: { pageId: 'forsendelse' } },
+      { label: 'Fragt og forsendelseskasse', name: 'CMSPage', params: { pageId: 'forsendelse' } },
     ],
   },
   {

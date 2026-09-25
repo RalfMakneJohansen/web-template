@@ -17,10 +17,10 @@ const localPages = {
         type: 'steps',
         items: [
           'Opret din annonce med billeder, stand og pris. Det tager få minutter.',
-          'Vælg, hvordan varen skal til køber: i din egen kasse, i en kasse vi sender dig, eller ved afhentning. Det er gratis for dig.',
-          'Når en køber har betalt, sender vi dig fragtlabelen (og kassen, hvis du har valgt den).',
-          'Pak udstyret, sæt labelen på, og aflever pakken.',
-          'Når køber har godkendt varen, udbetales hele din pris til dig.',
+          'Vælg, hvordan varen skal til køber: i din egen kasse, i en kasse vi sender dig for 59 kr., eller ved afhentning.',
+          'Når en køber har betalt, sender vi dig en fragtlabel eller QR-kode (og kassen, hvis du har valgt den).',
+          'Pak udstyret, sæt labelen på, og aflever pakken i en pakkeshop.',
+          'Når køber har godkendt varen, udbetales din pris til dig, minus 59 kr., hvis du fik en kasse fra os.',
         ],
       },
       {
@@ -37,7 +37,7 @@ const localPages = {
         heading: 'Hvad koster det?',
         type: 'paragraph',
         text:
-          'Som sælger betaler du ingenting: ingen annoncegebyr, ingen kommission og ingen fragt. Køber betaler varens pris, et gebyr på 4,99 % og 50 kr. for fragten, når varen sendes.',
+          'Som sælger betaler du ingen annoncegebyr, ingen kommission og ingen fragt. Vil du have en kasse fra os, koster den 59 kr., som trækkes fra salget. Køber betaler varens pris, et gebyr på 4,99 % og 50 kr. for fragten, når varen sendes.',
       },
     ],
   },
@@ -72,25 +72,25 @@ const localPages = {
   },
 
   forsendelse: {
-    title: 'Gratis forsendelseskasse',
+    title: 'Fragt og forsendelseskasse',
     intro:
-      'Du skal ikke ud og finde pap og tape. Når dit udstyr er solgt, sender vi dig en kasse, der passer.',
+      'Når dit udstyr er solgt, sender vi dig en betalt fragtlabel eller QR-kode, og du afleverer pakken i en pakkeshop. Har du ikke en kasse, der passer, sender vi en.',
     sections: [
       {
         heading: 'Sådan foregår det',
         type: 'steps',
         items: [
           'Dit udstyr bliver solgt, og køber betaler.',
-          'Vi sender en flad kasse og en fragtlabel til din adresse.',
-          'Du folder kassen, pakker udstyret og sætter labelen på.',
+          'Vi sender en fragtlabel eller QR-kode til din e-mail, og har du valgt en kasse, kommer den fladpakket med posten.',
+          'Du pakker udstyret og sætter labelen på, eller tager QR-koden med.',
           'Du afleverer pakken på nærmeste pakkeshop.',
         ],
       },
       {
-        heading: 'Vil du hellere pakke selv?',
+        heading: 'Hvad koster kassen?',
         type: 'paragraph',
         text:
-          'Det kan du sagtens. Når du opretter din annonce, vælger du, om du vil have en kasse tilsendt, pakke i din egen emballage, eller sælge til afhentning.',
+          'Kassen koster 59 kr. og trækkes fra salget, så du betaler intet på forhånd. Pakker du i din egen kasse, eller sælger du til afhentning, koster det dig ingenting. Du vælger, når du opretter annoncen.',
       },
       {
         heading: 'Leveringstid',
@@ -152,7 +152,7 @@ const localPages = {
           {
             q: 'Hvad koster det at sælge?',
             a:
-              'Ingenting. Det er gratis at oprette annoncer og at sælge. Køber betaler et gebyr på 4,99 % og fragten.',
+              'Det er gratis at oprette annoncer og at sælge. Køber betaler et gebyr på 4,99 % og fragten. Den eneste udgift for dig er kassen, hvis du vil have en fra os: 59 kr., trukket fra salget.',
           },
           {
             q: 'Hvornår får jeg pengene som sælger?',
@@ -182,7 +182,7 @@ const localPages = {
           {
             q: 'Skal jeg selv skaffe en kasse?',
             a:
-              'Nej. Når du opretter annoncen, kan du vælge, at vi sender dig en kasse i den rigtige størrelse sammen med fragtlabelen. Det er gratis for dig. Vil du hellere pakke i din egen, sender vi kun labelen.',
+              'Nej. Når du opretter annoncen, kan du vælge, at vi sender dig en kasse i den rigtige størrelse sammen med fragtlabelen. Den koster 59 kr., som trækkes fra salget. Pakker du i din egen, sender vi kun labelen eller QR-koden, og det er gratis.',
           },
           {
             q: 'Hvilket udstyr må jeg sælge?',

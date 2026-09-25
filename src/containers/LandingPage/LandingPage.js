@@ -73,7 +73,7 @@ const CATEGORY_PICKS = [
 const COMMUNITY_POINTS = [
   {
     title: 'Kassen',
-    text: 'Ingen har en kasse, der passer til en driver. Nu sender vi den.',
+    text: 'Ingen har en kasse, der passer til en driver. Mangler du en, sender vi den.',
   },
   {
     title: 'Prisen',
@@ -139,7 +139,7 @@ const COMPARE_ROWS = [
     label: 'Fragten',
     group: 'I finder selv ud af kasse og porto',
     dealer: 'De kan sende — men fragten er ikke betalt',
-    fairway: 'Kasse og label betalt',
+    fairway: 'Label betalt, og kasse hvis du mangler'
   },
 ];
 
@@ -151,7 +151,7 @@ const SIDES = [
     who: 'Sælger',
     title: 'Markant højere pris',
     text: 'end du får ved indlevering til en forhandler.',
-    note: 'Gratis kasse leveret, når du har solgt.',
+    note: 'Fragtlabel betalt. Aflever i pakkeshoppen.',
   },
   {
     who: 'Køber',
@@ -247,8 +247,8 @@ const BeFirst = () => (
     <h2 className={css.beFirstTitle}>Bliv en af de første</h2>
     <p className={css.beFirstText}>
       Fairway er lige gået i luften, så der er ikke lagt udstyr op endnu. Det tager to minutter at
-      oprette en annonce, det koster ikke noget, og vi sender dig en gratis kasse, når den er
-      solgt.
+      oprette en annonce, det koster ikke noget, og når den er solgt, sender vi dig en betalt
+      fragtlabel.
     </p>
     <NamedLink name="NewListingPage" className={css.beFirstButton}>
       Opret den første annonce
@@ -280,9 +280,9 @@ export const LandingPageComponent = props => {
             <span className={css.eyebrowOnDark}>Brugt golfudstyr · Danmark</span>
             <RotatingHeadline />
             <p className={css.heroText}>
-              {/* The seller pays neither box nor freight — the buyer pays a flat
-                  50 kr., and our 4.99% on top of it. Nothing comes off the seller. */}
-              Det er gratis at sælge, og du beholder hele prisen. Vi står for kassen, fragten og betalingen.
+              {/* The seller pays no freight — the buyer pays a flat 50 kr., and our
+                  4.99% on top of it. Only a box, if the seller asks for one, costs 59 kr. */}
+              Det er gratis at sælge, og du beholder hele prisen. Vi står for fragten og betalingen.
             </p>
             <div className={css.heroActions}>
               <NamedLink name="NewListingPage" className={css.buttonPrimary}>
@@ -316,7 +316,7 @@ export const LandingPageComponent = props => {
               </span>
               <span className={css.offerCopy}>
                 <span className={css.offerWho}>Sælger du</span>
-                vi sender dig en kasse
+                vi sender fragtlabelen
               </span>
             </p>
             <p className={css.offerLine}>
@@ -387,7 +387,7 @@ export const LandingPageComponent = props => {
             <span className={css.tileContent}>
               <span className={css.tileLabel}>Sælg</span>
               <span className={css.tileTitle}>Opret annonce</span>
-              <span className={css.tileText}>Få en gratis kasse, når du har solgt.</span>
+              <span className={css.tileText}>Gratis at sælge. Fragten er betalt.</span>
               <span className={css.tileButton}>
                 Opret annonce
                 <ArrowIcon />
@@ -469,9 +469,9 @@ export const LandingPageComponent = props => {
           <div className={css.boxInner}>
             <div className={css.boxPanel}>
               <span className={css.eyebrowOnDark}>Fragten</span>
-              <h2 className={css.boxTitle}>Vi sender kassen</h2>
+              <h2 className={css.boxTitle}>Vi sender labelen</h2>
               <p className={css.boxLead}>
-                Driver, jernsæt eller bag — vi har kassen, og du betaler ikke for at sende den.
+                Du får en betalt fragtlabel eller QR-kode og afleverer pakken i en pakkeshop. Mangler du en kasse til driveren eller bagen, sender vi en for 59 kr.
               </p>
 
               <ShippingChoice />
@@ -516,7 +516,7 @@ export const LandingPageComponent = props => {
           <div className={css.sellBannerInner}>
             <h2 className={css.sellTitle}>Klar til at sælge?</h2>
             <p className={css.sellText}>
-              Kassen er på vej, så snart din vare er solgt. Du skal bare pakke den.
+              Fragtlabelen kommer, så snart din vare er solgt. Du skal bare pakke og aflevere.
             </p>
             <div className={css.sellActions}>
               <NamedLink name="SignupPage" className={css.buttonPrimary}>

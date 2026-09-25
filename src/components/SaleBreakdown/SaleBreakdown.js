@@ -15,9 +15,10 @@ export const formatKr = subunits =>
 /**
  * FAIRWAY: the money on a listing, line by line.
  *
- * What the seller gets (the whole price) and what the buyer pays (price, our
- * fee and freight), for the shipping choice given. Used live under the price
- * field and under the shipping choices, so a seller sees the effect of every
+ * What the seller gets (the price, less 59 kr. if we send them a box) and what
+ * the buyer pays (price, our fee and freight), for the shipping choice given.
+ * Used live under the price field and under the shipping choices, so a seller
+ * sees the effect of every
  * keypress and every choice.
  *
  * @component
@@ -43,7 +44,9 @@ const SaleBreakdown = props => {
         </span>
         <span className={css.payoutAmount}>{formatKr(b.sellerPayout)}</span>
         <span className={css.payoutNote}>
-          <FormattedMessage id="SaleBreakdown.noSellerFees" />
+          <FormattedMessage
+            id={b.boxFee > 0 ? 'SaleBreakdown.boxNote' : 'SaleBreakdown.noSellerFees'}
+          />
         </span>
       </div>
 
@@ -64,7 +67,9 @@ const SaleBreakdown = props => {
           <dt>
             <FormattedMessage id="SaleBreakdown.freight" />
           </dt>
-          <dd>{shipped ? formatKr(b.freight) : <FormattedMessage id="SaleBreakdown.noFreight" />}</dd>
+          <dd>
+            {shipped ? formatKr(b.freight) : <FormattedMessage id="SaleBreakdown.noFreight" />}
+          </dd>
         </div>
         <div className={css.total}>
           <dt>

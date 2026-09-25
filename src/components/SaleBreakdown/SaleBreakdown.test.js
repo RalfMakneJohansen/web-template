@@ -30,6 +30,14 @@ describe('SaleBreakdown', () => {
     expect(screen.getByText('1.260 kr.')).toBeInTheDocument();
   });
 
+  it('takes the box from the payout but not from the buyer', () => {
+    render(<SaleBreakdown priceSubunits={120000} shipmentType="box" />);
+
+    expect(screen.getByText('1.141 kr.')).toBeInTheDocument(); // payout
+    expect(screen.getByText('SaleBreakdown.boxNote')).toBeInTheDocument();
+    expect(screen.getByText('1.310 kr.')).toBeInTheDocument(); // buyer total unchanged
+  });
+
   it('renders nothing before a price is typed', () => {
     const { container } = render(<SaleBreakdown priceSubunits={0} />);
     expect(container).toBeEmptyDOMElement();
