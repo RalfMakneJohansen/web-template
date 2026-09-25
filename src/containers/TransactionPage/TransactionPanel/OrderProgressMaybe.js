@@ -47,14 +47,18 @@ export const progressStepFor = ({ deliveryMethod, shipmentType, metadata }) => {
  * @param {string} props.deliveryMethod - 'shipping' | 'pickup'
  * @param {string} [props.shipmentType] - The listing's shipment_type
  * @param {Object} [props.metadata] - The transaction's metadata
- * @returns {JSX.Element|null} the note, or nothing outside the purchased state
+ * @returns {JSX.Element|null} the note, or nothing outside purchased and delivered
  */
 const OrderProgressMaybe = props => {
   const { className, processState, isCustomer, deliveryMethod, shipmentType, metadata } = props;
-  if (processState !== 'purchased') {
-    return null;
-  }
-  const step = progressStepFor({ deliveryMethod, shipmentType, metadata });
+  // After the seller marks it shipped or delivered, the 48 hours are what
+  // matter: the buyer's window to check the item, and when the seller is paid.
+  const step =
+    processState === 'delivered'
+      ? 'inspection'
+      : processState === 'purchased'
+      ? progressStepFor({ deliveryMethod, shipmentType, metadata })
+      : null;
   if (!step) {
     return null;
   }

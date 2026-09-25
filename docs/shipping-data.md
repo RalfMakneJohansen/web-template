@@ -80,3 +80,17 @@ the listing's shipping step, and the automation should treat a missing sender
 address as "ask the seller" rather than failing silently.
 
 The phone and postcode rules are shared in `src/util/fairwayContact.js`.
+
+## Marking delivery — this starts the buyer's 48 hours
+
+The process's `delivered` state is what starts the 48-hour window
+(`transition/auto-mark-received`, 48 hours after entering `delivered`). It
+must therefore be entered when the parcel **arrives**, not when it is sent —
+otherwise the buyer's window, and the payout, run while the parcel is still
+in transit.
+
+- The seller's button on a shipped order says "Pakken er leveret" and the
+  order page tells them to press it when track & trace shows delivery.
+- The automation should do this itself: when Shipmondo reports the parcel as
+  delivered, call `transition/operator-mark-delivered` on the transaction
+  through the Integration API. Sellers then never need to press it.

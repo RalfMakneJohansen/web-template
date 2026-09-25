@@ -43,9 +43,14 @@ describe('OrderProgressMaybe', () => {
     expect(screen.getByText('OrderProgress.meetup.customer.text')).toBeInTheDocument();
   });
 
-  it('says nothing once the order has moved past purchased', () => {
+  it('reminds the buyer of the 48 hours once the item is on its way', () => {
+    render(<OrderProgressMaybe processState="delivered" isCustomer deliveryMethod="shipping" />);
+    expect(screen.getByText('OrderProgress.inspection.customer.text')).toBeInTheDocument();
+  });
+
+  it('says nothing once the order is completed', () => {
     const { container } = render(
-      <OrderProgressMaybe processState="delivered" isCustomer deliveryMethod="shipping" />
+      <OrderProgressMaybe processState="completed" isCustomer deliveryMethod="shipping" />
     );
     expect(container).toBeEmptyDOMElement();
   });
