@@ -1703,6 +1703,7 @@
   "EditListingShippingPanel.option.meetup.delivery": "Agreed with the buyer",
   "EditListingShippingPanel.option.meetup.hint": "The buyer collects the item from you. No freight and no label, but payment still goes through Fairway.",
   "EditListingShippingPanel.meetupNote": "How pickup works: the buyer pays through Fairway, and you agree on a time and place in the order messages. When the buyer has the item and confirms it, we send you the money. Never agree to payment outside Fairway, or neither of you is covered.",
+  "FairwayListingCard.pickupOnly": "Pickup",
   "OrderProgress.own.customer.title": "The seller is packing your item",
   "OrderProgress.own.customer.text": "It ships insured with track & trace. Expect 2–3 working days. The money stays with Fairway until you approve the item.",
   "OrderProgress.own.provider.title": "Pack the item and ship it",

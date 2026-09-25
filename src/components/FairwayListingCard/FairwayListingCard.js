@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import { useConfiguration } from '../../context/configurationContext';
-import { useIntl } from '../../util/reactIntl';
+import { FormattedMessage, useIntl } from '../../util/reactIntl';
 import { formatMoney } from '../../util/currency';
 import { createSlug } from '../../util/urlHelpers';
 import { lazyLoadWithDimensions } from '../../util/uiHelpers';
@@ -71,7 +71,7 @@ const FairwayListingCard = props => {
 
   const id = listing?.id?.uuid;
   const { title = '', price, publicData } = listing?.attributes || {};
-  const { brand, model, condition } = publicData || {};
+  const { brand, model, condition, shipment_type: shipmentType } = publicData || {};
   const slug = createSlug(title);
 
   const { variantPrefix = 'listing-card' } = config.layout.listingImage;
@@ -122,6 +122,13 @@ const FairwayListingCard = props => {
         {conditionLabel ? (
           <span className={css.conditionBadge}>
             {conditionLabel}
+          </span>
+        ) : null}
+        {/* FAIRWAY: a pickup-only item is no use to a buyer at the other end of
+            the country, so it says so before they click */}
+        {shipmentType === 'meetup' ? (
+          <span className={css.pickupBadge}>
+            <FormattedMessage id="FairwayListingCard.pickupOnly" />
           </span>
         ) : null}
       </div>

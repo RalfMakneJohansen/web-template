@@ -179,3 +179,23 @@
     transform: none;
   }
 }
+
+/* FAIRWAY: pickup-only, top right, in the brand green so it reads as a fact
+   about delivery rather than another condition */
+.pickupBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  padding: 4px 10px;
+  border-radius: var(--borderRadius);
+
+  background-color: var(--colorForest);
+  color: var(--colorWhite);
+
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}

@@ -539,6 +539,7 @@
   "ErrorMessage.tooManyRequestsError": "Handlingen mislykkedes. Der er blevet foretaget for mange forespørgsler på kort tid. Hvis fejlen fortsætter, kan du prøve at genindlæse siden eller kontakte support.",
   "ErrorMessage.unknownError": "Ups, noget gik galt. Prøv igen. Hvis problemet fortsætter, kan du kontakte support.",
   "ErrorMessage.userPendingApprovalError": "Ups, noget gik galt. Din konto afventer godkendelse.",
+  "FairwayListingCard.pickupOnly": "Afhentning",
   "FairwayPriceBreakdown.free": "Gratis",
   "FairwayPriceBreakdown.included": "Inkluderet",
   "FairwayPriceBreakdown.item": "Pris",
