@@ -1767,5 +1767,7 @@
   "ShipmentTracking.save": "Save tracking",
   "ShipmentTracking.cancel": "Cancel",
   "ShipmentTracking.error.notReady": "Tracking is not switched on yet. Send the number to the buyer in the messages below instead.",
-  "ShipmentTracking.error.failed": "The number could not be saved. Try again shortly."
+  "ShipmentTracking.error.failed": "The number could not be saved. Try again shortly.",
+  "OffPlatformWarning.warning": "Keep the payment on Fairway. If you pay by MobilePay or bank transfer you are not covered by buyer protection, and the money cannot be recovered. We never ask you to pay outside the site.",
+  "OffPlatformWarning.note": "Always pay through Fairway. We hold the money until the item is received and approved."
 }

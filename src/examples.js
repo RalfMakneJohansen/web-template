@@ -17,6 +17,7 @@
 import * as Avatar from './components/Avatar/Avatar.example';
 import * as SaleBreakdown from './components/SaleBreakdown/SaleBreakdown.example';
 import * as DeliveryInfo from './components/DeliveryInfo/DeliveryInfo.example';
+import * as OffPlatformWarning from './components/OffPlatformWarning/OffPlatformWarning.example';
 import * as TradeReadiness from './components/TradeReadiness/TradeReadiness.example';
 import * as Button from './components/Button/Button.example';
 import * as ExpandingTextarea from './components/ExpandingTextarea/ExpandingTextarea.example';
@@ -143,6 +144,7 @@ export {
   ActivityFeed,
   Avatar,
   DeliveryInfo,
+  OffPlatformWarning,
   SaleBreakdown,
   TradeReadiness,
   BookingDateRangeFilter,

@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl';
 import { propTypes } from '../../../util/types';
 
-import { Form, FieldTextInput, FileUpload, Button } from '../../../components';
+import { Form, FieldTextInput, FileUpload, Button, OffPlatformWarning } from '../../../components';
 import { MAX_FILE_UPLOAD_COUNT } from '../../../util/fileHelpers';
 
 import css from './SendMessageForm.module.css';
@@ -170,6 +170,8 @@ class SendMessageFormComponent extends Component {
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
               />
+              {/* FAIRWAY: keep payment on Fairway */}
+              <OffPlatformWarning className={css.safety} text={formState.values.message} />
               {showUploads ? (
                 <div className={css.files}>
                   {files.map(f => (

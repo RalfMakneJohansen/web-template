@@ -51,3 +51,8 @@
   color: var(--colorSlate, #5a6b63);
   text-align: center;
 }
+
+/* FAIRWAY: payment reminder under the message */
+.safety {
+  margin-top: 12px;
+}

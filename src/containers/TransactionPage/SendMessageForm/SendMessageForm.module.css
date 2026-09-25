@@ -112,3 +112,8 @@
   gap: 8px;
   align-self: stretch;
 }
+
+/* FAIRWAY: payment reminder under the message */
+.safety {
+  margin-top: 12px;
+}

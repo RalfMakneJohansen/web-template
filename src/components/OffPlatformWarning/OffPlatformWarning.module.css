@@ -1,0 +1,24 @@
+.root {
+  &:empty {
+    display: none;
+  }
+}
+
+.warning,
+.note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.warning {
+  padding: 12px;
+
+  color: var(--colorAttentionDark);
+  background-color: var(--colorAttentionSubtle);
+  border-radius: 12px;
+}
+
+.note {
+  color: var(--colorGraphite);
+}

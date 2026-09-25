@@ -15,6 +15,7 @@ import {
   Form,
   Heading,
   IconInquiry,
+  OffPlatformWarning,
   PrimaryButton,
 } from '../../../components';
 
@@ -140,6 +141,7 @@ const InquiryForm = props => {
           sendInquiryError,
           listingPrice,
           marketplaceCurrency,
+          values,
         } = fieldRenderProps;
 
         const messageLabel = intl.formatMessage(
@@ -158,7 +160,11 @@ const InquiryForm = props => {
         const submitInProgress = inProgress;
 
         return (
-          <Form className={classes} onSubmit={handleSubmit} enforcePagePreloadFor="OrderDetailsPage">
+          <Form
+            className={classes}
+            onSubmit={handleSubmit}
+            enforcePagePreloadFor="OrderDetailsPage"
+          >
             <IconInquiry className={css.icon} />
             <Heading as="h2" rootClassName={css.heading}>
               <FormattedMessage
@@ -186,9 +192,16 @@ const InquiryForm = props => {
               />
             )}
 
+            {/* FAIRWAY: the first message is where "pay me on MobilePay" starts */}
+            <OffPlatformWarning className={css.safety} text={values?.message} showNote />
+
             <div className={submitButtonWrapperClassName}>
               <ErrorMessage error={sendInquiryError} />
-              <PrimaryButton type="submit" inProgress={submitInProgress} disabled={submitInProgress}>
+              <PrimaryButton
+                type="submit"
+                inProgress={submitInProgress}
+                disabled={submitInProgress}
+              >
                 <FormattedMessage
                   id={isOffer ? 'InquiryForm.offerSubmit' : 'InquiryForm.submitButtonText'}
                 />
