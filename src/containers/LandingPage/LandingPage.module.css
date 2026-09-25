@@ -450,19 +450,40 @@
 
 .tile {
   position: relative;
+  isolation: isolate;
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 48px;
   overflow: hidden;
 
-  min-height: 300px;
-  padding: 26px;
-  border-radius: var(--radiusCard);
+  min-height: 384px;
+  padding: 24px;
+  border-radius: var(--radiusSheet);
 
   color: var(--colorPaper);
+  background-color: var(--colorForest);
+
+  /* A hairline of light on the edge, so the card reads as a lit object
+     rather than a cut-out of the photo */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+  }
 
   @media (--viewportMedium) {
-    min-height: 360px;
-    padding: 30px;
+    min-height: 440px;
+    padding: 28px;
+  }
+
+  @media (--viewportLarge) {
+    min-height: 480px;
+    padding: 32px;
   }
 }
 
@@ -470,104 +491,196 @@
   text-decoration: none;
 }
 
+.tile:focus-visible {
+  outline: 3px solid var(--colorSage);
+  outline-offset: 3px;
+}
+
 .tileImage {
   position: absolute;
   inset: 0;
+  z-index: -2;
 
   width: 100%;
   height: 100%;
   object-fit: cover;
 
-  transition: transform 0.6s ease;
+  filter: saturate(1.08) contrast(1.04);
+  transform: scale(1.02);
+  transition: transform 0.9s var(--easeOut);
 }
 
 .tile:hover .tileImage {
-  transform: scale(1.04);
+  transform: scale(1.08);
 }
 
+/* Dark where the words are, clear where the photo is: a forest-tinted fade
+   from the bottom, and a soft shade at the top for the tag. */
 .tileScrim {
   position: absolute;
   inset: 0;
+  z-index: -1;
   background-image: linear-gradient(
-    5deg,
-    rgba(8, 28, 22, 0.92) 8%,
-    rgba(8, 28, 22, 0.62) 48%,
-    rgba(8, 28, 22, 0.18) 100%
-  );
+      180deg,
+      rgba(6, 24, 19, 0.55) 0%,
+      rgba(6, 24, 19, 0) 26%
+    ),
+    linear-gradient(
+      0deg,
+      rgba(6, 24, 19, 0.96) 0%,
+      rgba(8, 40, 31, 0.82) 30%,
+      rgba(10, 52, 40, 0.28) 62%,
+      rgba(10, 52, 40, 0) 80%
+    );
 }
 
-.tileContent {
-  position: relative;
+.tileTop {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
-
-  max-width: 17em;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-.tileLabel {
+/* A frosted tag */
+.tileChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  min-height: 32px;
+  padding: 0 14px 0 12px;
+
   font-size: 11px;
   line-height: 16px;
-  font-weight: var(--fontWeightSemiBold);
-  letter-spacing: 0.2em;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: 0.18em;
   text-transform: uppercase;
+  color: var(--colorPaper);
+
+  background-color: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radiusPill);
+  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(10px) saturate(1.4);
+}
+
+.tileChipIcon {
+  flex-shrink: 0;
   color: var(--colorSage);
 }
 
-.tileTitle {
-  margin-top: 8px;
-
+.tileIndex {
   font-family: var(--fontFamilyDisplay);
-  font-size: 28px;
-  line-height: 28px;
+  font-size: 44px;
+  line-height: 36px;
   font-weight: 700;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.28);
 
+  transition: color 0.4s var(--easeOut);
+}
+
+.tile:hover .tileIndex {
+  color: var(--colorSage);
+}
+
+.tileContent {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.tileTitle {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 34px;
+  line-height: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+
+  /* Two lines reserved side by side, so the three cards line up below the title */
   @media (--viewportMedium) {
-    font-size: 30px;
-    line-height: 30px;
+    display: flex;
+    align-items: flex-end;
+    min-height: 68px;
+  }
+
+  @media (--viewportLarge) {
+    min-height: 80px;
+    font-size: 40px;
+    line-height: 40px;
   }
 }
 
 .tileText {
   margin-top: 12px;
   font-size: 15px;
-  line-height: 23px;
-  color: rgba(237, 232, 220, 0.78);
+  line-height: 24px;
+  color: rgba(237, 232, 220, 0.86);
+
+  @media (--viewportMedium) {
+    min-height: 48px;
+  }
 }
 
-.tileButton {
-  display: inline-flex;
+/* The call to action as a line: the words on the left, a round mint button
+   on the right. It never wraps, however narrow the card. */
+.tileCta {
+  display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  gap: 12px;
 
-  min-height: 52px;
-  margin-top: 26px;
-  padding: 0 30px;
-  border-radius: var(--radiusPill);
-
-  /* Same mint pill as the hero. These sit on dark photographs, which is the
-     same ground the hero buttons sit on, so they get the same treatment. */
-  background-color: var(--colorSagePale);
-  color: var(--colorForest);
-  box-shadow: 0 1px 2px rgba(12, 40, 32, 0.2), 0 6px 16px rgba(12, 40, 32, 0.24);
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 
   font-size: 15px;
+  line-height: 20px;
   font-weight: var(--fontWeightBold);
   letter-spacing: 0.01em;
+  white-space: nowrap;
 
-  transition: background-color var(--transitionStyle), gap var(--transitionStyle),
-    transform 0.12s var(--easeOut), box-shadow 0.15s var(--easeOut);
+  @media (--viewportMedium) {
+    margin-top: 32px;
+    padding-top: 24px;
+  }
 }
 
-.tile:active .tileButton {
-  transform: translateY(1px);
-  box-shadow: 0 1px 2px rgba(12, 40, 32, 0.24);
+.tileCtaIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 48px;
+  height: 48px;
+
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+  border-radius: 50%;
+  box-shadow: 0 6px 16px rgba(6, 24, 19, 0.35);
+
+  transition: transform 0.35s var(--easeOut), background-color 0.2s var(--easeOut);
 }
 
-.tile:hover .tileButton {
-  background-color: var(--colorPaper);
-  gap: 16px;
+.tile:hover .tileCtaIcon {
+  background-color: var(--colorWhite);
+  transform: rotate(-45deg) scale(1.06);
+}
+
+.tile:active .tileCtaIcon {
+  transform: scale(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tileImage,
+  .tile:hover .tileImage,
+  .tileCtaIcon,
+  .tile:hover .tileCtaIcon {
+    transform: none;
+    transition: none;
+  }
 }
 
 .arrow {

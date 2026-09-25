@@ -21,7 +21,8 @@ import course2 from '../../assets/course/course-2.jpg';
 import course3 from '../../assets/course/course-3.jpg';
 import course4 from '../../assets/course/course-4.jpg';
 import tileBuy from '../../assets/tiles/tile-buy.jpg';
-import tileSell from '../../assets/tiles/tile-sell.jpg';
+// Photo: Gene Gallin on Unsplash (Unsplash License)
+import tileJoin from '../../assets/tiles/tile-join.jpg';
 
 import FooterContainer from '../FooterContainer/FooterContainer';
 import BoxWalkthrough from './BoxWalkthrough';
@@ -176,6 +177,75 @@ const ArrowIcon = () => (
     <path d="m9 4.5 3.5 3.5L9 11.5" />
   </svg>
 );
+
+// Small line icons for the tiles' tags, drawn on the same 16px grid as the arrow.
+const tileIcon = path => (
+  <svg
+    className={css.tileChipIcon}
+    width="14"
+    height="14"
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden={true}
+  >
+    {path}
+  </svg>
+);
+
+// The three ways in: buy, sell, join.
+const TILES = [
+  {
+    name: 'SearchPage',
+    image: tileBuy,
+    index: '01',
+    label: 'Køb',
+    icon: tileIcon(
+      <>
+        <circle cx="7" cy="7" r="4.5" />
+        <path d="m10.5 10.5 3 3" />
+      </>
+    ),
+    title: 'Find dit næste sæt',
+    text: 'Brugt udstyr fra andre golfspillere.',
+    cta: 'Se annoncer',
+  },
+  {
+    name: 'NewListingPage',
+    image: boxDriver,
+    index: '02',
+    label: 'Sælg',
+    icon: tileIcon(
+      <>
+        <path d="M2.5 8.6V3.5a1 1 0 0 1 1-1h5.1l5 5a1 1 0 0 1 0 1.4l-4.2 4.2a1 1 0 0 1-1.4 0l-5.5-4.5Z" />
+        <circle cx="5.5" cy="5.5" r="1" />
+      </>
+    ),
+    title: 'Sælg på to minutter',
+    text: 'Gratis at oprette. Label på mail.',
+    cta: 'Opret annonce',
+  },
+  {
+    name: 'SignupPage',
+    image: tileJoin,
+    // keep the three golfers in frame when the wide photo is cropped tall
+    imagePosition: '38% 50%',
+    index: '03',
+    label: 'Kom i gang',
+    icon: tileIcon(
+      <>
+        <circle cx="8" cy="5.5" r="2.8" />
+        <path d="M2.8 13.5c.8-2.4 2.8-3.7 5.2-3.7s4.4 1.3 5.2 3.7" />
+      </>
+    ),
+    title: 'Opret en bruger',
+    text: 'Gratis, og det tager et minut.',
+    cta: 'Opret bruger',
+  },
+];
 
 const ListingRow = props => {
   const {
@@ -382,48 +452,38 @@ export const LandingPageComponent = props => {
           </div>
         )}
 
-        <section className={css.tiles}>
-          <NamedLink name="SearchPage" className={css.tile}>
-            <img className={css.tileImage} src={tileBuy} alt="" />
-            <span className={css.tileScrim} />
-            <span className={css.tileContent}>
-              <span className={css.tileLabel}>Køb</span>
-              <span className={css.tileTitle}>Se udstyr</span>
-              <span className={css.tileText}>Brugt udstyr fra andre golfspillere.</span>
-              <span className={css.tileButton}>
-                Se annoncer
-                <ArrowIcon />
+        <section className={css.tiles} aria-label="Kom i gang">
+          {TILES.map(tile => (
+            <NamedLink key={tile.name} name={tile.name} className={css.tile}>
+              <img
+                className={css.tileImage}
+                src={tile.image}
+                alt=""
+                loading="lazy"
+                style={tile.imagePosition ? { objectPosition: tile.imagePosition } : null}
+              />
+              <span className={css.tileScrim} />
+              <span className={css.tileTop}>
+                <span className={css.tileChip}>
+                  {tile.icon}
+                  {tile.label}
+                </span>
+                <span className={css.tileIndex} aria-hidden={true}>
+                  {tile.index}
+                </span>
               </span>
-            </span>
-          </NamedLink>
-
-          <NamedLink name="NewListingPage" className={css.tile}>
-            <img className={css.tileImage} src={boxDriver} alt="" />
-            <span className={css.tileScrim} />
-            <span className={css.tileContent}>
-              <span className={css.tileLabel}>Sælg</span>
-              <span className={css.tileTitle}>Opret annonce</span>
-              <span className={css.tileText}>Gratis at sælge. Label på mail.</span>
-              <span className={css.tileButton}>
-                Opret annonce
-                <ArrowIcon />
+              <span className={css.tileContent}>
+                <span className={css.tileTitle}>{tile.title}</span>
+                <span className={css.tileText}>{tile.text}</span>
+                <span className={css.tileCta}>
+                  <span className={css.tileCtaLabel}>{tile.cta}</span>
+                  <span className={css.tileCtaIcon}>
+                    <ArrowIcon />
+                  </span>
+                </span>
               </span>
-            </span>
-          </NamedLink>
-
-          <NamedLink name="SignupPage" className={css.tile}>
-            <img className={css.tileImage} src={tileSell} alt="" />
-            <span className={css.tileScrim} />
-            <span className={css.tileContent}>
-              <span className={css.tileLabel}>Kom i gang</span>
-              <span className={css.tileTitle}>Opret bruger</span>
-              <span className={css.tileText}>Gratis. Tager under et minut.</span>
-              <span className={css.tileButton}>
-                Opret bruger
-                <ArrowIcon />
-              </span>
-            </span>
-          </NamedLink>
+            </NamedLink>
+          ))}
         </section>
 
         {/* Dealer trade-in against a sale here, as money in a bar */}
