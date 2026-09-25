@@ -11,7 +11,7 @@ import {
   stringifyDateToISO8601,
 } from '../../util/dates';
 import { isTransactionsTransitionInvalidTransition, storableError } from '../../util/errors';
-import { transactionLineItems, transitionPrivileged } from '../../util/api';
+import { addTransactionTracking, transactionLineItems, transitionPrivileged } from '../../util/api';
 import * as log from '../../util/log';
 import {
   updatedEntities,
@@ -322,6 +322,22 @@ export const fetchTransactionThunk = createAsyncThunk(
 export const fetchTransaction = (id, txRole, config) => dispatch => {
   return dispatch(fetchTransactionThunk({ id, txRole, config }));
 };
+
+/**
+ * FAIRWAY: the seller adds the tracking number from their label. The backend
+ * writes it to the order's metadata; the order is then re-read so the page
+ * shows it straight away. Rejects with the server's error for the form.
+ *
+ * @param {UUID} txId
+ * @param {{ carrier: string, trackingNumber: string }} params
+ */
+export const addTracking = (txId, params) => (dispatch, getState, sdk) =>
+  addTransactionTracking({ txId, ...params })
+    .then(() => sdk.transactions.show({ id: txId }, { expand: true }))
+    .then(response => {
+      dispatch(addMarketplaceEntities(response));
+      return response;
+    });
 
 ////////////////////
 // makeTransition //

@@ -94,3 +94,47 @@ in transit.
 - The automation should do this itself: when Shipmondo reports the parcel as
   delivered, call `transition/operator-mark-delivered` on the transaction
   through the Integration API. Sellers then never need to press it.
+
+## Track & trace on the order
+
+Buyer and seller both see the parcel's tracking on the order page
+(`TransactionPanel/ShipmentTrackingMaybe`). It is read from the transaction's
+metadata, which users cannot write:
+
+```
+transaction.attributes.metadata.shipment = {       // the parcel to the buyer
+  carrier: "gls" | "postnord" | "dao" | "bring" | "dhl",
+  trackingNumber: "00370712345678901234",
+  trackingUrl: "https://…",                          // optional; else the carrier's page
+  status: "label_created" | "in_transit" | "ready_for_pickup" | "delivered" | "exception",
+  events: [{ at, text, location }],                  // optional, newest first, max 20
+  updatedAt: "2026-09-25T12:00:00Z"
+}
+transaction.attributes.metadata.boxShipment = { … }  // same shape: the box to the seller
+```
+
+Two ways it gets there, both through `server/api-util/integrationApi.js`:
+
+- **The seller types it in.** While the order waits to be sent, the seller
+  sees "Tilføj track & trace" and enters the number from the label
+  (`POST /api/transaction-tracking`). The server checks it is the order's
+  seller, that the order is shipped and still in `purchased`.
+- **The freight automation reports it.** `POST /api/shipping/webhook` with
+  the header `x-fairway-secret` and a JSON body
+  `{ transactionId, leg: "parcel" | "box", carrier, trackingNumber, status, trackingUrl?, events? }`.
+  When the parcel to the buyer is `delivered` and the order is still in
+  `purchased`, it also calls `transition/operator-mark-delivered`, which
+  starts the buyer's 48 hours. Shipmondo's webhook format is translated into
+  this body when Shipmondo is connected.
+
+Environment variables (server only, never `REACT_APP_`):
+
+```
+SHARETRIBE_INTEGRATION_CLIENT_ID=      # Console → Advanced → Applications → Integration API
+SHARETRIBE_INTEGRATION_CLIENT_SECRET=
+FAIRWAY_SHIPPING_WEBHOOK_SECRET=       # a long random string, shared with the automation
+```
+
+Without the Integration API credentials both endpoints answer 503 and the
+seller's form says tracking is not switched on yet, pointing them to the
+order messages instead.

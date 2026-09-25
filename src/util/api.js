@@ -156,3 +156,9 @@ export const createUserWithIdp = body => {
 export const deleteUserAccount = body => {
   return post('/api/delete-account', body);
 };
+
+// FAIRWAY: a seller adds the tracking number from their label to an order.
+// Body: { txId, carrier, trackingNumber }. Resolves to { data: { shipment } }.
+export const addTransactionTracking = body => {
+  return post('/api/transaction-tracking', body);
+};

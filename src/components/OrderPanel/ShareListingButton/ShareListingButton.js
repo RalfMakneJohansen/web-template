@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 
 import { FormattedMessage } from '../../../util/reactIntl';
 import { EVENTS, track } from '../../../analytics/track';
+import { copyText } from '../../../util/clipboard';
 
 import css from './ShareListingButton.module.css';
+
+// The copy helper lives in util/clipboard.js; re-exported for existing imports.
+export { copyText };
 
 /**
  * FAIRWAY: sharing a find is how used-gear listings actually travel — into a
@@ -12,38 +16,6 @@ import css from './ShareListingButton.module.css';
  * Uses the native share sheet where there is one (every phone), and falls back
  * to copying the link with a confirmation, so the button never does nothing.
  */
-// Copies text with the async clipboard API, or — where that is missing or
-// refused (older browsers, plain http) — with a selected textarea and the
-// legacy copy command, so "Kopiér link" works everywhere.
-export const copyText = async text => {
-  try {
-    if (typeof navigator !== 'undefined' && navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  } catch (e) {
-    // fall through to the legacy path
-  }
-  if (typeof document === 'undefined') {
-    return false;
-  }
-  const area = document.createElement('textarea');
-  area.value = text;
-  area.setAttribute('readonly', '');
-  area.style.position = 'fixed';
-  area.style.opacity = '0';
-  document.body.appendChild(area);
-  area.select();
-  let ok = false;
-  try {
-    ok = document.execCommand('copy');
-  } catch (e) {
-    ok = false;
-  }
-  document.body.removeChild(area);
-  return ok;
-};
-
 const ShareListingButton = props => {
   const { listingId, title } = props;
   const [copied, setCopied] = useState(false);

@@ -22,7 +22,7 @@ describe('OrderProgressMaybe', () => {
     expect(progressStepFor({ deliveryMethod: 'none' })).toBeNull();
   });
 
-  it('shows the seller the box tracking once the box is sent', () => {
+  it('tells the seller the box is on its way once it is sent', () => {
     render(
       <OrderProgressMaybe
         processState="purchased"
@@ -33,7 +33,7 @@ describe('OrderProgressMaybe', () => {
       />
     );
     expect(screen.getByText('OrderProgress.boxOnItsWay.provider.title')).toBeInTheDocument();
-    expect(screen.getByText('OrderProgress.tracking')).toBeInTheDocument();
+    expect(screen.getByText('OrderProgress.boxOnItsWay.provider.text')).toBeInTheDocument();
   });
 
   it('tells the buyer of a meetup to arrange it and confirm receipt', () => {

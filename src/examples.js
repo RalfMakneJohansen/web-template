@@ -112,6 +112,7 @@ import * as ActivityFeed from './containers/TransactionPage/ActivityFeed/Activit
 import * as ReviewForm from './containers/TransactionPage/ReviewForm/ReviewForm.example';
 import * as SendMessageForm from './containers/TransactionPage/SendMessageForm/SendMessageForm.example';
 import * as PanelHeading from './containers/TransactionPage/TransactionPanel/PanelHeading.example';
+import * as ShipmentTrackingMaybe from './containers/TransactionPage/TransactionPanel/ShipmentTrackingMaybe.example';
 import * as SelectMultipleFilter from './containers/SearchPage/SelectMultipleFilter/SelectMultipleFilter.example';
 import * as BookingDateRangeFilter from './containers/SearchPage/BookingDateRangeFilter/BookingDateRangeFilter.example';
 import * as KeywordFilter from './containers/SearchPage/KeywordFilter/KeywordFilter.example';
@@ -236,6 +237,7 @@ export {
   PageBuilder,
   PaginationLinks,
   PanelHeading,
+  ShipmentTrackingMaybe,
   PasswordRecoveryForm,
   PasswordResetForm,
   PriceFilter,

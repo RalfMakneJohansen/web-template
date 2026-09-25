@@ -76,6 +76,7 @@ import SendMessageForm from './SendMessageForm/SendMessageForm';
 import TransactionPanel from './TransactionPanel/TransactionPanel';
 
 import {
+  addTracking,
   makeTransition,
   sendMessage,
   sendReview,
@@ -313,6 +314,7 @@ const useUploadNavigationBlock = (isBlockNavigation, history, message) => {
  * @param {Function} props.onFetchTransactionLineItems - The on fetch transaction line items function
  * @param {Function} props.onManageDisableScrolling - The on manage disable scrolling function
  * @param {Function} props.onSendMessage - The on send message function
+ * @param {Function} [props.onAddTracking] - Adds a tracking number to the order (seller)
  * @param {Function} props.onSendReview - The on send review function
  * @param {Function} props.onShowMoreMessages - The on show more messages function
  * @param {Function} props.onTransition - The on transition function
@@ -357,6 +359,7 @@ export const TransactionPageComponent = props => {
     messages,
     onManageDisableScrolling,
     onSendMessage,
+    onAddTracking,
     onSendReview,
     onShowMoreMessages,
     params,
@@ -850,6 +853,7 @@ export const TransactionPageComponent = props => {
       processName={processName}
       protectedData={transaction?.attributes?.protectedData}
       metadata={transaction?.attributes?.metadata}
+      onAddTracking={params => onAddTracking(transaction.id, params)}
       marketplaceName={config.marketplaceName}
       messages={messages}
       savePaymentMethodFailed={savePaymentMethodFailed}
@@ -1201,6 +1205,9 @@ const TransactionPage = props => {
     (txId, message, config, fileIds) => dispatch(sendMessage(txId, message, config, fileIds)),
     [dispatch]
   );
+  const onAddTracking = useCallback((txId, params) => dispatch(addTracking(txId, params)), [
+    dispatch,
+  ]);
   const onManageDisableScrolling = useCallback(
     (componentId, disableScrolling) =>
       dispatch(manageDisableScrolling(componentId, disableScrolling)),
@@ -1269,6 +1276,7 @@ const TransactionPage = props => {
       onTransition={onTransition}
       onShowMoreMessages={onShowMoreMessages}
       onSendMessage={onSendMessage}
+      onAddTracking={onAddTracking}
       onManageDisableScrolling={onManageDisableScrolling}
       onSendReview={onSendReview}
       callSetInitialValues={callSetInitialValues}

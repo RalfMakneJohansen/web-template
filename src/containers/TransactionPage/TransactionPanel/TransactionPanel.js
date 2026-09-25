@@ -16,6 +16,7 @@ import DetailCardHeadingsMaybe from './DetailCardHeadingsMaybe';
 import DetailCardImage from './DetailCardImage';
 import DeliveryInfoMaybe from './DeliveryInfoMaybe';
 import OrderProgressMaybe from './OrderProgressMaybe';
+import ShipmentTrackingMaybe from './ShipmentTrackingMaybe';
 import BookingLocationMaybe from './BookingLocationMaybe';
 import FeedSection from './FeedSection';
 import DiminishedActionButtonMaybe from './DiminishedActionButtonMaybe';
@@ -110,6 +111,7 @@ export class TransactionPanelComponent extends Component {
       processName,
       protectedData,
       metadata,
+      onAddTracking,
       marketplaceName,
       messages,
       savePaymentMethodFailed = false,
@@ -237,6 +239,18 @@ export class TransactionPanelComponent extends Component {
                 deliveryMethod={deliveryMethod}
                 shipmentType={listing?.attributes?.publicData?.shipment_type}
                 metadata={metadata}
+              />
+            ) : null}
+
+            {/* FAIRWAY: track & trace for both parties */}
+            {stateData.processName === 'default-purchase' ? (
+              <ShipmentTrackingMaybe
+                processState={stateData.processState}
+                isCustomer={isCustomer}
+                deliveryMethod={deliveryMethod}
+                shipmentType={listing?.attributes?.publicData?.shipment_type}
+                metadata={metadata}
+                onAddTracking={onAddTracking}
               />
             ) : null}
 

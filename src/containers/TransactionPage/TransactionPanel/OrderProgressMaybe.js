@@ -22,7 +22,9 @@ export const progressStepFor = ({ deliveryMethod, shipmentType, metadata }) => {
     return null;
   }
   if (shipmentType === 'box') {
-    return metadata?.boxDispatchedAt ? 'boxOnItsWay' : 'boxComing';
+    const boxStatus = metadata?.boxShipment?.status;
+    const boxSent = metadata?.boxDispatchedAt || (boxStatus && boxStatus !== 'label_created');
+    return boxSent ? 'boxOnItsWay' : 'boxComing';
   }
   return 'own';
 };
@@ -36,8 +38,8 @@ export const progressStepFor = ({ deliveryMethod, shipmentType, metadata }) => {
  * says, to each side, what is happening and what they should do.
  *
  * Box progress comes from the transaction's metadata, written by the freight
- * automation (docs/shipping-data.md): boxDispatchedAt and, when known,
- * boxTracking.
+ * automation (docs/shipping-data.md): boxShipment, or the older boxDispatchedAt.
+ * The tracking numbers themselves are in ShipmentTrackingMaybe, for both sides.
  *
  * @component
  * @param {Object} props
@@ -63,7 +65,6 @@ const OrderProgressMaybe = props => {
     return null;
   }
   const role = isCustomer ? 'customer' : 'provider';
-  const tracking = metadata?.boxTracking;
 
   return (
     <div className={classNames(css.orderProgress, className)} role="status">
@@ -73,11 +74,6 @@ const OrderProgressMaybe = props => {
       <p className={css.orderProgressText}>
         <FormattedMessage id={`OrderProgress.${step}.${role}.text`} />
       </p>
-      {step === 'boxOnItsWay' && tracking && !isCustomer ? (
-        <p className={css.orderProgressTracking}>
-          <FormattedMessage id="OrderProgress.tracking" values={{ tracking }} />
-        </p>
-      ) : null}
     </div>
   );
 };
