@@ -528,3 +528,23 @@
     margin-top: 18px;
   }
 }
+
+/* FAIRWAY: the seller card wraps its button onto its own row when the panel
+   is narrow, instead of squeezing "Medlem siden september 2026" into a
+   column four lines tall beside it. The button then spans the card. */
+.author {
+  flex-wrap: wrap;
+}
+
+.authorText {
+  flex-basis: 140px;
+}
+
+.authorContact {
+  flex-grow: 1;
+  text-align: center;
+
+  @media (--viewportLarge) {
+    flex-grow: 0;
+  }
+}
