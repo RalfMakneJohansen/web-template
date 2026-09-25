@@ -481,9 +481,9 @@
   "EditListingWizard.default-negotiation.new.savePricing": "Næste",
   "EditListingWizard.default-negotiation.new.saveStyle": "Udgiv annonce",
   "EditListingWizard.default-purchase.new.saveDelivery": "Næste",
-  "EditListingWizard.default-purchase.new.saveDetails": "Næste",
-  "EditListingWizard.default-purchase.new.savePhotos": "Næste",
-  "EditListingWizard.default-purchase.new.savePricingAndStock": "Næste",
+  "EditListingWizard.default-purchase.new.saveDetails": "Næste: pris",
+  "EditListingWizard.default-purchase.new.savePhotos": "Næste: beskrivelse",
+  "EditListingWizard.default-purchase.new.savePricingAndStock": "Næste: fragt",
   "EditListingWizard.default-purchase.new.saveStyle": "Udgiv annonce",
   "EditListingWizard.edit.saveAvailability": "Gem ændringer",
   "EditListingWizard.edit.saveDelivery": "Gem ændringer",
@@ -503,9 +503,9 @@
   "EditListingWizard.saveEditDescription": "Gem beskrivelse",
   "EditListingWizard.saveEditReview": "Gem ændringer",
   "EditListingWizard.saveEditShipping": "Gem fragtvalg",
-  "EditListingWizard.saveNewDescription": "Næste: fragt",
+  "EditListingWizard.saveNewDescription": "Næste: tjek og udgiv",
   "EditListingWizard.saveNewReview": "Udgiv annonce",
-  "EditListingWizard.saveNewShipping": "Næste: gennemgang",
+  "EditListingWizard.saveNewShipping": "Næste: billeder",
   "EditListingWizard.screenreader.tabNavigation": "Navigation til redigering af annonce",
   "EditListingWizard.tabLabelAvailability": "Tilgængelighed",
   "EditListingWizard.tabLabelDelivery": "Levering",
@@ -1945,5 +1945,7 @@
   "ListingDescription.created": "Oprettet {date}",
   "ListingDescription.sellSimilar": "Sælg lignende",
   "ListingDescription.report": "Anmeld annonce",
-  "OverviewPage.savedTitle": "Gemte annoncer"
+  "OverviewPage.savedTitle": "Gemte annoncer",
+  "PaymentMethodsForm.missingStripeKey": "Kortbetaling er ikke slået til endnu. Prøv igen senere, eller skriv til os.",
+  "StripeConnectAccountForm.submitButtonText": "Gem udbetalingsoplysninger"
 }
