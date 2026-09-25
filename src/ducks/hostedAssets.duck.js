@@ -136,7 +136,7 @@ export const fetchAppAssets = (assets, version) => (dispatch, getState, sdk) => 
 };
 
 const fetchPageAssetsPayloadCreator = (arg, thunkAPI) => {
-  const { assets, hasFallback } = arg;
+  const { assets, hasFallback, expectMissing } = arg;
   const { getState, extra: sdk, rejectWithValue } = thunkAPI;
 
   const version = getState()?.hostedAssets?.version;
@@ -196,7 +196,9 @@ const fetchPageAssetsPayloadCreator = (arg, thunkAPI) => {
     .catch(e => {
       // If there's a fallback UI, something went wrong when fetching the "known asset" like landing-page.json.
       // If there's no fallback UI created, we assume that the page URL was mistyped for 404 errors.
-      if (hasFallback || (!hasFallback && e.status === 404)) {
+      // FAIRWAY: expectMissing — the caller has local content for a 404
+      const expected404 = expectMissing && e.status === 404;
+      if (!expected404 && (hasFallback || (!hasFallback && e.status === 404))) {
         log.error(e, 'page-asset-fetch-failed', { assets, version });
       }
       return rejectWithValue(storableError(e));
@@ -208,8 +210,12 @@ const fetchPageAssetsThunk = createAsyncThunk(
   fetchPageAssetsPayloadCreator
 );
 // Wrapper functions to maintain the same API as the original thunks without Redux Toolkit.
-export const fetchPageAssets = (assets, hasFallback) => (dispatch, getState, sdk) => {
-  return dispatch(fetchPageAssetsThunk({ assets, hasFallback })).unwrap();
+export const fetchPageAssets = (assets, hasFallback, expectMissing = false) => (
+  dispatch,
+  getState,
+  sdk
+) => {
+  return dispatch(fetchPageAssetsThunk({ assets, hasFallback, expectMissing })).unwrap();
 };
 
 // ================ Slice ================ //

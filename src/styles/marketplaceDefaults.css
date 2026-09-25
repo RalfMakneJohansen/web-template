@@ -337,6 +337,19 @@
   border-radius: var(--radiusControl);
 }
 
+/* The rule above has no specificity, and 38 template stylesheets set
+   outline: none on :focus — so on links and buttons, which is where keyboard
+   users move, the ring was switched off again. :focus-visible only matches
+   keyboard focus for these elements, so forcing it here costs mouse users
+   nothing. Form fields keep their own focus styles (a coloured border). */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+[tabindex]:not(input):not(textarea):not(select):focus-visible {
+  outline: 2px solid var(--colorFairway) !important;
+  outline-offset: 2px !important;
+}
+
 /* ================ Global element styles ================ */
 /**
  * Here are the global styles: for elements as well as some

@@ -17,9 +17,10 @@ const localPages = {
         type: 'steps',
         items: [
           'Opret din annonce med billeder, stand og pris. Det tager få minutter.',
-          'Når en køber betaler, sender vi dig en gratis forsendelseskasse.',
-          'Pak udstyret, sæt fragtlabelen på, og aflever pakken.',
-          'Når køber har godkendt varen, udbetales pengene til dig.',
+          'Vælg, hvordan varen skal til køber: i din egen kasse, i en kasse vi sender dig, eller ved afhentning. Det er gratis for dig.',
+          'Når en køber har betalt, sender vi dig fragtlabelen (og kassen, hvis du har valgt den).',
+          'Pak udstyret, sæt labelen på, og aflever pakken.',
+          'Når køber har godkendt varen, udbetales hele din pris til dig.',
         ],
       },
       {
@@ -27,7 +28,7 @@ const localPages = {
         type: 'steps',
         items: [
           'Find udstyret, og betal på siden. Pengene går ikke direkte til sælger.',
-          'Sælger pakker og sender — du følger forsendelsen undervejs.',
+          'Sælger pakker og sender, og du følger pakken med track & trace. Leveringstiden står i annoncen.',
           'Du har 48 timer til at tjekke, at varen svarer til beskrivelsen.',
           'Godkender du, frigives betalingen. Er der noget galt, gør du indsigelse.',
         ],
@@ -36,7 +37,7 @@ const localPages = {
         heading: 'Hvad koster det?',
         type: 'paragraph',
         text:
-          'Det er gratis at oprette en annonce. Der betales først noget, når en handel gennemføres.',
+          'Som sælger betaler du ingenting: ingen annoncegebyr, ingen kommission og ingen fragt. Køber betaler varens pris, et gebyr på 4,99 % og 50 kr. for fragten, når varen sendes.',
       },
     ],
   },
@@ -89,7 +90,13 @@ const localPages = {
         heading: 'Vil du hellere pakke selv?',
         type: 'paragraph',
         text:
-          'Det kan du sagtens. Når du opretter din annonce, vælger du, om du vil have en kasse tilsendt, pakke i din egen emballage, eller kun sælge til afhentning.',
+          'Det kan du sagtens. Når du opretter din annonce, vælger du, om du vil have en kasse tilsendt, pakke i din egen emballage, eller sælge til afhentning.',
+      },
+      {
+        heading: 'Leveringstid',
+        type: 'paragraph',
+        text:
+          'Pakker du selv, er varen normalt hos køber på 2–3 hverdage. Vælger du en kasse fra os, skal den først ud til dig, så køber må regne med 4–6 hverdage. Det står i annoncen, så køber ved det på forhånd.',
       },
     ],
   },
@@ -145,7 +152,7 @@ const localPages = {
           {
             q: 'Hvad koster det at sælge?',
             a:
-              'Det er gratis at oprette en annonce. Der betales først noget, når udstyret er solgt.',
+              'Ingenting. Det er gratis at oprette annoncer og at sælge. Køber betaler et gebyr på 4,99 % og fragten.',
           },
           {
             q: 'Hvornår får jeg pengene som sælger?',
@@ -160,7 +167,7 @@ const localPages = {
           {
             q: 'Kan jeg sælge til afhentning i stedet for fragt?',
             a:
-              'Ja. Når du opretter annoncen, vælger du, om varen sendes eller kun kan hentes.',
+              'Ja. Vælg "Afhentning", når du opretter annoncen. Køber betaler stadig gennem Fairway, I aftaler tid og sted i beskederne på ordren, og pengene udbetales, når køber bekræfter, at varen er hentet.',
           },
           {
             q: 'Hvilket udstyr må jeg sælge?',
@@ -191,7 +198,7 @@ const localPages = {
         heading: 'Handler det om en igangværende handel?',
         type: 'paragraph',
         text:
-          'Skriv gerne ordrenummeret med i din besked. Så kan vi se sagen med det samme og hjælpe hurtigere.',
+          'Skriv til den anden part i beskederne på ordren, under Indbakke. Er der noget galt med varen, så meld et problem på ordren inden for 48 timer efter levering, så holder vi pengene tilbage, mens vi hjælper jer.',
       },
     ],
   },

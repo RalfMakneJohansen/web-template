@@ -282,7 +282,7 @@ export const LandingPageComponent = props => {
             <p className={css.heroText}>
               {/* The seller pays neither box nor freight — the buyer pays a flat
                   50 kr., and our 4.99% on top of it. Nothing comes off the seller. */}
-              Vi sender kassen direkte til dig — du betaler først noget, når den er solgt.
+              Det er gratis at sælge, og du beholder hele prisen. Vi står for kassen, fragten og betalingen.
             </p>
             <div className={css.heroActions}>
               <NamedLink name="NewListingPage" className={css.buttonPrimary}>
