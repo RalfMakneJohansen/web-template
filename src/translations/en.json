@@ -1728,5 +1728,9 @@
   "SaleBreakdown.noFreight": "None for pickup",
   "SaleBreakdown.buyerTotal": "Buyer pays in total",
   "StripePaymentForm.pickupArranged": "You collect the item from the seller. Agree on a time and place in the order messages once you have paid. The money stays with Fairway until you confirm you have the item.",
-  "TransactionPanel.pickupArranged": "Time and place are arranged in the messages below."
+  "TransactionPanel.pickupArranged": "Time and place are arranged in the messages below.",
+  "InboxPage.noOrdersHint": "When you buy something, you can follow the order and message the seller here.",
+  "InboxPage.noOrdersCta": "Browse gear",
+  "InboxPage.noSalesHint": "When someone buys your gear, you see the order here and what to do.",
+  "InboxPage.noSalesCta": "Create a listing"
 }

@@ -425,9 +425,25 @@ export const InboxPageComponent = props => {
           )}
           {hasNoResults ? (
             <li key="noResults" className={css.noResults}>
-              <FormattedMessage
-                id={isOrders ? 'InboxPage.noOrdersFound' : 'InboxPage.noSalesFound'}
-              />
+              {/* FAIRWAY: an empty inbox says what to do next */}
+              <p className={css.noResultsTitle}>
+                <FormattedMessage
+                  id={isOrders ? 'InboxPage.noOrdersFound' : 'InboxPage.noSalesFound'}
+                />
+              </p>
+              <p className={css.noResultsText}>
+                <FormattedMessage
+                  id={isOrders ? 'InboxPage.noOrdersHint' : 'InboxPage.noSalesHint'}
+                />
+              </p>
+              <NamedLink
+                className={css.noResultsCta}
+                name={isOrders ? 'SearchPage' : 'NewListingPage'}
+              >
+                <FormattedMessage
+                  id={isOrders ? 'InboxPage.noOrdersCta' : 'InboxPage.noSalesCta'}
+                />
+              </NamedLink>
             </li>
           ) : null}
         </ul>
