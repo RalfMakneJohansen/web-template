@@ -170,6 +170,21 @@ const localPages = {
               'Ja. Vælg "Afhentning", når du opretter annoncen. Køber betaler stadig gennem Fairway, I aftaler tid og sted i beskederne på ordren, og pengene udbetales, når køber bekræfter, at varen er hentet.',
           },
           {
+            q: 'Hvor lang tid tager levering?',
+            a:
+              'Det står i annoncen. Pakker sælger selv, er varen normalt fremme på 2–3 hverdage. Får sælger en kasse fra os først, må du regne med 4–6 hverdage. Kommer varen ikke frem inden 14 dage, får du hele beløbet retur.',
+          },
+          {
+            q: 'Hvad koster det at købe?',
+            a:
+              'Du betaler varens pris, et gebyr på 4,99 % og 50 kr. i fragt, når varen sendes. Den samlede pris står tydeligt, før du betaler.',
+          },
+          {
+            q: 'Skal jeg selv skaffe en kasse?',
+            a:
+              'Nej. Når du opretter annoncen, kan du vælge, at vi sender dig en kasse i den rigtige størrelse sammen med fragtlabelen. Det er gratis for dig. Vil du hellere pakke i din egen, sender vi kun labelen.',
+          },
+          {
             q: 'Hvilket udstyr må jeg sælge?',
             a:
               'Alt golfrelateret: køller, bags, sko, tøj og tilbehør. Beskriv altid stand og eventuelle fejl ærligt — det er dét, der gør, at handlen går igennem uden problemer.',
