@@ -72,6 +72,7 @@
     color: var(--colorInk);
     font-variant-numeric: tabular-nums;
     text-align: right;
+    white-space: nowrap;
   }
 }
 
