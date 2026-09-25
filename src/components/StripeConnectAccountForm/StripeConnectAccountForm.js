@@ -215,9 +215,19 @@ const StripeConnectAccountForm = props => {
   const stripePublishableKey = config.stripe.publishableKey;
   const supportedCountries = config.stripe.supportedCountries;
 
+  // FAIRWAY: Danish sellers — Denmark is preselected when Stripe supports it.
+  // The account type is left for the seller to choose; the submit button waits
+  // for that choice anyway.
+  const supportsDenmark = (supportedCountries || []).some(c => c.code === 'DK');
+  const initialValues = {
+    ...(supportsDenmark ? { country: 'DK' } : {}),
+    ...restOfProps.initialValues,
+  };
+
   return (
     <FinalForm
       {...restOfProps}
+      initialValues={initialValues}
       onSubmit={values => onSubmit({ ...values, stripePublishableKey }, isUpdate)}
       mutators={{
         ...arrayMutators,
