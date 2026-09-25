@@ -67,8 +67,12 @@ export const IncludeScripts = props => {
     : {};
 
   const { mapProvider, googleMapsAPIKey, mapboxAccessToken } = maps || {};
-  const isGoogleMapsInUse = mapProvider === 'googleMaps';
-  const isMapboxInUse = mapProvider === 'mapbox';
+  // FAIRWAY: a map library is only loaded when there is a key to use it with.
+  // Without one no map can render anyway, and Fairway shows none (grid search,
+  // no listing locations) — yet mapbox-gl.js, its CSS and the SDK were fetched
+  // on every page. Adding a token in Console turns them back on.
+  const isGoogleMapsInUse = mapProvider === 'googleMaps' && !!googleMapsAPIKey;
+  const isMapboxInUse = mapProvider === 'mapbox' && !!mapboxAccessToken;
 
   // Add Google Analytics script if correct id exists (it should start with 'G-' prefix)
   // See: https://developers.google.com/analytics/devguides/collection/gtagjs
