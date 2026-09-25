@@ -25,12 +25,17 @@ const DeliveryInfoMaybe = props => {
           <FormattedMessage id="TransactionPanel.pickupInfoHeading" />
         </Heading>
         <div className={css.pickupInfoContent}>
-          <AddressLinkMaybe
-            linkRootClassName={css.pickupAddress}
-            location={pickupLocation}
-            geolocation={listing?.attributes?.geolocation}
-            showAddress={true}
-          />
+          {/* FAIRWAY: listings carry no address; the handover is arranged in messages */}
+          {pickupLocation?.address ? (
+            <AddressLinkMaybe
+              linkRootClassName={css.pickupAddress}
+              location={pickupLocation}
+              geolocation={listing?.attributes?.geolocation}
+              showAddress={true}
+            />
+          ) : (
+            <FormattedMessage id="TransactionPanel.pickupArranged" />
+          )}
         </div>
       </div>
     );

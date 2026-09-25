@@ -511,3 +511,47 @@
     margin-top: 16px;
   }
 }
+
+/* FAIRWAY: what happens next on a purchase that is on its way */
+.orderProgress {
+  margin: 18px 0 0 0;
+  padding: 14px 16px;
+
+  background-color: rgba(15, 110, 86, 0.06);
+  border: 1px solid rgba(93, 202, 165, 0.35);
+  border-radius: 12px;
+
+  @media (--viewportMedium) {
+    margin-top: 24px;
+  }
+}
+
+.orderProgressTitle {
+  margin: 0;
+  padding: 0;
+
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+}
+
+.orderProgressText {
+  margin: 4px 0 0 0;
+  padding: 0;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorGraphite);
+}
+
+.orderProgressTracking {
+  margin: 8px 0 0 0;
+  padding: 0;
+
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  font-variant-numeric: tabular-nums;
+}

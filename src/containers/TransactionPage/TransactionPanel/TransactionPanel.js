@@ -15,6 +15,7 @@ import BreakdownMaybe from './BreakdownMaybe';
 import DetailCardHeadingsMaybe from './DetailCardHeadingsMaybe';
 import DetailCardImage from './DetailCardImage';
 import DeliveryInfoMaybe from './DeliveryInfoMaybe';
+import OrderProgressMaybe from './OrderProgressMaybe';
 import BookingLocationMaybe from './BookingLocationMaybe';
 import FeedSection from './FeedSection';
 import DiminishedActionButtonMaybe from './DiminishedActionButtonMaybe';
@@ -108,6 +109,7 @@ export class TransactionPanelComponent extends Component {
       transitions,
       processName,
       protectedData,
+      metadata,
       marketplaceName,
       messages,
       savePaymentMethodFailed = false,
@@ -226,6 +228,17 @@ export class TransactionPanelComponent extends Component {
               listingTitle={listingTitle}
               listingDeleted={listingDeleted}
             />
+
+            {/* FAIRWAY: the next step while a purchase is on its way */}
+            {stateData.processName === 'default-purchase' ? (
+              <OrderProgressMaybe
+                processState={stateData.processState}
+                isCustomer={isCustomer}
+                deliveryMethod={deliveryMethod}
+                shipmentType={listing?.attributes?.publicData?.shipment_type}
+                metadata={metadata}
+              />
+            ) : null}
 
             {requestQuote}
             {offer}
