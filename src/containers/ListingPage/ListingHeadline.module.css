@@ -53,13 +53,18 @@
   }
 }
 
-.priceRow {
+/* The heart sits at the end of the tag row */
+.topRow {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
-  margin: 0;
-  padding: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .price {
@@ -74,9 +79,36 @@
 }
 
 .priceNote {
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 14px;
+  line-height: 20px;
   color: var(--colorGraphite);
+}
+
+.totalAmount {
+  color: var(--colorInk);
+  font-weight: var(--fontWeightBold);
+  white-space: nowrap;
+}
+
+.readMore {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.sellerMeta .rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 8px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.star {
+  fill: var(--colorForest);
 }
 
 /* The seller, right under the price on a phone */

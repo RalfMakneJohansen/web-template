@@ -4,6 +4,7 @@ import { createImageVariantConfig } from '../../util/sdkLoader';
 import { storableError } from '../../util/errors';
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { fetchCurrentUser } from '../../ducks/user.duck';
+import { favoriteIdsOf } from '../../util/favorites';
 
 // ================ Constants ================ //
 
@@ -11,6 +12,7 @@ import { fetchCurrentUser } from '../../ducks/user.duck';
 // more than this sees the full lists under Indbakke and Dine annoncer.
 const TX_PAGE_SIZE = 50;
 const LISTING_PAGE_SIZE = 6;
+const FAVORITES_SHOWN = 6;
 
 const imageParams = {
   'fields.image': ['variants.listing-card', 'variants.listing-card-2x'],
@@ -61,6 +63,29 @@ const loadOverviewPayloadCreator = (_, { dispatch, rejectWithValue, extra: sdk }
     .catch(e => rejectWithValue(storableError(e)));
 };
 
+/**
+ * FAIRWAY: the listings the user has saved ("Gem"), newest first. Sold or
+ * deleted listings simply don't come back from the API.
+ */
+export const loadFavoritesThunk = createAsyncThunk(
+  'OverviewPage/loadFavorites',
+  (_, { getState, dispatch, rejectWithValue, extra: sdk }) => {
+    const ids = favoriteIdsOf(getState().user?.currentUser).slice(0, FAVORITES_SHOWN);
+    if (ids.length === 0) {
+      return Promise.resolve([]);
+    }
+    return sdk.listings
+      .query({ ids: ids.join(','), include: ['images'], 'limit.images': 1, ...imageParams })
+      .then(response => {
+        dispatch(addMarketplaceEntities(response));
+        const byId = new Map(entityRefs(response).map(r => [r.id.uuid, r]));
+        // Keep the user's order (newest saved first), not the API's.
+        return ids.map(id => byId.get(id)).filter(Boolean);
+      })
+      .catch(e => rejectWithValue(storableError(e)));
+  }
+);
+
 export const loadOverviewThunk = createAsyncThunk(
   'OverviewPage/loadOverview',
   loadOverviewPayloadCreator
@@ -73,6 +98,7 @@ const initialState = {
   listingCount: 0,
   saleRefs: [],
   orderRefs: [],
+  favoriteRefs: [],
   loadInProgress: false,
   loadError: null,
 };
@@ -90,6 +116,9 @@ const overviewPageSlice = createSlice({
       .addCase(loadOverviewThunk.fulfilled, (state, action) => {
         return { ...state, ...action.payload, loadInProgress: false };
       })
+      .addCase(loadFavoritesThunk.fulfilled, (state, action) => {
+        state.favoriteRefs = action.payload;
+      })
       .addCase(loadOverviewThunk.rejected, (state, action) => {
         state.loadInProgress = false;
         state.loadError = action.payload;
@@ -102,4 +131,8 @@ export default overviewPageSlice.reducer;
 // ================ Load data ================ //
 
 export const loadData = () => dispatch =>
-  Promise.all([dispatch(fetchCurrentUser()), dispatch(loadOverviewThunk())]);
+  Promise.all([
+    // Saved listings live on the user, so they wait for the user to load.
+    dispatch(fetchCurrentUser()).then(() => dispatch(loadFavoritesThunk())),
+    dispatch(loadOverviewThunk()),
+  ]);

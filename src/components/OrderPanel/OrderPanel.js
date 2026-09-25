@@ -39,6 +39,7 @@ import {
 
 import { ModalInMobile, PrimaryButton, AvatarSmall, H2 } from '../../components';
 import DeliveryInfo from '../DeliveryInfo/DeliveryInfo';
+import BuyerProtectionCard from '../BuyerProtectionCard/BuyerProtectionCard';
 import PriceVariantPicker from './PriceVariantPicker/PriceVariantPicker';
 import { customerTotal } from './FairwayPriceBreakdown/FairwayPriceBreakdown';
 import SubmitFinePrint from './SubmitFinePrint/SubmitFinePrint';
@@ -286,6 +287,7 @@ const hasValidPriceVariants = priceVariants => {
  * @param {Function} props.onSubmit - Handler for form submission
  * @param {ReactNode|string} props.title - Title of the panel
  * @param {ReactNode} [props.titleDesktop] - Alternative title for desktop view
+ * @param {{ average: number|null, count: number }} [props.authorRating] - The seller's average rating
  * @param {ReactNode|string} [props.subTitle] - Subtitle text
  * @param {Function} props.onManageDisableScrolling - Handler for managing scroll behavior
  * @param {Function} props.onFetchTimeSlots - Handler for fetching available time slots
@@ -323,6 +325,7 @@ const OrderPanel = props => {
     onSubmit,
     title,
     titleDesktop,
+    authorRating,
     author,
     authorLink,
     onManageDisableScrolling,
@@ -541,6 +544,29 @@ const OrderPanel = props => {
               <span className={css.providerNamePlain}>
                 <FormattedMessage id="OrderPanel.author" values={{ name: authorDisplayName }} />
               </span>
+              {authorRating?.count > 0 && authorRating.average ? (
+                <span className={css.authorRating}>
+                  <svg
+                    className={css.authorStar}
+                    width="14"
+                    height="14"
+                    viewBox="0 0 20 20"
+                    aria-hidden={true}
+                  >
+                    <path d="m10 1.8 2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.7l-5.1 2.8L6 11.8l-4.3-4 5.8-.7L10 1.8Z" />
+                  </svg>
+                  <FormattedMessage
+                    id="ListingHeadline.rating"
+                    values={{
+                      average: intl.formatNumber(authorRating.average, {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      }),
+                      count: authorRating.count,
+                    }}
+                  />
+                </span>
+              ) : null}
               {authorMemberSince ? (
                 <span className={css.authorMeta}>
                   <FormattedMessage
@@ -657,6 +683,9 @@ const OrderPanel = props => {
             <FormattedMessage id="OrderPanel.unknownTransactionProcess" />
           </p>
         ) : null}
+
+        {/* FAIRWAY: what the buyer is promised, right under the buy button */}
+        {isPurchase && !isClosed ? <BuyerProtectionCard className={css.buyerProtection} /> : null}
       </ModalInMobile>
       <div className={css.openOrderForm}>
         {/* FAIRWAY: on a phone, bidding is as big a choice as buying — two equal

@@ -1,0 +1,76 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  margin: 0 24px 36px 24px;
+
+  @media (--viewportMedium) {
+    margin: 0 0 40px 0;
+  }
+}
+
+.heading {
+  margin: 0 0 12px 0;
+  padding: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  color: var(--colorInk);
+}
+
+.text {
+  margin: 0;
+  padding: 0;
+
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--colorInk);
+  /* Keep the seller's line breaks */
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.folded {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+
+.toggle {
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 0;
+
+  font-family: var(--fontFamily);
+  font-size: 15px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* The small print: number, date, and two ways onward */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 18px;
+  padding-top: 12px;
+
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--colorGraphite);
+  border-top: 1px solid var(--colorDivider);
+}
+
+.metaLink {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

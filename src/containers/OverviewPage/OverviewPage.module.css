@@ -770,3 +770,22 @@
   background-color: var(--colorFailSubtle);
   border-radius: 12px;
 }
+
+/* FAIRWAY: saved listings */
+.savedGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}

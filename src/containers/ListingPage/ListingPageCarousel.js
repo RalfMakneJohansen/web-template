@@ -15,13 +15,13 @@ import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 
 // Shared components
 import {
+  BuyerProtectionCard,
   DeliveryInfo,
   H3,
   Page,
   NamedLink,
   OrderPanel,
   LayoutSingleColumn,
-  SectionText,
 } from '../../components';
 
 // Related components and modules
@@ -58,6 +58,7 @@ import SectionSpecs from './SectionSpecs';
 import SectionMapMaybe from './SectionMapMaybe';
 import SectionGallery from './SectionGallery';
 import ListingHeadline from './ListingHeadline';
+import ListingDescription from './ListingDescription';
 import SectionRelatedListings from './SectionRelatedListings';
 import SectionBuyerJourney from './SectionBuyerJourney';
 import SectionListingFaq from './SectionListingFaq';
@@ -78,6 +79,9 @@ export const ListingPageComponent = props => {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // FAIRWAY: the seller's average rating, fetched after the listing loads
+  const sellerRating = useSelector(state => state.ListingPage?.sellerRating);
 
   const {
     isAuthenticated,
@@ -323,6 +327,8 @@ export const ListingPageComponent = props => {
                 /* FAIRWAY: tags, title, price and the seller, above the fold on a phone */
                 <ListingHeadline
                   variant="page"
+                  listingId={listingId.uuid}
+                  sellerRating={sellerRating}
                   title={title}
                   price={price}
                   publicData={publicData}
@@ -340,7 +346,13 @@ export const ListingPageComponent = props => {
             {/* FAIRWAY: on a phone the order panel only opens on "Køb nu", so how
                 and how fast the item arrives is shown here, under the title */}
             <DeliveryInfo className={css.deliveryInfoMobile} publicData={publicData} />
-            {showDescription && <SectionText text={description} showAsIngress />}
+            {/* FAIRWAY: what the buyer is promised, before they scroll into the details */}
+            <BuyerProtectionCard className={css.buyerProtectionMobile} />
+            <ListingDescription
+              text={showDescription ? description : null}
+              listing={currentListing}
+              isOwnListing={isOwnListing}
+            />
 
             {/* FAIRWAY: one specification table instead of a details list plus
                 a paragraph per text field */}
@@ -399,6 +411,8 @@ export const ListingPageComponent = props => {
                    price together, so the panel opens on what it is and costs. */
                 <ListingHeadline
                   variant="panel"
+                  listingId={listingId.uuid}
+                  isOwnListing={isOwnListing}
                   title={title}
                   price={price}
                   publicData={publicData}
@@ -409,6 +423,7 @@ export const ListingPageComponent = props => {
               sectionHeadingAs="h2"
               payoutDetailsWarning={payoutDetailsWarning}
               author={ensuredAuthor}
+              authorRating={sellerRating}
               onManageDisableScrolling={onManageDisableScrolling}
               onContactUser={onContactUser}
               onMakeOffer={onMakeOffer}

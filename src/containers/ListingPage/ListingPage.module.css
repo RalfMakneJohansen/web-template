@@ -1389,3 +1389,16 @@
     flex-basis: 400px;
   }
 }
+
+/* FAIRWAY: the buyer's promises on a phone; the buy panel shows them on a desktop */
+.buyerProtectionMobile {
+  margin: 0 24px 24px 24px;
+
+  @media (--viewportMedium) {
+    margin: 0 0 32px 0;
+  }
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}

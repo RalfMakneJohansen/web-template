@@ -535,3 +535,23 @@
   flex-shrink: 0;
   fill: none;
 }
+
+/* FAIRWAY: the buyer's promises, under the buy button */
+.buyerProtection {
+  margin-top: 18px;
+}
+
+/* FAIRWAY: the seller's rating on the seller card */
+.authorRating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.authorStar {
+  fill: var(--colorForest);
+}

@@ -365,6 +365,7 @@ describe('Duck', () => {
         inquiryModalOpenForListingId: null,
         relatedListings: [],
         fetchRelatedListingsInProgress: false,
+        sellerRating: null,
       });
     });
 

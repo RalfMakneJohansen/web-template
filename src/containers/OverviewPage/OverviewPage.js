@@ -130,7 +130,7 @@ const listingLinkProps = listing => {
   };
 };
 
-const ListingTile = ({ listing, intl }) => {
+const ListingTile = ({ listing, intl, hideStatus = false }) => {
   const { title, price, state } = listing.attributes;
   const status = ['published', 'draft', 'closed', 'pendingApproval'].includes(state)
     ? state
@@ -140,9 +140,11 @@ const ListingTile = ({ listing, intl }) => {
       <NamedLink {...listingLinkProps(listing)} className={css.listingTile}>
         <span className={css.listingImageWrap}>
           <Thumb listing={listing} className={css.listingThumb} />
-          <span className={classNames(css.status, css[`status_${status}`])}>
-            <FormattedMessage id={`OverviewPage.listingStatus.${status}`} />
-          </span>
+          {hideStatus ? null : (
+            <span className={classNames(css.status, css[`status_${status}`])}>
+              <FormattedMessage id={`OverviewPage.listingStatus.${status}`} />
+            </span>
+          )}
         </span>
         <span className={css.listingTitle}>{title}</span>
         {price ? <span className={css.listingPrice}>{formatMoney(intl, price)}</span> : null}
@@ -165,12 +167,18 @@ const OverviewPage = () => {
   const config = useConfiguration();
   const scrollingDisabled = useSelector(isScrollingDisabled);
   const currentUser = useSelector(state => state.user?.currentUser);
-  const { listingRefs, listingCount, saleRefs, orderRefs, loadError } = useSelector(
-    state => state.OverviewPage
-  );
+  const {
+    listingRefs,
+    listingCount,
+    saleRefs,
+    orderRefs,
+    favoriteRefs = [],
+    loadError,
+  } = useSelector(state => state.OverviewPage);
   const listings = useSelector(state => getMarketplaceEntities(state, listingRefs));
   const sales = useSelector(state => getMarketplaceEntities(state, saleRefs));
   const orders = useSelector(state => getMarketplaceEntities(state, orderRefs));
+  const favorites = useSelector(state => getMarketplaceEntities(state, favoriteRefs));
 
   const user = ensureCurrentUser(currentUser);
   const firstName = user.attributes.profile?.firstName || '';
@@ -390,6 +398,21 @@ const OverviewPage = () => {
               )}
             </section>
           </div>
+
+          {favorites.length > 0 ? (
+            <section className={css.section} aria-labelledby="overview-saved">
+              <div className={css.sectionHead}>
+                <h2 id="overview-saved" className={css.sectionTitle}>
+                  <FormattedMessage id="OverviewPage.savedTitle" />
+                </h2>
+              </div>
+              <ul className={css.savedGrid}>
+                {favorites.map(listing => (
+                  <ListingTile key={listing.id.uuid} listing={listing} intl={intl} hideStatus />
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </div>
       </LayoutSingleColumn>
     </Page>

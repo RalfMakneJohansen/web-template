@@ -1,0 +1,85 @@
+.root {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorForest);
+  border-radius: var(--radiusCard);
+}
+
+.body {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--fontFamily);
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.list {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorInk);
+}
+
+/* Line icons: the global svg { fill: currentColor } would fill them in */
+.check {
+  flex-shrink: 0;
+  margin-top: 2px;
+  fill: none;
+  stroke: var(--colorForest);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.link {
+  display: inline-block;
+  margin-top: 12px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.shield {
+  flex-shrink: 0;
+}
+
+.shieldBody {
+  fill: var(--colorSagePale);
+  stroke: var(--colorForest);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.shieldCheck {
+  fill: none;
+  stroke: var(--colorForest);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

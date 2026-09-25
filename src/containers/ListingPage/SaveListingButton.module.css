@@ -1,0 +1,58 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorDivider);
+  border-radius: var(--radiusPill);
+  cursor: pointer;
+  transition: border-color 0.15s var(--easeOut), background-color 0.15s var(--easeOut);
+
+  &:hover:not(:disabled) {
+    border-color: var(--colorForest);
+    background-color: var(--colorSagePale);
+  }
+
+  &:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+}
+
+.compact {
+  width: 44px;
+  padding: 0;
+}
+
+.saved {
+  border-color: var(--colorForest);
+  background-color: var(--colorSagePale);
+}
+
+/* The global svg { fill: currentColor } would fill an empty heart */
+.heart {
+  flex-shrink: 0;
+  fill: none;
+  transition: transform 0.2s var(--easeOut);
+}
+
+.heartFilled {
+  fill: currentColor;
+  transform: scale(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart,
+  .heartFilled {
+    transition: none;
+    transform: none;
+  }
+}

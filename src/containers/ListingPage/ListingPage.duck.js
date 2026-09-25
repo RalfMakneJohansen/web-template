@@ -144,6 +144,30 @@ export const fetchReviews = listingId => (dispatch, getState, sdk) => {
   return dispatch(fetchReviewsThunk({ listingId })).unwrap();
 };
 
+/**
+ * FAIRWAY: the seller's standing — the average of the public reviews buyers
+ * have left them as a seller, across all their sales, not just this listing.
+ */
+export const summariseRatings = reviews => {
+  const ratings = (reviews || [])
+    .map(r => r?.attributes?.rating)
+    .filter(r => typeof r === 'number' && r >= 1 && r <= 5);
+  if (ratings.length === 0) {
+    return { average: null, count: 0 };
+  }
+  const average = ratings.reduce((sum, r) => sum + r, 0) / ratings.length;
+  return { average: Math.round(average * 10) / 10, count: ratings.length };
+};
+
+export const fetchSellerRatingThunk = createAsyncThunk(
+  'ListingPage/fetchSellerRating',
+  ({ authorId }, { rejectWithValue, extra: sdk }) =>
+    sdk.reviews
+      .query({ subject_id: authorId, type: 'ofProvider', state: 'public', perPage: 100 })
+      .then(response => summariseRatings(response.data.data))
+      .catch(e => rejectWithValue(storableError(e)))
+);
+
 //////////////////////
 // Fetch Time Slots //
 //////////////////////
@@ -466,6 +490,7 @@ const initialState = {
   inquiryModalOpenForListingId: null,
   relatedListings: [],
   fetchRelatedListingsInProgress: false,
+  sellerRating: null,
 };
 
 const listingPageSlice = createSlice({
@@ -506,6 +531,12 @@ const listingPageSlice = createSlice({
       })
       .addCase(fetchReviewsThunk.fulfilled, (state, action) => {
         state.reviews = action.payload;
+      })
+      .addCase(fetchSellerRatingThunk.pending, state => {
+        state.sellerRating = null;
+      })
+      .addCase(fetchSellerRatingThunk.fulfilled, (state, action) => {
+        state.sellerRating = action.payload;
       })
       .addCase(fetchReviewsThunk.rejected, (state, action) => {
         state.fetchReviewsError = action.payload;
@@ -650,6 +681,12 @@ export const loadData = (params, search, config) => (dispatch, getState, sdk) =>
       dispatch(
         fetchRelatedListings(listingId, listing?.attributes?.publicData?.categoryLevel1, config)
       );
+
+      // FAIRWAY: the seller's average rating, for the seller card. Not awaited.
+      const authorId = listing?.relationships?.author?.data?.id;
+      if (authorId) {
+        dispatch(fetchSellerRatingThunk({ authorId }));
+      }
     }
 
     if (isBookingProcessAlias(transactionProcessAlias) && !hasNoViewingRights) {
