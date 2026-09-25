@@ -18,6 +18,14 @@ import css from './TopbarMobileMenu.module.css';
 
 // Line icons on one 24px grid, so every row of the menu reads alike.
 const ICON_PATHS = {
+  overview: (
+    <>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" />
+    </>
+  ),
   home: (
     <>
       <path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1v-9.5Z" />
@@ -269,6 +277,9 @@ const TopbarMobileMenu = props => {
           </div>
 
           <ul className={css.menuList}>
+            <MenuLink name="OverviewPage" icon="overview" isCurrent={isCurrent('OverviewPage')}>
+              <FormattedMessage id="TopbarMobileMenu.overviewLink" />
+            </MenuLink>
             <li>
               <NamedLink
                 name="InboxPage"

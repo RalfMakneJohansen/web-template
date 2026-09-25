@@ -75,6 +75,15 @@ const ProfileMenu = ({ currentPage, currentUser, onLogout, showManageListingsLin
         <Avatar className={css.avatar} user={currentUser} disableProfileLink />
       </MenuLabel>
       <MenuContent className={css.profileMenuContent}>
+        <MenuItem key="OverviewPage">
+          <NamedLink
+            className={classNames(css.menuLink, currentPageClass('OverviewPage'))}
+            name="OverviewPage"
+          >
+            <span className={css.menuItemBorder} />
+            <FormattedMessage id="TopbarDesktop.overviewLink" />
+          </NamedLink>
+        </MenuItem>
         {showManageListingsLink ? (
           <MenuItem key="ManageListingsPage">
             <NamedLink

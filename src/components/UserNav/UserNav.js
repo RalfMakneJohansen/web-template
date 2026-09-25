@@ -34,6 +34,14 @@ const UserNav = props => {
     : [];
 
   const tabs = [
+    // FAIRWAY: "Min side" first — the overview of everything below
+    {
+      text: <FormattedMessage id="UserNav.overview" />,
+      selected: currentPage === 'OverviewPage',
+      linkProps: {
+        name: 'OverviewPage',
+      },
+    },
     ...manageListingsTabMaybe,
     {
       text: <FormattedMessage id="UserNav.profileSettings" />,

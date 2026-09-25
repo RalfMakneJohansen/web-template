@@ -36,6 +36,7 @@ const RequestQuotePage = loadable(() => import(/* webpackChunkName: "RequestQuot
 const SearchPageWithMap = loadable(() => import(/* webpackChunkName: "SearchPageWithMap" */ /* webpackPrefetch: true */  '../containers/SearchPage/SearchPageWithMap'));
 const SearchPageWithGrid = loadable(() => import(/* webpackChunkName: "SearchPageWithGrid" */ /* webpackPrefetch: true */  '../containers/SearchPage/SearchPageWithGrid'));
 const StripePayoutPage = loadable(() => import(/* webpackChunkName: "StripePayoutPage" */ '../containers/StripePayoutPage/StripePayoutPage'));
+const OverviewPage = loadable(() => import(/* webpackChunkName: "OverviewPage" */ '../containers/OverviewPage/OverviewPage'));
 const TradingGuidePage = loadable(() => import(/* webpackChunkName: "TradingGuidePage" */ '../containers/TradingGuidePage/TradingGuidePage'));
 const TermsOfServicePage = loadable(() => import(/* webpackChunkName: "TermsOfServicePage" */ '../containers/TermsOfServicePage/TermsOfServicePage'));
 const TransactionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/TransactionPage/TransactionPage'));
@@ -317,6 +318,15 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       auth: true,
       authPage: 'LoginPage',
       component: props => <NamedRedirect name="SaleDetailsPage" params={{ id: props.params?.id }} />,
+    },
+    {
+      // FAIRWAY: "Min side" — what needs doing, your numbers, listings and trades
+      path: '/min-side',
+      name: 'OverviewPage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: OverviewPage,
+      loadData: pageDataLoadingAPI.OverviewPage.loadData,
     },
     {
       path: '/listings',
