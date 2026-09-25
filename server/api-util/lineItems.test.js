@@ -418,7 +418,7 @@ describe('transactionLineItems', () => {
         code: 'line-item/shipping-fee',
         unitPrice: new Money(900, 'EUR'), // €5.00 + (2 * €2.00) = €9.00
         quantity: 1,
-        includeFor: ['customer', 'provider'],
+        includeFor: ['customer'],
       });
     });
 
@@ -456,7 +456,7 @@ describe('transactionLineItems', () => {
         code: 'line-item/shipping-fee',
         unitPrice: new Money(500, 'EUR'), // €5.00 for first item only
         quantity: 1,
-        includeFor: ['customer', 'provider'],
+        includeFor: ['customer'],
       });
     });
   });
@@ -804,7 +804,7 @@ describe('transactionLineItems', () => {
         code: 'line-item/shipping-fee',
         unitPrice: new Money(5000, 'DKK'), // 50,00 kr
         quantity: 1,
-        includeFor: ['customer', 'provider'],
+        includeFor: ['customer'],
       });
     });
 
@@ -885,15 +885,11 @@ describe('transactionLineItems', () => {
     // are in different jest projects and module systems, so the panel is read as
     // text rather than imported. If this fails, the two rates have drifted and
     // sellers are quoted one price while buyers are charged another.
-    it('pins the server rate to FREIGHT_SUBUNITS in the shipping panel', () => {
+    it('pins the server rate to FREIGHT_SUBUNITS in the client fee helper', () => {
       const fs = require('fs');
       const path = require('path');
 
-      const panelPath = path.join(
-        __dirname,
-        '../../src/containers/EditListingPage/EditListingWizard',
-        'EditListingShippingPanel/EditListingShippingPanel.js'
-      );
+      const panelPath = path.join(__dirname, '../../src/util/fairwayFees.js');
       const panelSource = fs.readFileSync(panelPath, 'utf8');
       const panelMatch = panelSource.match(/export const FREIGHT_SUBUNITS = (\d+);/);
 

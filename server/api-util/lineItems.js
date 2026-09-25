@@ -70,7 +70,10 @@ const getItemQuantityAndLineItems = (orderData, publicData, currency) => {
           code: 'line-item/shipping-fee',
           unitPrice: shippingFee,
           quantity: 1,
-          includeFor: ['customer', 'provider'],
+          // FAIRWAY: Fairway buys the label, so the buyer's freight stays with
+          // the marketplace. Counting it for the provider as well would add it
+          // to the seller's payout — the seller gets exactly their price.
+          includeFor: ['customer'],
         },
       ]
     : [];
