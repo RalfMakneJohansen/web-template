@@ -196,3 +196,8 @@
     text-decoration: none;
   }
 }
+
+/* Line icons: the global svg { fill: currentColor } would fill them in */
+.lineIcon {
+  fill: none;
+}

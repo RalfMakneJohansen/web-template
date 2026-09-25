@@ -28,6 +28,7 @@ const SOCIAL_ICONS = {
       width="20"
       height="20"
       viewBox="0 0 24 24"
+      className={css.lineIcon}
       fill="none"
       stroke="currentColor"
       strokeWidth="1.8"

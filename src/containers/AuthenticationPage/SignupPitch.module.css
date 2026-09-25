@@ -84,3 +84,9 @@
   position: relative;
   z-index: 1;
 }
+
+/* A line icon: the global svg { fill: currentColor } would fill the circle in */
+.checkIcon {
+  display: block;
+  fill: none;
+}

@@ -256,6 +256,7 @@ const TopbarComponent = props => {
       isAuthenticated={isAuthenticated}
       currentUser={currentUser}
       onLogout={handleLogout}
+      onSearchSubmit={values => handleSubmit(values)}
       notificationCount={notificationCount}
       currentPage={resolvedCurrentPage}
       customLinks={customLinks}

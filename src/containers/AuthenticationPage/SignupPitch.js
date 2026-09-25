@@ -19,6 +19,7 @@ const POINTS = ['free', 'protected', 'box'];
 
 const CheckIcon = () => (
   <svg
+    className={css.checkIcon}
     width="18"
     height="18"
     viewBox="0 0 20 20"

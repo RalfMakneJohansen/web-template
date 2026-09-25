@@ -566,6 +566,7 @@
 
 .tileChipIcon {
   flex-shrink: 0;
+  fill: none;
   color: var(--colorSage);
 }
 

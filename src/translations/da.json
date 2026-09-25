@@ -1432,13 +1432,13 @@
   "TopbarDesktop.yourListingsLink": "Dine annoncer",
   "TopbarMobileMenu.accountSettingsLink": "Kontoindstillinger",
   "TopbarMobileMenu.browseAll": "Alt udstyr",
-  "TopbarMobileMenu.browseHeading": "Find udstyr",
+  "TopbarMobileMenu.browseHeading": "Kategorier",
   "TopbarMobileMenu.greeting": "Hej {displayName}",
   "TopbarMobileMenu.inboxLink": "Indbakke",
   "TopbarMobileMenu.loginLink": "Log ind",
   "TopbarMobileMenu.logoutLink": "Log ud",
   "TopbarMobileMenu.newListingLink": "Opret en ny annonce",
-  "TopbarMobileMenu.profileSettingsLink": "Profilindstillinger",
+  "TopbarMobileMenu.profileSettingsLink": "Profil",
   "TopbarMobileMenu.signupLink": "Opret konto",
   "TopbarMobileMenu.signupOrLogin": "{signup} eller {login}",
   "TopbarMobileMenu.unauthorizedGreeting": "Hej,{lineBreak}vil du {signupOrLogin}?",
@@ -1849,5 +1849,11 @@
   "NewsletterSignup.consent": "Vi sender dig nyt udstyr og nyheder på mail. Du kan altid afmelde dig. Se vores {privacyLink}.",
   "NewsletterSignup.privacyLink": "privatlivspolitik",
   "FairwayFooter.followUs": "Følg os",
-  "FairwayFooter.followOn": "Følg Fairway på {network}"
+  "FairwayFooter.followOn": "Følg Fairway på {network}",
+  "TopbarMobileMenu.menuTitle": "Menu",
+  "TopbarMobileMenu.searchLabel": "Søg i udstyr",
+  "TopbarMobileMenu.searchPlaceholder": "Søg efter udstyr eller mærke",
+  "TopbarMobileMenu.homeLink": "Forside",
+  "TopbarMobileMenu.howItWorksLink": "Sådan fungerer det",
+  "TopbarMobileMenu.sellLink": "Sælg dit udstyr"
 }

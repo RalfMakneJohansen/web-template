@@ -1,259 +1,256 @@
 @import '../../../../styles/customMediaQueries.css';
 
+/* FAIRWAY: the mobile menu, laid out like an app's side menu.
+   Mobile first on a 6px rhythm; the modal around it supplies the close button. */
+
 .root {
-  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  height: auto;
+  gap: 18px;
+
+  width: 100%;
+  padding: 0 0 48px 0;
 }
 
-.content {
-  flex-grow: 1;
-  flex-shrink: 0;
+/* ================ The mark ================ */
+
+.brandRow {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+  /* keep clear of the modal's close button in the top right */
+  padding-right: 72px;
 }
 
-.accountLinksWrapper,
-.customLinksWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.accountLinksWrapper {
-  margin-bottom: 36px;
+.brandLogo {
+  display: block;
+  width: auto;
+  height: 28px;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  padding: 24px;
-  background-color: var(--colorWhite);
-  box-shadow: var(--boxShadowTop);
-}
-
-.avatar {
-  /* Layout */
-  flex-shrink: 0;
-  margin: var(--TopbarMobileMenu_topMargin) 0 0 0;
-}
-
-.greeting {
-  /* Font */
-  font-weight: var(--fontWeightBlack);
-  font-size: 24px;
-  line-height: 24px;
-
-  padding: 3px 0 3px 0;
-  margin-bottom: 1px;
-  margin-top: 16px;
-
-  @media (--viewportMedium) {
-    font-size: 40px;
-    line-height: 56px;
-    padding: 5px 0 3px 0;
-    /* x * 8px */
-    margin-top: 24px;
-  }
-}
-
-.logoutButton {
-  /* Position and dimensions */
-  display: inline;
-
-  /* Borders */
-  border: none;
-
-  /* Text size should be inherited */
-  text-decoration: none;
-
-  /* Logout font is smaller and gray since the action is not recommended. */
-  font-weight: var(--fontWeightSemiBold);
+.brandTitle {
   font-size: 18px;
   line-height: 24px;
-
-  color: var(--colorGrey600);
-
-  /* Position component */
-  width: initial;
-  margin: 4px 0 24px 0;
-  padding: 0;
-
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  @media (--viewportMedium) {
-    margin: 0 0 36px 0;
-  }
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
 }
 
-.customLinkFont {
-  /* Font */
-  font-weight: var(--fontWeightBold);
-  font-size: 21px;
-  line-height: 24px;
+/* ================ Search ================ */
 
-  padding: 4px 0 2px 0;
-  /* x * 6px */
-  margin-top: 24px;
-  margin-bottom: 18px;
-
-  @media (--viewportMedium) {
-    font-size: 30px;
-    line-height: 40px;
-    padding: 1px 0 7px 0;
-  }
-}
-
-.inbox {
-  /* Font */
-  composes: customLinkFont;
-  color: var(--marketplaceColor);
+.search {
   position: relative;
-
-  margin-top: auto;
-  margin-bottom: 13px;
+  display: flex;
+  align-items: center;
 }
 
-.navigationLink {
-  /* Font */
-  composes: customLinkFont;
-  color: var(--marketplaceColor);
-
-  /* Layout */
-  margin-top: 0;
-  margin-bottom: 11px;
-}
-.currentPageLink {
-  color: var(--marketplaceColorDark);
-}
-
-.notificationBadge {
+.searchIcon {
   position: absolute;
-  top: 4px;
-  right: -26px;
+  left: 14px;
+  color: var(--colorGraphite);
+  pointer-events: none;
+}
 
-  /* This is inside a link - remove underline */
-  &:hover {
-    text-decoration: none;
+.searchInput {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px 0 44px;
+
+  font-size: 16px;
+  color: var(--colorInk);
+  background-color: var(--colorOffWhite);
+  border: 1px solid var(--colorDivider);
+  border-radius: 12px;
+
+  &::placeholder {
+    color: var(--colorGraphite);
+  }
+
+  &:focus {
+    background-color: var(--colorWhite);
+    border-color: var(--colorForest);
+    box-shadow: 0 0 0 3px rgba(15, 110, 86, 0.15);
+    outline: none;
   }
 }
 
-.createNewListingLink {
-  composes: buttonPrimary from global;
-}
+/* ================ Rows ================ */
 
-.authenticationGreeting {
-  /* Font */
-  composes: h1 from global;
-
-  margin-bottom: 48px;
-  margin-top: var(--TopbarMobileMenu_topMargin);
-}
-.authenticationLinks {
-  white-space: nowrap;
-}
-
-.signupLink {
-  text-decoration: none;
-  white-space: nowrap;
-  color: var(--marketplaceColor);
-}
-.loginLink {
-  text-decoration: none;
-  white-space: nowrap;
-  color: var(--marketplaceColor);
-}
-
-.currentPage {
-  color: var(--colorBlack);
-
-  /* black left border */
-  border-left: 5px solid black;
-  margin-left: -24px;
-  padding-left: 19px;
-}
-
-.spacer {
-  width: 100%;
-  height: 124px;
-}
-
-/* FAIRWAY: browse by category, in the mobile menu */
-
-.browseSection {
-  margin-top: 28px;
-  padding-top: 22px;
-  border-top: 1px solid var(--colorGrey100);
-}
-
-.browseHeading {
-  margin: 0 0 12px 0;
-
-  font-size: 11px;
-  line-height: 16px;
-  font-weight: var(--fontWeightBold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--colorSlate, #5a6b63);
-}
-
-.browseList {
-  display: grid;
-  gap: 2px;
+.menuList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.browseLink {
-  display: block;
-  padding: 10px 0;
+/* Line icons: the global svg { fill: currentColor } would fill them in */
+.icon {
+  flex-shrink: 0;
+  fill: none;
+}
 
-  font-size: 17px;
+.menuLink,
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+
+  font-family: var(--fontFamily);
+  font-size: 16px;
   line-height: 24px;
-  font-weight: var(--fontWeightMedium);
-  color: var(--colorInk, #0c2820);
-  text-decoration: none;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition: background-color 0.15s var(--easeOut), color 0.15s var(--easeOut);
+
+  &:hover {
+    text-decoration: none;
+    background-color: var(--colorSagePale);
+  }
+
+  & .icon {
+    color: var(--colorForest);
+  }
 }
 
-.browseLink:hover {
-  text-decoration: none;
-  color: var(--colorFairway, #0f6e56);
+/* The page you're on: a dark pill */
+.menuLinkCurrent {
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+
+  & .icon {
+    color: var(--colorSage);
+  }
+
+  &:hover {
+    color: var(--colorPaper);
+    background-color: var(--colorForest);
+  }
 }
 
-/* ============================================================
-   FAIRWAY: the guest's welcome
-   A card in the brand's pale green with the two ways in as buttons side by
-   side — the primary one filled — so the first thing in the menu is
-   something to tap, not a sentence to read.
-   ============================================================ */
+.menuLabel {
+  flex-grow: 1;
+}
+
+.badge {
+  position: static;
+  flex-shrink: 0;
+}
+
+.logoutButton {
+  color: var(--colorFail);
+
+  & .icon {
+    color: var(--colorFail);
+  }
+
+  &:hover {
+    background-color: var(--colorFailSubtle);
+  }
+}
+
+/* ================ Sell ================ */
+
+.sellButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  min-height: 52px;
+  padding: 0 24px;
+
+  font-size: 16px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+  border-radius: var(--radiusPill);
+  box-shadow: 0 6px 16px rgba(12, 40, 32, 0.18);
+
+  &:hover {
+    color: var(--colorPaper);
+    text-decoration: none;
+    background-color: var(--colorInk);
+  }
+
+  & .icon {
+    color: var(--colorSage);
+  }
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: none;
+  background-color: var(--colorDivider);
+}
+
+/* ================ Account ================ */
+
+.userCard {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+
+  background-color: var(--colorOffWhite);
+  border-radius: 12px;
+}
+
+.avatar {
+  flex-shrink: 0;
+}
+
+.userText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.userName {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.userEmail {
+  overflow: hidden;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorGraphite);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ================ Guests ================ */
 
 .welcome {
-  align-self: stretch;
-  /* Close under the Luk button — the template left room for a two-line headline */
-  margin-top: 64px;
-  margin-bottom: 32px;
-  padding: 20px;
-
+  padding: 18px;
   background-color: var(--colorSagePale);
   border-radius: var(--radiusCard);
 }
 
 .welcomeTitle {
   margin: 0;
+  padding: 0;
 
   font-family: var(--fontFamilyDisplay);
   font-size: 24px;
   line-height: 28px;
   font-weight: 700;
-  letter-spacing: -0.015em;
   color: var(--colorForest);
 }
 
@@ -263,61 +260,123 @@
 
   font-size: 14px;
   line-height: 20px;
-  color: var(--colorSlate);
+  color: var(--colorGraphite);
 }
 
-.welcome .authenticationLinks {
+.authenticationLinks {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 16px;
-  white-space: normal;
+  gap: 12px;
+  margin-top: 18px;
 }
 
-.welcome .signupLink,
-.welcome .loginLink {
+.signupLink,
+.loginLink {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 48px;
-  padding: 0 12px;
 
   font-size: 15px;
-  line-height: 20px;
-  font-weight: var(--fontWeightSemiBold);
-  text-decoration: none;
+  font-weight: var(--fontWeightBold);
+  border-radius: var(--radiusPill);
 
-  border-radius: 999px;
-  transition: background-color 0.2s var(--easeOut), transform 0.2s var(--easeOut);
-
-  &:active {
-    transform: scale(0.98);
+  &:hover {
+    text-decoration: none;
   }
 }
 
-.welcome .signupLink {
+.signupLink {
+  color: var(--colorPaper);
   background-color: var(--colorForest);
-  color: var(--colorWhite);
 
   &:hover {
-    background-color: var(--marketplaceColorDark);
-    text-decoration: none;
+    color: var(--colorPaper);
+    background-color: var(--colorInk);
   }
 }
 
-.welcome .loginLink {
-  background-color: var(--colorWhite);
+.loginLink {
   color: var(--colorForest);
-  box-shadow: inset 0 0 0 1.5px var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorForest);
 
   &:hover {
-    text-decoration: none;
+    color: var(--colorForest);
+    background-color: var(--colorWhite);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .welcome .signupLink,
-  .welcome .loginLink {
-    transition: none;
+/* ================ Categories ================ */
+
+.categories {
+  margin-top: 6px;
+}
+
+.sectionHeading {
+  margin: 0 0 12px 0;
+  padding: 0;
+
+  font-family: var(--fontFamily);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--colorGraphite);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorDivider);
+  border-radius: var(--radiusPill);
+
+  &:hover {
+    text-decoration: none;
+    border-color: var(--colorForest);
+    background-color: var(--colorSagePale);
   }
+}
+
+/* ================ Hosted links ================ */
+
+.textLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.textLink {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--colorGraphite);
+
+  &:hover {
+    color: var(--colorInk);
+  }
+}
+
+.textLinkCurrent {
+  color: var(--colorForest);
+  font-weight: var(--fontWeightSemiBold);
 }

@@ -1317,13 +1317,13 @@
   "TopbarDesktop.yourListingsLink": "Your listings",
   "TopbarMobileMenu.accountSettingsLink": "Account settings",
   "TopbarMobileMenu.browseAll": "All equipment",
-  "TopbarMobileMenu.browseHeading": "Browse",
+  "TopbarMobileMenu.browseHeading": "Categories",
   "TopbarMobileMenu.greeting": "Hello {displayName}",
   "TopbarMobileMenu.inboxLink": "Inbox",
   "TopbarMobileMenu.loginLink": "Log in",
   "TopbarMobileMenu.logoutLink": "Log out",
   "TopbarMobileMenu.newListingLink": "Post a new listing",
-  "TopbarMobileMenu.profileSettingsLink": "Profile settings",
+  "TopbarMobileMenu.profileSettingsLink": "Profile",
   "TopbarMobileMenu.signupLink": "Sign up",
   "TopbarMobileMenu.signupOrLogin": "{signup} or {login}",
   "TopbarMobileMenu.unauthorizedGreeting": "Hello there,{lineBreak}would you like to {signupOrLogin}?",
@@ -1786,5 +1786,11 @@
   "NewsletterSignup.consent": "We email you new gear and news. You can always unsubscribe. See our {privacyLink}.",
   "NewsletterSignup.privacyLink": "privacy policy",
   "FairwayFooter.followUs": "Follow us",
-  "FairwayFooter.followOn": "Follow Fairway on {network}"
+  "FairwayFooter.followOn": "Follow Fairway on {network}",
+  "TopbarMobileMenu.menuTitle": "Menu",
+  "TopbarMobileMenu.searchLabel": "Search gear",
+  "TopbarMobileMenu.searchPlaceholder": "Search for gear or brand",
+  "TopbarMobileMenu.homeLink": "Home",
+  "TopbarMobileMenu.howItWorksLink": "How it works",
+  "TopbarMobileMenu.sellLink": "Sell your gear"
 }
