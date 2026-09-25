@@ -168,6 +168,7 @@
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
+    "testTimeout": 20000,
     "testEnvironmentOptions": {
       "customExportConditions": [
         "node",

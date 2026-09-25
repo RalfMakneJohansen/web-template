@@ -14,6 +14,7 @@ const wellKnownRouter = require('./wellKnownRouter');
 const webmanifestResourceRoute = require('./resources/webmanifest');
 const robotsTxtRoute = require('./resources/robotsTxt');
 const sitemapResourceRoute = require('./resources/sitemap');
+const listingsFeedRoute = require('./resources/listingsFeed');
 
 const radix = 10;
 const PORT = parseInt(process.env.REACT_APP_DEV_API_SERVER_PORT, radix);
@@ -62,6 +63,9 @@ app.get('/robots.txt', robotsTxtRoute);
 
 // Handle different sitemap-* resources. E.g. /sitemap-index.xml
 app.get('/sitemap-:resource', sitemapResourceRoute);
+
+// FAIRWAY: RSS feed of the newest listings (server/index.js serves it in production)
+app.get('/feed/nyeste-annoncer.xml', listingsFeedRoute);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console

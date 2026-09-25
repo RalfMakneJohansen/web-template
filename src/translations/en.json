@@ -1769,5 +1769,22 @@
   "ShipmentTracking.error.notReady": "Tracking is not switched on yet. Send the number to the buyer in the messages below instead.",
   "ShipmentTracking.error.failed": "The number could not be saved. Try again shortly.",
   "OffPlatformWarning.warning": "Keep the payment on Fairway. If you pay by MobilePay or bank transfer you are not covered by buyer protection, and the money cannot be recovered. We never ask you to pay outside the site.",
-  "OffPlatformWarning.note": "Always pay through Fairway. We hold the money until the item is received and approved."
+  "OffPlatformWarning.note": "Always pay through Fairway. We hold the money until the item is received and approved.",
+  "NewsletterSignup.eyebrow": "Fairway newsletter",
+  "NewsletterSignup.title": "See the newest listings first",
+  "NewsletterSignup.text": "One email a week with new gear, good finds and tips for buying and selling. No spam, and you can unsubscribe any time.",
+  "NewsletterSignup.emailLabel": "Your email",
+  "NewsletterSignup.emailPlaceholder": "name@mail.com",
+  "NewsletterSignup.emailRequired": "Enter your email.",
+  "NewsletterSignup.emailInvalid": "Check that the email is typed correctly.",
+  "NewsletterSignup.submit": "Subscribe",
+  "NewsletterSignup.success": "Thanks! Check your inbox and confirm the subscription in our email.",
+  "NewsletterSignup.error.invalid-email": "That email could not be used. Check that it is typed correctly.",
+  "NewsletterSignup.error.too-many": "You have tried several times. Try again shortly.",
+  "NewsletterSignup.error.not-configured": "Sign-up opens soon. Check back in a few days.",
+  "NewsletterSignup.error.failed": "Something went wrong. Try again shortly.",
+  "NewsletterSignup.consent": "When you subscribe, we email you news and new listings. You can unsubscribe in every email. Read our {privacyLink}.",
+  "NewsletterSignup.privacyLink": "privacy policy",
+  "FairwayFooter.followUs": "Follow us",
+  "FairwayFooter.followOn": "Follow Fairway on {network}"
 }

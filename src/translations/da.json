@@ -1832,5 +1832,22 @@
   "ShipmentTracking.error.notReady": "Track & trace er ikke slået til endnu. Skriv nummeret til køber i beskederne herunder i stedet.",
   "ShipmentTracking.error.failed": "Nummeret kunne ikke gemmes. Prøv igen om lidt.",
   "OffPlatformWarning.warning": "Hold betalingen på Fairway. Betaler du med MobilePay eller bankoverførsel, er du ikke dækket af køberbeskyttelsen, og pengene kan ikke hentes tilbage. Vi beder aldrig om at betale uden om siden.",
-  "OffPlatformWarning.note": "Betal altid gennem Fairway. Så holder vi pengene, til varen er modtaget og godkendt."
+  "OffPlatformWarning.note": "Betal altid gennem Fairway. Så holder vi pengene, til varen er modtaget og godkendt.",
+  "NewsletterSignup.eyebrow": "Fairway-nyhedsbrev",
+  "NewsletterSignup.title": "Få de nyeste annoncer først",
+  "NewsletterSignup.text": "Én mail om ugen med nyt udstyr, gode fund og tips til køb og salg. Ingen spam, og du kan altid afmelde dig.",
+  "NewsletterSignup.emailLabel": "Din e-mail",
+  "NewsletterSignup.emailPlaceholder": "navn@mail.dk",
+  "NewsletterSignup.emailRequired": "Skriv din e-mail.",
+  "NewsletterSignup.emailInvalid": "Tjek, at e-mailen er skrevet rigtigt.",
+  "NewsletterSignup.submit": "Tilmeld",
+  "NewsletterSignup.success": "Tak! Tjek din indbakke, og bekræft tilmeldingen i mailen fra os.",
+  "NewsletterSignup.error.invalid-email": "E-mailen kunne ikke bruges. Tjek, at den er skrevet rigtigt.",
+  "NewsletterSignup.error.too-many": "Du har prøvet mange gange. Prøv igen om lidt.",
+  "NewsletterSignup.error.not-configured": "Tilmeldingen åbner snart. Kig forbi igen om et par dage.",
+  "NewsletterSignup.error.failed": "Noget gik galt. Prøv igen om lidt.",
+  "NewsletterSignup.consent": "Når du tilmelder dig, sender vi dig nyheder og nye annoncer på mail. Du kan afmelde dig i hver mail. Læs vores {privacyLink}.",
+  "NewsletterSignup.privacyLink": "privatlivspolitik",
+  "FairwayFooter.followUs": "Følg os",
+  "FairwayFooter.followOn": "Følg Fairway på {network}"
 }

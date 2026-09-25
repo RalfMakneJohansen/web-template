@@ -162,3 +162,8 @@ export const deleteUserAccount = body => {
 export const addTransactionTracking = body => {
   return post('/api/transaction-tracking', body);
 };
+
+// FAIRWAY: newsletter sign-up from the footer. Body: { email, company }.
+export const subscribeNewsletter = body => {
+  return post('/api/newsletter', body);
+};

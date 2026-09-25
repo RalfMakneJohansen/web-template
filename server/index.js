@@ -40,6 +40,7 @@ const wellKnownRouter = require('./wellKnownRouter');
 const webmanifestResourceRoute = require('./resources/webmanifest');
 const robotsTxtRoute = require('./resources/robotsTxt');
 const sitemapResourceRoute = require('./resources/sitemap');
+const listingsFeedRoute = require('./resources/listingsFeed');
 const { getExtractors } = require('./importer');
 const renderer = require('./renderer');
 const dataLoader = require('./dataLoader');
@@ -190,6 +191,9 @@ app.get('/robots.txt', robotsTxtRoute);
 
 // Handle different sitemap-* resources. E.g. /sitemap-index.xml
 app.get('/sitemap-:resource', sitemapResourceRoute);
+
+// FAIRWAY: RSS feed of the newest listings, for the newsletter's weekly email
+app.get('/feed/nyeste-annoncer.xml', listingsFeedRoute);
 
 // Generate web app manifest
 // When developing with "yarn run dev",

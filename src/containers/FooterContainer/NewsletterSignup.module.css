@@ -1,0 +1,170 @@
+@import '../../styles/customMediaQueries.css';
+
+/* FAIRWAY: the newsletter card — the forest panel of the landing page's
+   shipping section, as a card on the white footer. */
+.root {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 48px;
+  padding: 30px 24px;
+
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+  border-radius: var(--radiusSheet);
+
+  @media (--viewportMedium) {
+    padding: 40px;
+  }
+
+  @media (--viewportLarge) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    gap: 48px;
+    padding: 48px 56px;
+  }
+}
+
+.eyebrow {
+  display: block;
+
+  font-family: var(--fontFamily);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--colorSage);
+}
+
+.title {
+  margin: 12px 0 0 0;
+  padding: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 30px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--colorPaper);
+
+  @media (--viewportMedium) {
+    font-size: 36px;
+    line-height: 40px;
+  }
+}
+
+.text {
+  margin: 12px 0 0 0;
+  padding: 0;
+
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--colorPaper);
+  opacity: 0.85;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.row {
+  display: grid;
+  gap: 12px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+}
+
+.field {
+  margin: 0;
+}
+
+.label {
+  color: var(--colorPaper);
+}
+
+/* A cream pill on the forest card; the page's primary green would vanish here. */
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 30px;
+
+  font-family: var(--fontFamily);
+  font-size: 15px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background-color: var(--colorPaper);
+  border: none;
+  border-radius: var(--radiusPill);
+  cursor: pointer;
+  transition: background-color 120ms ease-in-out;
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--colorWhite);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.7;
+  }
+
+  @media (--viewportMedium) {
+    min-height: 48px;
+  }
+}
+
+.consent {
+  margin: 0;
+  padding: 0;
+
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--colorPaper);
+  opacity: 0.75;
+}
+
+.consentLink {
+  color: var(--colorPaper);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--colorWhite);
+  }
+}
+
+.success,
+.error {
+  margin: 0;
+  padding: 12px 18px;
+
+  font-size: 14px;
+  line-height: 20px;
+  border-radius: 12px;
+}
+
+.success {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+}
+
+.error {
+  color: var(--colorPaper);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+/* The bot trap: out of sight and out of the tab order, but still in the form */
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

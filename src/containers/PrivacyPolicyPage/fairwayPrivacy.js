@@ -26,6 +26,7 @@ Her kan du læse, hvilke oplysninger Fairway behandler om dig, hvorfor vi gør d
 - **Levering:** navn og adresse, der skal bruges til at sende varen.
 - **Beskeder:** det, du skriver til andre brugere på Fairway.
 - **Betaling:** kortbetalinger og udbetalinger håndteres af Stripe. Vi ser ikke dine fulde kortoplysninger.
+- **Nyhedsbrev:** din e-mail, hvis du tilmelder dig, og om du har bekræftet tilmeldingen.
 - **Teknik:** IP-adresse, browser og enhed, som bruges til at drive siden sikkert.
 
 ## 3. Hvorfor vi behandler dem
@@ -35,7 +36,7 @@ Her kan du læse, hvilke oplysninger Fairway behandler om dig, hvorfor vi gør d
 - **Køberbeskyttelse og behandling af sager** — for at opfylde aftalen og ud fra vores legitime interesse i sikker handel (litra b og f).
 - **At forebygge svindel og misbrug** — ud fra vores legitime interesse (litra f).
 - **Bogføring af handler** — fordi bogføringsloven kræver det (litra c).
-- **Nyhedsbreve, hvis du har sagt ja** — ud fra dit samtykke (litra a).
+- **Nyhedsbreve, hvis du har sagt ja** — ud fra dit samtykke (litra a). Du bekræfter tilmeldingen via et link i en mail, og du kan trække samtykket tilbage når som helst med afmeldingslinket i hver mail.
 
 ## 4. Hvem vi deler oplysninger med
 
@@ -45,6 +46,7 @@ Vi sælger aldrig dine oplysninger. Vi deler dem kun, når det er nødvendigt fo
 - **Sharetribe**, som leverer den teknologi, Fairway er bygget på, og opbevarer data på vores vegne som databehandler.
 - **Stripe**, som håndterer betalinger og udbetalinger og foretager den identitetskontrol, loven kræver af sælgere. Stripe er selvstændigt dataansvarlig for den del.
 - **Shipmondo og fragtfirmaet**, som skal bruge navn og adresse til fragtlabel og levering.
+- **Mailchimp**, som sender vores nyhedsbrev og opbevarer tilmeldte e-mails på vores vegne som databehandler.
 - **Myndigheder**, hvis vi er forpligtet til det efter loven.
 
 Nogle af vores leverandører kan behandle oplysninger uden for EU. Det sker kun med de garantier, databeskyttelsesreglerne kræver, fx EU-Kommissionens standardkontrakter.
@@ -54,6 +56,7 @@ Nogle af vores leverandører kan behandle oplysninger uden for EU. Det sker kun 
 - Kontooplysninger gemmer vi, så længe du har en konto. Lukker du den, sletter vi dem inden for [30] dage, medmindre vi skal gemme dem af en af grundene nedenfor.
 - Oplysninger om handler gemmer vi i fem år efter udgangen af regnskabsåret, som bogføringsloven kræver.
 - Oplysninger i en uafsluttet sag gemmer vi, til sagen er afgjort.
+- Din e-mail til nyhedsbrevet gemmer vi, til du afmelder dig.
 
 ## 6. Dine rettigheder
 

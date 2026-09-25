@@ -18,6 +18,7 @@ const transitionPrivileged = require('./api/transition-privileged');
 const deleteAccount = require('./api/delete-account');
 const transactionTracking = require('./api/transaction-tracking');
 const shippingWebhook = require('./api/shipping-webhook');
+const newsletter = require('./api/newsletter');
 
 const createUserWithIdp = require('./api/auth/createUserWithIdp');
 
@@ -63,6 +64,9 @@ router.post('/delete-account', deleteAccount);
 // automation reports progress (JSON, authenticated with a shared secret).
 router.post('/transaction-tracking', transactionTracking);
 router.post('/shipping/webhook', bodyParser.json({ limit: '100kb' }), shippingWebhook);
+
+// FAIRWAY: newsletter sign-up from the footer (Mailchimp, double opt-in)
+router.post('/newsletter', bodyParser.json({ limit: '2kb' }), newsletter);
 
 // Create user with identity provider (e.g. Facebook or Google)
 // This endpoint is called to create a new user after user has confirmed
