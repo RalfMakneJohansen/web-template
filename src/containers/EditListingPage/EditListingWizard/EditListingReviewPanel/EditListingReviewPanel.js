@@ -6,7 +6,7 @@ import { formatMoney } from '../../../../util/currency';
 import { isFieldForCategory } from '../../../../util/fieldHelpers';
 import { LISTING_STATE_DRAFT } from '../../../../util/types';
 
-import { Button, H3, ListingLink, NamedLink } from '../../../../components';
+import { Button, H3, ListingLink, NamedLink, SaleBreakdown } from '../../../../components';
 
 import css from './EditListingReviewPanel.module.css';
 
@@ -218,6 +218,13 @@ const EditListingReviewPanel = props => {
           </div>
         ))}
       </dl>
+
+      {/* FAIRWAY: the money, once more, right before publishing */}
+      <SaleBreakdown
+        className={css.breakdown}
+        priceSubunits={price?.amount}
+        shipmentType={shipmentType}
+      />
 
       {allMissing.length > 0 ? (
         <div className={css.missing}>

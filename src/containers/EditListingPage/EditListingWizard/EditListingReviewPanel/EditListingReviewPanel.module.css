@@ -140,3 +140,8 @@
     margin-top: 40px;
   }
 }
+
+/* FAIRWAY: payout and buyer total under the summary */
+.breakdown {
+  margin-top: 24px;
+}
