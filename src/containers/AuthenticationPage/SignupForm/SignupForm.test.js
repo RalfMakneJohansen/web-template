@@ -112,7 +112,7 @@ describe('SignupForm', () => {
   // });
 
   it('enables Sign up button when required fields are filled', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null });
     render(
       <SignupForm
         intl={fakeIntl}
