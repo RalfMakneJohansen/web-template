@@ -195,12 +195,15 @@ export const listingFields = [
     key: 'shipment_type',
     scope: 'public',
     schemaType: 'enum',
+    // The labels are what a buyer reads in the listing's details and in the
+    // Levering filter, so they say how the item arrives rather than what the
+    // seller chose. 'meetup' is paid through Fairway like the others (it is
+    // the purchase process's pickup delivery method), which needs pickup
+    // enabled on the listing type in Console.
     enumOptions: [
-      { option: 'box', label: 'Send mig en gratis kasse' },
-      { option: 'own', label: 'Jeg pakker og sender selv' },
-      // 'pickup' is deliberately left out for now: collection bypasses our
-      // freight and escrow. Re-adding it here also needs pickup enabled on the
-      // listing type in Console, or the buyer hits a dead end at checkout.
+      { option: 'own', label: 'Sendes (2–3 hverdage)' },
+      { option: 'box', label: 'Sendes i Fairway-kasse (4–6 hverdage)' },
+      { option: 'meetup', label: 'Afhentning' },
     ],
     filterConfig: FILTER('Levering', 'secondary'),
     showConfig: { label: 'Levering', isDetail: true },

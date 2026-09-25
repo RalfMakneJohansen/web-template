@@ -40,12 +40,15 @@ Fairway er en platform, der forbinder købere og sælgere. Købsaftalen om en va
 - Kopivarer, stjålne varer og varer, der ikke er golfudstyr, må ikke sælges.
 - Du sætter selv prisen. Når en køber har betalt, er du forpligtet til at sælge varen til den aftalte pris.
 - For at modtage penge skal du oprette en udbetalingskonto hos vores betalingspartner Stripe og gennemføre deres identitetskontrol.
-- Når varen er solgt, sender vi dig en gratis forsendelseskasse og en fragtlabel. Du skal pakke varen forsvarligt og sende den hurtigst muligt.
+- Du vælger, hvordan varen kommer til køber: Du sender den i din egen kasse, du får tilsendt en kasse fra Fairway, eller køber henter den hos dig. Kasse og fragtlabel er gratis for dig.
+- Sender du varen, skal du pakke den forsvarligt og sende den hurtigst muligt og senest inden for 14 dage efter købet.
+- Ved afhentning aftaler I tid og sted i beskederne på ordren. Betalingen går stadig gennem Fairway.
 - Det koster ikke noget at oprette annoncer eller at sælge på Fairway.
 
 ## 4. Når du køber
 
-- Prisen i annoncen er sælgers pris. Oveni betaler du fragt (50 kr.) og Fairways gebyr på 4,99 % af varens pris. Den samlede pris står tydeligt, før du betaler.
+- Prisen i annoncen er sælgers pris. Oveni betaler du Fairways gebyr på 4,99 % af varens pris og, når varen sendes, fragt (50 kr.). Ved afhentning er der ingen fragt. Den samlede pris står tydeligt, før du betaler.
+- Leveringstiden står i annoncen: normalt 2–3 hverdage, eller 4–6 hverdage hvis sælger først skal have tilsendt en kasse.
 - Du kan give et bud på en vare. Et bud er bindende, hvis sælger accepterer det.
 - Du betaler med kort via Stripe. Pengene trækkes, når du køber, men de holdes hos Fairway og udbetales først til sælger, når handlen er afsluttet.
 
@@ -53,7 +56,7 @@ Fairway er en platform, der forbinder købere og sælgere. Købsaftalen om en va
 
 Fairway holder pengene, indtil du har modtaget varen og haft tid til at kontrollere den.
 
-1. **Levering.** Sælger sender varen med forsikret fragt og track & trace.
+1. **Levering.** Sælger sender varen med forsikret fragt og track & trace. Ved afhentning får du varen udleveret af sælger.
 2. **48 timers kontrol.** Når varen er leveret, har du 48 timer til at kontrollere den.
 3. **Godkendelse.** Svarer varen til beskrivelsen, godkender du den, og pengene udbetales til sælger. Gør du ikke noget inden for de 48 timer, regnes varen som godkendt.
 4. **Problemer.** Svarer varen ikke til beskrivelsen, skal du melde det i ordren inden for de 48 timer. Så bliver pengene hos os, mens sagen behandles.

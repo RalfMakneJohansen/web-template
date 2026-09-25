@@ -19,6 +19,7 @@ import {
   FieldCurrencyInput,
   FieldCheckboxGroup,
   FieldTextInput,
+  SaleBreakdown,
 } from '../../../../components';
 
 // Import modules from this directory
@@ -142,6 +143,7 @@ export const EditListingPricingAndStockForm = props => (
         fetchErrors,
         values,
         priceGuidanceProps,
+        shipmentType,
       } = formRenderProps;
 
       const intl = useIntl();
@@ -202,6 +204,13 @@ export const EditListingPricingAndStockForm = props => (
           {priceGuidanceProps ? (
             <PriceGuidance {...priceGuidanceProps} currentPrice={values.price} />
           ) : null}
+
+          {/* FAIRWAY: what the seller gets and the buyer pays, on every keypress */}
+          <SaleBreakdown
+            className={css.breakdown}
+            priceSubunits={values.price?.amount}
+            shipmentType={shipmentType}
+          />
 
           <UpdateStockToInfinityCheckboxMaybe
             formId={formId}

@@ -519,3 +519,12 @@
 .authorContact:hover {
   background-color: var(--colorSagePale);
 }
+
+/* FAIRWAY: delivery time and method, between the price and the seller */
+.deliveryInfo {
+  margin-top: 16px;
+
+  @media (--viewportMedium) {
+    margin-top: 18px;
+  }
+}

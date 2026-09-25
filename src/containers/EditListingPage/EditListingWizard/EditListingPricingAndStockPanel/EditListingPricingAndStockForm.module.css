@@ -42,3 +42,12 @@
     margin-top: 100px;
   }
 }
+
+/* FAIRWAY: the payout and buyer total, under the price and its guidance */
+.breakdown {
+  margin-top: 18px;
+
+  @media (--viewportMedium) {
+    margin-top: 24px;
+  }
+}

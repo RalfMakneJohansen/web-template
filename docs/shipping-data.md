@@ -49,14 +49,29 @@ The box is sent to this address too, when the seller chose it.
 ## What to send — the listing
 
 ```
-listing.attributes.publicData.shipment_type = "box" | "own"
+listing.attributes.publicData.shipment_type = "own" | "box" | "meetup"
 ```
 
-- `box`: send the seller a box and a label.
-- `own`: send only the label; the seller packs in their own box.
+- `own`: send only the label; the seller packs in their own box. Buyer sees 2–3 working days.
+- `box`: send the seller a box and a label first. Buyer sees 4–6 working days.
+- `meetup`: nothing to send. The order's deliveryMethod is `pickup`; buyer and
+  seller arrange the handover in the order messages, and the buyer marking the
+  order received releases the payout. No sender address is required.
 
-Both ship with the flat 50 kr. freight the buyer paid
-(`server/api-util/lineItems.js`).
+`own` and `box` ship with the flat 50 kr. freight the buyer paid
+(`server/api-util/lineItems.js`); a meetup has no freight line. Meetup needs
+pickup enabled on the listing type in Console, or the option is hidden in the
+listing wizard.
+
+## Box progress on the order
+
+When the automation has sent a box, it writes to the transaction's metadata,
+which the order page shows to both sides:
+
+```
+transaction.attributes.metadata.boxDispatchedAt = "2026-09-25T09:00:00Z"
+transaction.attributes.metadata.boxTracking = "00370712345678901234"   // optional
+```
 
 ## Listings created before 2026-09-24
 

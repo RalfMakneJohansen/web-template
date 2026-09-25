@@ -816,10 +816,10 @@ describe('EditListingPage', () => {
       expect(getByText('EditListingShippingPanel.title')).toBeInTheDocument();
 
       // Tab/form: the two shipment_type options, neither one preselected
-      expect(getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })).not.toBeChecked();
-      expect(getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })).not.toBeChecked();
+      expect(getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })).not.toBeChecked();
+      expect(getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })).not.toBeChecked();
 
-      // No delivery-method choice any more: pickup is off and shipping is on for every listing
+      // No separate delivery-method form: shipment_type decides pickup and shipping
       expect(
         queryByRole('checkbox', { name: /EditListingDeliveryForm.pickupLabel/i })
       ).not.toBeInTheDocument();
@@ -833,10 +833,10 @@ describe('EditListingPage', () => {
     });
 
     // Test interaction
-    await user.click(getByRole('radio', { name: 'EditListingShippingPanel.optionBox' }));
+    await user.click(getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' }));
 
-    expect(getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })).toBeChecked();
-    expect(getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })).not.toBeChecked();
+    expect(getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })).toBeChecked();
+    expect(getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })).not.toBeChecked();
   });
 
   it('Purchase: edit flow on photos tab', async () => {
@@ -969,8 +969,8 @@ describe('EditListingPage', () => {
     expect(saveButton).not.toBeDisabled();
   });
 
-  // FAIRWAY: the shipping step hardcodes shippingEnabled: true and a flat 5000-subunit
-  // freight, so the built-in `shipping` toggle on the listing type no longer has an effect.
+  // FAIRWAY: the shipping step derives shippingEnabled and the flat 5000-subunit freight from
+  // the seller's shipment_type, so the built-in `shipping` toggle on the listing type has no effect.
   it('Purchase: shipping tab ignores the listing type shipping toggle', async () => {
     const listingTypePurchase = listingTypesPurchase[0];
     const purchaseNoShipping = {
@@ -1022,10 +1022,10 @@ describe('EditListingPage', () => {
 
       // Tab/form: the shipment_type question is asked regardless of the shipping toggle
       expect(
-        getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })
+        getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })
       ).toBeInTheDocument();
       expect(
-        getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })
+        getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })
       ).toBeInTheDocument();
 
       // The built-in delivery form is gone, so its shipping fields are never rendered
@@ -1038,8 +1038,8 @@ describe('EditListingPage', () => {
     });
   });
 
-  // FAIRWAY: the shipping step hardcodes pickupEnabled: false, so the built-in `pickup`
-  // toggle on the listing type no longer changes what the seller is asked for.
+  // FAIRWAY: the shipping step derives pickupEnabled from shipment_type (only a meetup is
+  // pickup), so the built-in `pickup` toggle on the listing type does not change the question.
   it('Purchase: shipping tab ignores the listing type pickup toggle', async () => {
     const listingTypePurchase = listingTypesPurchase[0];
     const purchaseNoPickup = { ...listingTypePurchase, defaultListingFields: { pickup: false } };
@@ -1091,10 +1091,10 @@ describe('EditListingPage', () => {
 
       // Tab/form: the shipment_type question is asked regardless of the pickup toggle
       expect(
-        getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })
+        getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })
       ).toBeInTheDocument();
       expect(
-        getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })
+        getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })
       ).toBeInTheDocument();
 
       // The built-in delivery form is gone, so its pickup fields are never rendered

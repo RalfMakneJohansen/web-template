@@ -109,15 +109,17 @@ const tabsForListingType = (processName, listingTypeConfig) => {
   const tabs = {
     ['default-booking']: [DETAILS, ...locationMaybe, PRICING, AVAILABILITY, ...styleOrPhotosTab],
     // FAIRWAY: the seller is walked through the listing in this order —
-    // category/brand/condition, price, photos, description, shipping, review.
-    // The built-in DELIVERY tab is replaced by SHIPPING, which asks the
-    // shipment_type question and derives deliveryOptions from the answer.
+    // category/brand/condition, price, shipping, photos, description, review.
+    // Shipping follows the price because together they are the money: the
+    // shipping step shows what the buyer pays for each choice. The built-in
+    // DELIVERY tab is replaced by SHIPPING, which asks the shipment_type
+    // question and derives deliveryOptions from the answer.
     ['default-purchase']: [
       DETAILS,
       PRICING_AND_STOCK,
+      SHIPPING,
       ...styleOrPhotosTab,
       DESCRIPTION,
-      SHIPPING,
       REVIEW,
     ],
     ['default-negotiation']: [DETAILS, ...locationMaybe, ...pricingMaybe, ...styleOrPhotosTab],

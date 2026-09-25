@@ -150,6 +150,7 @@ const EditListingPricingAndStockPanel = props => {
             currency: marketplaceCurrency,
             listingId: listing?.id?.uuid,
           }}
+          shipmentType={publicData?.shipment_type}
           onSubmit={values => {
             const { price, stock, stockTypeInfinity } = values;
 

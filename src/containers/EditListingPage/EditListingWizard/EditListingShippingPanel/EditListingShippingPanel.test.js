@@ -1,7 +1,11 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 
-import { renderWithProviders as render, testingLibrary } from '../../../../util/testHelpers';
+import {
+  getHostedConfiguration,
+  renderWithProviders as render,
+  testingLibrary,
+} from '../../../../util/testHelpers';
 import { createCurrentUser, createOwnListing } from '../../../../util/testData';
 import { updateProfile } from '../../../ProfileSettingsPage/ProfileSettingsPage.duck';
 
@@ -73,34 +77,63 @@ describe('EditListingShippingPanel', () => {
       },
     });
 
-  it('offers both shipment options with neither preselected', () => {
+  it('offers the three ways with none preselected', () => {
     render(<EditListingShippingPanel {...panelProps(publishedListing())} />);
 
-    const box = screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' });
-    const own = screen.getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' });
-
-    expect(box).not.toBeChecked();
-    expect(own).not.toBeChecked();
+    for (const value of ['own', 'box', 'meetup']) {
+      expect(
+        screen.getByRole('radio', { name: `EditListingShippingPanel.option.${value}.title` })
+      ).not.toBeChecked();
+    }
 
     // A listing must not reach the review step with a choice nobody made.
     expect(screen.getByRole('button', { name: 'Save shipping' })).toBeDisabled();
   });
 
-  it('does not offer collection, which this version deliberately leaves out', () => {
-    render(<EditListingShippingPanel {...panelProps(publishedListing())} />);
+  it('warns that the Fairway box makes delivery slower', async () => {
+    const user = userEvent.setup();
+    render(<EditListingShippingPanel {...panelProps(publishedListing())} />, withSender);
 
-    expect(
-      screen.queryByRole('radio', { name: 'EditListingShippingPanel.optionPickup' })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('EditListingShippingPanel.option.box.warning')).toBeNull();
+    await user.click(
+      screen.getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })
+    );
+    expect(screen.getByText('EditListingShippingPanel.option.box.warning')).toBeInTheDocument();
+  });
+
+  it('saves a meetup as pickup only, without asking for a sender address', async () => {
+    const user = userEvent.setup();
+    const onSubmit = jest.fn();
+    render(<EditListingShippingPanel {...panelProps(publishedListing(), { onSubmit })} />);
+
+    await user.click(
+      screen.getByRole('radio', { name: 'EditListingShippingPanel.option.meetup.title' })
+    );
+    // Nothing is shipped, so no sender fields
+    expect(screen.queryByLabelText('SenderAddressFields.line1')).toBeNull();
+    expect(screen.getByText('EditListingShippingPanel.meetupNote')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Save shipping' }));
+    await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
+    expect(onSubmit).toHaveBeenCalledWith({
+      publicData: {
+        shipment_type: 'meetup',
+        pickupEnabled: true,
+        shippingEnabled: false,
+        shippingPriceInSubunitsOneItem: 0,
+        shippingPriceInSubunitsAdditionalItems: 0,
+      },
+    });
+    expect(updateProfile).not.toHaveBeenCalled();
   });
 
   it('enables submit once a shipment type is picked', async () => {
     const user = userEvent.setup();
     render(<EditListingShippingPanel {...panelProps(publishedListing())} />, withSender);
 
-    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' }));
+    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' }));
 
-    expect(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })).toBeChecked();
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Save shipping' })).not.toBeDisabled();
     });
@@ -114,13 +147,12 @@ describe('EditListingShippingPanel', () => {
       withSender
     );
 
-    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' }));
+    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' }));
     await user.click(screen.getByRole('button', { name: 'Save shipping' }));
 
     await waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
 
-    // Both routes ship, so pickup stays off and shipping on for every listing,
-    // and the buyer pays the flat freight regardless of which route was picked.
+    // Shipped listings keep pickup off and carry the flat freight the buyer pays
     expect(onSubmit).toHaveBeenCalledWith({
       publicData: {
         shipment_type: 'own',
@@ -151,7 +183,7 @@ describe('EditListingShippingPanel', () => {
     const onSubmit = jest.fn();
     render(<EditListingShippingPanel {...panelProps(publishedListing(), { onSubmit })} />);
 
-    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' }));
+    await user.click(screen.getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' }));
 
     // Shipping chosen, but no address yet: the step cannot be finished
     expect(screen.getByRole('button', { name: 'Save shipping' })).toBeDisabled();
@@ -194,9 +226,9 @@ describe('EditListingShippingPanel', () => {
       <EditListingShippingPanel {...panelProps(publishedListing({ shipment_type: 'box' }))} />
     );
 
-    expect(screen.getByRole('radio', { name: 'EditListingShippingPanel.optionBox' })).toBeChecked();
+    expect(screen.getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })).toBeChecked();
     expect(
-      screen.getByRole('radio', { name: 'EditListingShippingPanel.optionOwn' })
+      screen.getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })
     ).not.toBeChecked();
   });
 
@@ -208,5 +240,31 @@ describe('EditListingShippingPanel', () => {
     );
 
     expect(screen.getByText('EditListingShippingPanel.updateFailed')).toBeInTheDocument();
+  });
+
+  it('does not offer a meetup while pickup is off on the listing type', () => {
+    // Hosted listing types, as Console serves them
+    const config = {
+      ...getHostedConfiguration(),
+      listingTypes: {
+        listingTypes: [
+          {
+            id: 'sell-bicycles',
+            transactionProcess: { name: 'default-purchase', alias: 'default-purchase/release-1' },
+            unitType: 'item',
+            defaultListingFields: { pickup: false, shipping: true },
+          },
+        ],
+      },
+    };
+    render(<EditListingShippingPanel {...panelProps(publishedListing())} />, { config });
+
+    // A pickup-only listing would leave the buyer without a delivery method
+    expect(
+      screen.queryByRole('radio', { name: 'EditListingShippingPanel.option.meetup.title' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })
+    ).toBeInTheDocument();
   });
 });

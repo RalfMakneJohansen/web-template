@@ -130,3 +130,182 @@
   color: var(--colorSlate);
 }
 
+
+/* ============================================================
+   FAIRWAY: three shipping choices as large cards
+   Icon top left, a check top right once chosen, then the two facts a seller
+   weighs — what it costs them and how long the buyer waits — and a line on
+   what happens. Selected: the brand green edge on a pale green ground.
+   ============================================================ */
+
+.lead {
+  margin: 8px 0 0 0;
+  padding: 0;
+
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--colorGraphite);
+}
+
+
+.option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+
+  border: 1.5px solid rgba(93, 202, 165, 0.35);
+  border-radius: var(--radiusCard);
+  background-color: var(--colorWhite);
+}
+
+.optionSelected {
+  border-color: var(--colorForest);
+  background-color: rgba(15, 110, 86, 0.06);
+}
+
+.optionIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 12px;
+
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+  border-radius: 12px;
+
+  & svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.optionSelected .optionIcon {
+  color: var(--colorWhite);
+  background-color: var(--colorForest);
+}
+
+.optionCheck {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  background-color: var(--colorForest);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.15s var(--easeOut), transform 0.15s var(--easeOut);
+
+  & svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: var(--colorWhite);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.optionSelected .optionCheck {
+  opacity: 1;
+  transform: none;
+}
+
+/* The whole card is the hit area for the radio */
+.option .optionRadio {
+  position: static;
+
+  & label {
+    font-size: 16px;
+    line-height: 22px;
+    font-weight: var(--fontWeightSemiBold);
+    color: var(--colorInk);
+  }
+
+  & label::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radiusCard);
+  }
+}
+
+.facts {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0 0 0;
+}
+
+.fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  font-size: 13px;
+  line-height: 18px;
+
+  & dt {
+    color: var(--colorSlate);
+  }
+
+  & dd {
+    margin: 0;
+    font-weight: var(--fontWeightSemiBold);
+    color: var(--colorInk);
+    text-align: right;
+  }
+}
+
+.optionHint {
+  margin: 10px 0 0 0;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.optionWarning {
+  margin: 10px 0 0 0;
+  padding: 8px 10px;
+
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  color: #7a4d05;
+
+  background-color: #fff7e6;
+  border-radius: 8px;
+}
+
+.breakdown {
+  margin-top: 20px;
+}
+
+.meetupNote {
+  margin: 20px 0 0 0;
+  padding: 14px 16px;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorInk);
+
+  background-color: var(--colorGround);
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .optionCheck {
+    transition: none;
+  }
+}

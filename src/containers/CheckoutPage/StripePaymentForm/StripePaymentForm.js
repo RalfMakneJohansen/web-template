@@ -237,7 +237,14 @@ const LocationOrShippingDetails = props => {
       <Heading as="h3" rootClassName={css.heading}>
         <FormattedMessage id="StripePaymentForm.pickupDetailsTitle" />
       </Heading>
-      <p className={css.locationDetails}>{locationDetails}</p>
+      {/* FAIRWAY: listings carry no address; a pickup is arranged afterwards */}
+      <p className={css.locationDetails}>
+        {listingLocation?.address ? (
+          locationDetails
+        ) : (
+          <FormattedMessage id="StripePaymentForm.pickupArranged" />
+        )}
+      </p>
     </div>
   ) : showLocation && !isFuzzyLocation ? (
     <div className={css.locationWrapper}>

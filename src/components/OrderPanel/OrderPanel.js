@@ -38,6 +38,7 @@ import {
 } from '../../transactions/transaction';
 
 import { ModalInMobile, PrimaryButton, AvatarSmall, H2 } from '../../components';
+import DeliveryInfo from '../DeliveryInfo/DeliveryInfo';
 import PriceVariantPicker from './PriceVariantPicker/PriceVariantPicker';
 import { customerTotal } from './FairwayPriceBreakdown/FairwayPriceBreakdown';
 import SubmitFinePrint from './SubmitFinePrint/SubmitFinePrint';
@@ -518,6 +519,9 @@ const OrderPanel = props => {
             marketplaceCurrency={marketplaceCurrency}
           />
         )}
+
+        {/* FAIRWAY: how it arrives, before who sells it and the buy button */}
+        {isPurchase ? <DeliveryInfo className={css.deliveryInfo} publicData={publicData} /> : null}
 
         {!hideAuthorInfo && (
           /* FAIRWAY: the seller card says who you are buying from.
