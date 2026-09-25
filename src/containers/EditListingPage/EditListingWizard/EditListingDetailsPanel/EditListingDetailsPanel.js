@@ -395,6 +395,7 @@ const EditListingDetailsPanel = props => {
           className={css.tradeReadiness}
           currentUser={currentUser}
           context="listing"
+          compact
         />
       ) : null}
 

@@ -1,0 +1,168 @@
+@import '../../../styles/customMediaQueries.css';
+
+/* FAIRWAY: the step line above a new listing's card */
+
+.root {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 18px 16px 6px 16px;
+
+  @media (--viewportMedium) {
+    padding: 32px 32px 8px 32px;
+  }
+}
+
+.progressRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.stepCount {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorGraphite);
+}
+
+.percent {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  font-variant-numeric: tabular-nums;
+}
+
+.track {
+  height: 6px;
+  overflow: hidden;
+  background-color: var(--colorSagePale);
+  border-radius: 999px;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background-color: var(--colorForest);
+  border-radius: 999px;
+  transition: width 0.4s var(--easeOut);
+}
+
+/* Circles on a line */
+.steps {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  margin: 18px 0 0 0;
+  padding: 0;
+  list-style: none;
+
+  @media (--viewportMedium) {
+    margin-top: 24px;
+  }
+}
+
+.step {
+  position: relative;
+
+  /* the line to the previous step, behind the circles */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 17px;
+    right: 50%;
+    width: 100%;
+    z-index: 0;
+    height: 2px;
+    background-color: var(--colorDivider);
+  }
+
+  &:first-child::before {
+    display: none;
+  }
+}
+
+.stepDone::before,
+.stepCurrent::before {
+  background-color: var(--colorForest);
+}
+
+.stepLink {
+  position: relative;
+  /* above the lines of the neighbouring steps, which reach under this circle */
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--colorGraphite);
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorGraphite);
+  background-color: var(--colorWhite);
+  border: 2px solid var(--colorDivider);
+  border-radius: 50%;
+  transition: background-color 0.2s var(--easeOut), border-color 0.2s var(--easeOut),
+    box-shadow 0.2s var(--easeOut);
+}
+
+.stepDone .circle {
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+  border-color: var(--colorForest);
+}
+
+.stepDone a.stepLink:hover .circle {
+  box-shadow: 0 0 0 4px var(--colorSagePale);
+}
+
+.stepCurrent .circle {
+  color: var(--colorForest);
+  border-color: var(--colorForest);
+  box-shadow: 0 0 0 4px var(--colorSagePale);
+}
+
+.check {
+  fill: none;
+}
+
+/* Labels under the circles from tablet up; the count above names the step on a phone */
+.label {
+  display: none;
+
+  @media (--viewportMedium) {
+    display: block;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: var(--fontWeightSemiBold);
+    text-align: center;
+  }
+}
+
+.stepDone .label,
+.stepCurrent .label {
+  color: var(--colorForest);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .circle {
+    transition: none;
+  }
+}

@@ -26,6 +26,7 @@ import css from './Tabs.module.css';
  * @param {string} [props.rootClassName] - Custom class that overrides the default class for the root element
  * @param {string} [props.navRootClassName] - Custom class that overrides the default class for the nav element
  * @param {string} [props.tabRootClassName] - Custom class that overrides the default class for the tab element
+ * @param {boolean} [props.hideNav] - Leave the tab navigation out, when the page shows its own
  * @returns {JSX.Element} Tab navigation component
  */
 const Tabs = props => {
@@ -36,6 +37,7 @@ const Tabs = props => {
     navRootClassName,
     tabRootClassName,
     ariaLabel,
+    hideNav = false,
   } = props;
   const rootClasses = rootClassName || css.root;
   const classes = classNames(rootClasses, className);
@@ -72,12 +74,15 @@ const Tabs = props => {
 
   return (
     <div className={classes}>
-      <TabNav
-        rootClassName={navRootClassName}
-        tabs={tabNavTabs}
-        tabRootClassName={tabRootClassName}
-        ariaLabel={ariaLabel}
-      />
+      {/* FAIRWAY: a page can show its own step navigation instead */}
+      {hideNav ? null : (
+        <TabNav
+          rootClassName={navRootClassName}
+          tabs={tabNavTabs}
+          tabRootClassName={tabRootClassName}
+          ariaLabel={ariaLabel}
+        />
+      )}
       {selectedTabPanel}
     </div>
   );

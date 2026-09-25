@@ -175,3 +175,64 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+/* FAIRWAY: compact — one line that opens to the missing items */
+.compact {
+  background-color: var(--colorSagePale);
+  border-radius: var(--radiusCard);
+}
+
+.compactSummary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 6px 16px;
+  cursor: pointer;
+  list-style: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
+
+.compactCount {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  font-size: 13px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+  border-radius: 50%;
+}
+
+.compactText {
+  flex-grow: 1;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+}
+
+.compactToggle {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.compact[open] .compactToggle {
+  visibility: hidden;
+}
+
+.compact .items {
+  margin: 0;
+  padding: 0 12px 12px 12px;
+}

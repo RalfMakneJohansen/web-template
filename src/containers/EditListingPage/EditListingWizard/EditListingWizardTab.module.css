@@ -14,3 +14,32 @@
     padding: 48px calc((100% - 1056px) / 2) 82px 59px;
   }
 }
+
+/* FAIRWAY: each step is one white card, centred on the warm ground. With the
+   tab rail (editing an existing listing on a desktop) it sits to the right of it. */
+.panel {
+  width: calc(100% - 32px);
+  max-width: 800px;
+  margin: 12px auto 48px auto;
+  padding: 24px 18px 32px 18px;
+
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusSheet);
+  box-shadow: var(--shadowRest);
+
+  @media (--viewportMedium) {
+    width: calc(100% - 64px);
+    margin: 16px auto 80px auto;
+    padding: 40px 48px 48px 48px;
+  }
+
+  @media (--viewportLarge) {
+    border-left: 1px solid var(--colorDividerWarm);
+    padding: 48px 56px 56px 56px;
+  }
+
+  @media (--viewportLargeWithPaddings) {
+    padding: 48px 56px 56px 56px;
+  }
+}

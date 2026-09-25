@@ -1851,5 +1851,9 @@
   "OverviewPage.tradeStatus.inquiry": "Inquiry",
   "OverviewPage.tradeStatus.other": "In progress",
   "OverviewPage.noTrades": "You have not bought or sold anything yet.",
-  "OverviewPage.browse": "Browse gear"
+  "OverviewPage.browse": "Browse gear",
+  "EditListingWizard.stepOf": "Step {step} of {total} · {label}",
+  "EditListingWizard.percentDone": "{percent}% done",
+  "TradeReadiness.compact.summary": "{count, plural, one {# thing} other {# things}} left before you can be paid",
+  "TradeReadiness.compact.toggle": "Show"
 }

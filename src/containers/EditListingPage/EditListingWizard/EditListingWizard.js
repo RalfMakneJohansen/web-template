@@ -64,6 +64,7 @@ import EditListingWizardTab, {
   SHIPPING,
   REVIEW,
 } from './EditListingWizardTab';
+import WizardStepper from './WizardStepper';
 import { EVENTS, priceParam, track } from '../../../analytics/track';
 
 import css from './EditListingWizard.module.css';
@@ -783,44 +784,36 @@ class EditListingWizard extends Component {
       return <NamedRedirect name="EditListingPage" params={pathParams} />;
     }
 
-    // FAIRWAY: where the seller is in a new listing. On a phone the steps are a
-    // sideways-scrolling strip, so the count and the bar say how far along
-    // they are and how much is left; on a desktop the step list is in view.
+    // FAIRWAY: where the seller is in a new listing — a bar with how much is
+    // done and the steps as circles, instead of the template's tab rail. Steps
+    // already filled in can be revisited from it.
     const stepIndex = tabs.indexOf(selectedTab);
     const stepProgress =
       isNewListingFlow && stepIndex >= 0 ? (
-        <div
-          className={css.progress}
-          role="progressbar"
-          aria-valuemin={1}
-          aria-valuemax={tabs.length}
-          aria-valuenow={stepIndex + 1}
-          aria-label={intl.formatMessage(
-            { id: 'EditListingWizard.progress' },
-            { step: stepIndex + 1, total: tabs.length }
-          )}
-        >
-          <span className={css.progressLabel}>
-            <FormattedMessage
-              id="EditListingWizard.progress"
-              values={{ step: stepIndex + 1, total: tabs.length }}
-            />
-          </span>
-          <span className={css.progressTrack}>
-            <span
-              className={css.progressFill}
-              style={{ width: `${((stepIndex + 1) / tabs.length) * 100}%` }}
-            />
-          </span>
-        </div>
+        <WizardStepper
+          currentIndex={stepIndex}
+          steps={tabs.map(tab => ({
+            key: tab,
+            label: tabLabelAndSubmit(
+              intl,
+              tab,
+              isNewListingFlow,
+              isPriceDisabled,
+              resolveLatestProcessName(processName)
+            ).label,
+            linkProps: tabLink(tab),
+            reachable: !!tabsStatus[tab],
+          }))}
+        />
       ) : null;
 
     return (
       <div className={classes}>
         {stepProgress}
         <Tabs
-          rootClassName={css.tabsContainer}
+          rootClassName={isNewListingFlow ? css.tabsContainerNew : css.tabsContainer}
           navRootClassName={css.nav}
+          hideNav={isNewListingFlow}
           tabRootClassName={css.tab}
           ariaLabel={intl.formatMessage({ id: 'EditListingWizard.screenreader.tabNavigation' })}
         >

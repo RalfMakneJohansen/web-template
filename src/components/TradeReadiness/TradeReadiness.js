@@ -38,10 +38,11 @@ const DotIcon = () => (
  * @param {string} [props.rootClassName] - Custom class that overrides the default class for the root element
  * @param {Object} props.currentUser - The current user, with the stripeAccount relationship
  * @param {'guide'|'profile'|'listing'} [props.context] - Where the card is shown; picks the heading and links
+ * @param {boolean} [props.compact] - One line saying how much is missing, opening to the list
  * @returns {JSX.Element} the readiness checklist
  */
 const TradeReadiness = props => {
-  const { className, rootClassName, currentUser, context = 'profile' } = props;
+  const { className, rootClassName, currentUser, context = 'profile', compact = false } = props;
   if (!currentUser?.id) {
     return null;
   }
@@ -69,6 +70,51 @@ const TradeReadiness = props => {
       linkName: 'StripePayoutPage',
     },
   ];
+
+  // FAIRWAY: in a flow the full card pushed the actual question off the screen;
+  // compact, it is one line that opens to the same list.
+  if (compact) {
+    const missing = items.filter(item => !item.done);
+    if (missing.length === 0) {
+      return null;
+    }
+    return (
+      <details className={classNames(css.compact, className)}>
+        <summary className={css.compactSummary}>
+          <span className={css.compactCount}>{missing.length}</span>
+          <span className={css.compactText}>
+            <FormattedMessage
+              id="TradeReadiness.compact.summary"
+              values={{ count: missing.length }}
+            />
+          </span>
+          <span className={css.compactToggle}>
+            <FormattedMessage id="TradeReadiness.compact.toggle" />
+          </span>
+        </summary>
+        <ul className={css.items}>
+          {missing.map(item => (
+            <li key={item.key} className={css.item}>
+              <span className={css.mark}>
+                <DotIcon />
+              </span>
+              <span className={css.itemCopy}>
+                <span className={css.itemTitle}>
+                  <FormattedMessage id={`TradeReadiness.${item.key}.title`} />
+                </span>
+                <span className={css.itemText}>
+                  <FormattedMessage id={`TradeReadiness.${item.key}.todo`} />
+                </span>
+              </span>
+              <NamedLink className={css.itemLink} name={item.linkName} to={item.linkTo}>
+                <FormattedMessage id={`TradeReadiness.${item.key}.cta`} />
+              </NamedLink>
+            </li>
+          ))}
+        </ul>
+      </details>
+    );
+  }
 
   const headingId = readiness.readyToSell
     ? `TradeReadiness.${context}.readyTitle`
