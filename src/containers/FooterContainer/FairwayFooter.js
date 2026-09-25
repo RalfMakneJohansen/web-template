@@ -77,7 +77,7 @@ const COLUMNS = [
     title: 'Support',
     links: [
       { label: 'Kontakt', name: 'CMSPage', params: { pageId: 'kontakt' } },
-      { label: 'Ofte stillede spørgsmål', name: 'CMSPage', params: { pageId: 'faq' } },
+      { label: 'Spørgsmål og svar', name: 'CMSPage', params: { pageId: 'faq' } },
       { label: 'Handelsbetingelser', name: 'TermsOfServicePage' },
       { label: 'Privatlivspolitik', name: 'PrivacyPolicyPage' },
     ],
@@ -111,8 +111,7 @@ const FairwayFooter = props => {
             <img className={css.brandLogo} src={wordmark} alt="Fairway" />
           </NamedLink>
           <p className={css.brandText}>
-            Markedspladsen for brugt golfudstyr i Danmark. Vi står imellem køber og sælger, så ingen
-            af jer løber en risiko.
+            Brugt golfudstyr, købt og solgt trygt. Vi holder på pengene, til køber er tilfreds.
           </p>
           {socials.length > 0 ? (
             <div className={css.social}>

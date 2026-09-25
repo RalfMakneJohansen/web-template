@@ -104,7 +104,7 @@ const SearchPageContent = props => {
             {
               q: 'Hvad koster det at sælge?',
               a:
-                'Det er gratis at oprette en annonce. Når varen er solgt, får du en betalt fragtlabel, og mangler du en kasse, sender vi en for 59 kr.',
+                'Det er gratis at oprette en annonce. Når varen er solgt, får du en fragtlabel på mail, og mangler du en kasse, sender vi en for 59 kr.',
             },
           ].map(item => (
             <details key={item.q} className={css.item}>

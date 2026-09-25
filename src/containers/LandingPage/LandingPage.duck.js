@@ -10,7 +10,11 @@ export const fetchNewestListings = createAsyncThunk(
   'landingPage/fetchNewestListings',
   async (listingImageConfig, thunkAPI) => {
     const { extra: sdk, rejectWithValue, dispatch } = thunkAPI;
-    const { aspectWidth = 1, aspectHeight = 1, variantPrefix = 'listing-card' } = listingImageConfig;
+    const {
+      aspectWidth = 1,
+      aspectHeight = 1,
+      variantPrefix = 'listing-card',
+    } = listingImageConfig;
     const aspectRatio = aspectHeight / aspectWidth;
 
     return sdk.listings
@@ -59,9 +63,14 @@ export const fetchNewestListings = createAsyncThunk(
       .catch(error => {
         // Private marketplaces return 403 for anonymous users; that is access
         // control working as configured, not an app failure.
-        log.error(error, 'landing-page-newest-listings-failed', {}, {
-          skipSentry: isForbiddenError(error),
-        });
+        log.error(
+          error,
+          'landing-page-newest-listings-failed',
+          {},
+          {
+            skipSentry: isForbiddenError(error),
+          }
+        );
         return rejectWithValue(storableError(error));
       });
   }

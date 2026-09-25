@@ -4,44 +4,48 @@
  * These render only when Console has no hosted page for the same slug, so an
  * operator can take a page over in Console at any time without changing URLs.
  *
- * Block types: 'paragraph', 'list' (items), 'steps' (items), 'faq' (items with q/a).
+ * Block types: 'paragraph', 'list' (items), 'steps' (items),
+ * 'promises' (items with title/text), 'faq' (items with q/a).
+ *
+ * Voice: short sentences, "du" and "vi", golf words over marketplace words.
+ * Say it once; if a sentence could sit on any website, cut it.
  */
 const localPages = {
   'saadan-fungerer-det': {
     title: 'Sådan fungerer det',
     intro:
-      'Fairway er markedspladsen for brugt golfudstyr, hvor både køber og sælger er beskyttet. Pengene står sikkert hos os, til køber har haft udstyret i hænderne og sagt god for det.',
+      'Du betaler. Vi holder på pengene. Sælger får dem først, når du har haft udstyret i hænderne og er tilfreds.',
     sections: [
       {
         heading: 'Når du køber',
         type: 'steps',
         items: [
-          'Find udstyret, og betal på siden med kort. Pengene går ikke til sælger, men står sikkert hos Fairway.',
-          'Sælger sender varen, og du følger pakken med track & trace direkte på din ordre.',
-          'Når pakken er leveret, har du 48 timer til at tjekke, at udstyret svarer til beskrivelsen.',
-          'Er alt i orden, godkender du, og først da får sælger pengene. Er der noget galt, melder du det, og pengene bliver hos os, mens vi finder en løsning.',
+          'Find det, du leder efter, og betal med kort.',
+          'Sælger sender. Du følger pakken på din ordre.',
+          'Når den er fremme, har du 48 timer til at se den efter.',
+          'Er alt i orden, trykker du godkend. Så får sælger pengene.',
         ],
       },
       {
-        heading: 'Din tryghed som køber',
+        heading: 'Det får du som køber',
         type: 'promises',
         items: [
           {
-            title: '48 timers tjek',
+            title: '48 timer',
             text:
-              'Du ser og prøver udstyret, før handlen er endelig. Passer det ikke med beskrivelsen, siger du fra.',
+              'Tag køllen i hånden, kig på sålen og greb. Er den ikke som beskrevet, siger du til.',
           },
           {
-            title: 'Pengene står sikkert',
-            text: 'Sælger får ikke en krone, før du har modtaget varen og godkendt den.',
+            title: 'Pengene venter hos os',
+            text: 'Sælger ser ikke en krone, før du har godkendt.',
           },
           {
-            title: 'Pengene retur',
-            text: 'Kommer varen ikke frem inden for 14 dage, får du hele beløbet tilbage.',
+            title: 'Kommer den ikke?',
+            text: 'Så får du alle pengene tilbage efter 14 dage.',
           },
           {
-            title: 'Følg pakken',
-            text: 'Track & trace står på din ordre, så du ved, hvor udstyret er hele vejen.',
+            title: 'Track & trace',
+            text: 'Står på din ordre, så du ikke skal spørge sælger, hvor pakken er.',
           },
         ],
       },
@@ -49,33 +53,25 @@ const localPages = {
         heading: 'Når du sælger',
         type: 'steps',
         items: [
-          'Opret din annonce med billeder, stand og pris. Det tager få minutter.',
-          'Vælg, hvordan varen skal til køber: i din egen kasse, i en kasse vi sender dig, eller ved afhentning.',
-          'Når en køber har betalt, sender vi dig en fragtlabel eller QR-kode.',
-          'Pak udstyret, og aflever pakken i en pakkeshop.',
-          'Når køber har godkendt varen, sender vi pengene til din bankkonto.',
+          'Tag et par gode billeder, skriv standen ærligt, sæt en pris.',
+          'Når den er solgt, får du en fragtlabel på mail.',
+          'Pak den, og aflever den i en pakkeshop.',
+          'Når køber har godkendt, går pengene til din konto.',
         ],
       },
       {
-        heading: 'Din tryghed som sælger',
+        heading: 'Det får du som sælger',
         type: 'promises',
         items: [
           {
-            title: 'Betalt, før du sender',
-            text:
-              'Køber har betalt, før du får besked om at sende. Du sender aldrig udstyr uden dækning.',
+            title: 'Betalt på forhånd',
+            text: 'Du sender aldrig noget, før køber har betalt.',
           },
           {
-            title: 'Gratis at sælge',
-            text: 'Ingen annoncegebyr og ingen kommission. Fragtlabelen er betalt.',
+            title: 'Gratis',
+            text: 'Det koster ikke noget at sælge. Mangler du en kasse, sender vi en for 59 kr.',
           },
         ],
-      },
-      {
-        heading: 'Hvad med prisen?',
-        type: 'paragraph',
-        text:
-          'Du ser altid den samlede pris med fragt og køberbeskyttelse, før du betaler, så der ingen overraskelser er bagefter. Som sælger koster det kun noget, hvis du vil have en kasse fra os. Alle priser står i handelsbetingelserne.',
       },
     ],
   },
@@ -83,28 +79,27 @@ const localPages = {
   tryghed: {
     title: 'Tryghed og escrow',
     intro:
-      'Den største risiko ved at handle brugt udstyr privat er, at én af parterne ikke leverer. Det problem fjerner vi ved at holde betalingen, indtil begge parter har gjort deres.',
+      'Det værste ved at handle brugt er at betale en fremmed og håbe på det bedste. Det slipper du for her.',
     sections: [
       {
-        heading: 'Hvad betyder escrow?',
+        heading: 'Hvad er escrow?',
         type: 'paragraph',
         text:
-          'Escrow betyder, at pengene opbevares sikkert hos en tredjepart undervejs i handlen. Når køber betaler, går pengene ikke videre til sælger med det samme — de holdes, indtil varen er modtaget og godkendt.',
+          'Et fint ord for, at vi holder på pengene undervejs. Køber betaler til os, ikke til sælger. Pengene bliver hos os, til varen er fremme og godkendt.',
       },
       {
-        heading: 'Det beskytter begge parter',
+        heading: 'Hvad betyder det for dig?',
         type: 'list',
         items: [
-          'Som køber risikerer du ikke at betale for noget, der aldrig dukker op.',
-          'Som sælger risikerer du ikke at sende udstyr uden at få pengene.',
-          'Fragten er forsikret, så en pakke der bliver væk, ikke bliver dit tab.',
+          'Køber du, betaler du ikke for noget, der aldrig kommer.',
+          'Sælger du, sender du ikke noget, før det er betalt.',
         ],
       },
       {
-        heading: '48 timers inspektion',
+        heading: 'De 48 timer',
         type: 'paragraph',
         text:
-          'Når pakken er leveret, har køber 48 timer til at tjekke udstyret. Passer det med beskrivelsen, godkendes handlen — enten aktivt eller automatisk, når fristen udløber. Er der fejl eller afvigelser, kan køber gøre indsigelse inden for de 48 timer, og så går sagen ikke videre, før den er afklaret.',
+          'Når pakken er leveret, har køber 48 timer til at se udstyret efter. Er det fint, godkender køber, eller også sker det af sig selv, når tiden er gået. Er der noget galt, melder køber det, og så sidder pengene fast hos os, til vi har fundet en løsning.',
       },
     ],
   },
@@ -112,111 +107,108 @@ const localPages = {
   forsendelse: {
     title: 'Fragt og forsendelseskasse',
     intro:
-      'Når dit udstyr er solgt, sender vi dig en betalt fragtlabel eller QR-kode, og du afleverer pakken i en pakkeshop. Har du ikke en kasse, der passer, sender vi en.',
+      'Når dit udstyr er solgt, får du en fragtlabel på mail. Har du ikke en kasse, der passer, sender vi en.',
     sections: [
       {
-        heading: 'Sådan foregår det',
+        heading: 'Sådan gør du',
         type: 'steps',
         items: [
-          'Dit udstyr bliver solgt, og køber betaler.',
-          'Vi sender en fragtlabel eller QR-kode til din e-mail, og har du valgt en kasse, kommer den fladpakket med posten.',
-          'Du pakker udstyret og sætter labelen på, eller tager QR-koden med.',
-          'Du afleverer pakken på nærmeste pakkeshop.',
+          'Varen bliver solgt, og du får en fragtlabel eller QR-kode på mail.',
+          'Pak udstyret. Har du bestilt en kasse, kommer den med posten først.',
+          'Sæt labelen på, eller vis QR-koden i pakkeshoppen.',
+          'Aflever pakken. Det var det.',
         ],
       },
       {
-        heading: 'Hvad koster kassen?',
+        heading: 'Kassen',
         type: 'paragraph',
         text:
-          'Kassen koster 59 kr. og trækkes fra salget, så du betaler intet på forhånd. Pakker du i din egen kasse, eller sælger du til afhentning, koster det dig ingenting. Du vælger, når du opretter annoncen.',
+          'Den er lang nok til en driver og koster 59 kr., som vi trækker fra salget. Du betaler altså ikke noget på forhånd. Har du selv en kasse, koster fragten dig ingenting.',
       },
       {
-        heading: 'Leveringstid',
+        heading: 'Hvor lang tid tager det?',
         type: 'paragraph',
         text:
-          'Pakker du selv, er varen normalt hos køber på 2–3 hverdage. Vælger du en kasse fra os, skal den først ud til dig, så køber må regne med 4–6 hverdage. Det står i annoncen, så køber ved det på forhånd.',
+          'Pakker du i din egen kasse, er varen typisk hos køber på 2–3 hverdage. Med en kasse fra os skal den først ud til dig, så regn med 4–6.',
       },
     ],
   },
 
   'saadan-pakker-du': {
     title: 'Sådan pakker du udstyret',
-    intro:
-      'God pakning betyder, at udstyret kommer frem i samme stand, som da det forlod dig — og at handlen bliver godkendt uden diskussion.',
+    intro: 'Pak det, som hvis det var dit eget, der skulle sendes. Det var det jo også.',
     sections: [
       {
         heading: 'Køller',
         type: 'list',
         items: [
-          'Sæt headcover på, eller vikl køllehovedet ind i bobleplast.',
-          'Beskyt skaftet i hele længden — det er der, skader oftest sker.',
-          'Pak flere køller samlet, så de ikke kan bevæge sig mod hinanden.',
-          'Fyld tomrum i kassen ud, så intet rykker sig under transport.',
+          'Headcover på, eller bobleplast om hovedet.',
+          'Pas på skaftet hele vejen ned. Det er der, de knækker.',
+          'Flere køller? Tape dem sammen, så de ikke slår mod hinanden.',
+          'Fyld hullerne i kassen ud med avis eller pap.',
         ],
       },
       {
         heading: 'Bags',
         type: 'list',
         items: [
-          'Tøm alle lommer — også for bolde, tees og værktøj.',
-          'Spænd remme fast, så de ikke hænger løst.',
-          'Læg eventuelt et stykke pap i bunden som støtte.',
+          'Tøm lommerne. Også for tees og gamle scorekort.',
+          'Spænd remmene, så de ikke hænger og flagrer.',
         ],
       },
       {
         heading: 'Sko og tilbehør',
         type: 'list',
         items: [
-          'Stop papir i skoene, så de holder faconen.',
-          'Pak elektronik i den originale emballage, hvis du har den.',
+          'Avis i skoene, så de holder formen.',
+          'Afstandsmåler og ure i den originale æske, hvis du har den.',
         ],
       },
       {
-        heading: 'Før du lukker kassen',
+        heading: 'Et godt råd',
         type: 'paragraph',
         text:
-          'Tag et par billeder af det pakkede udstyr. Det er den hurtigste dokumentation, hvis der senere skulle opstå tvivl om, hvordan varen så ud ved afsendelse.',
+          'Tag et billede af udstyret i kassen, før du lukker den. Hvis der bliver tvivl bagefter, er det guld værd.',
       },
     ],
   },
 
   faq: {
-    title: 'Ofte stillede spørgsmål',
-    intro: 'Kan du ikke finde svaret her, er du velkommen til at skrive til os.',
+    title: 'Spørgsmål og svar',
+    intro: 'Kan du ikke finde svaret, så skriv til os.',
     sections: [
       {
         heading: 'Når du køber',
         type: 'faq',
         items: [
           {
-            q: 'Hvordan er jeg beskyttet som køber?',
+            q: 'Er jeg sikret, hvis noget går galt?',
             a:
-              'Pengene går ikke til sælger, når du betaler. De står sikkert hos Fairway, til du har modtaget varen og haft 48 timer til at tjekke den. Først når du godkender, eller de 48 timer er gået uden indsigelse, får sælger pengene.',
+              'Ja. Pengene ligger hos os, ikke hos sælger. Sælger får dem først, når du har haft varen i 48 timer eller har godkendt den.',
           },
           {
-            q: 'Hvad hvis varen ikke svarer til beskrivelsen?',
+            q: 'Hvad hvis den ikke er som beskrevet?',
             a:
-              'Så melder du et problem på ordren inden for 48 timer efter levering. Pengene bliver hos os, mens vi hjælper jer med at finde en løsning.',
+              'Meld det på ordren inden for 48 timer. Så bliver pengene hos os, mens vi finder ud af det.',
           },
           {
-            q: 'Hvad hvis varen aldrig kommer?',
-            a:
-              'Er varen ikke leveret inden for 14 dage, bliver handlen annulleret, og du får hele beløbet tilbage. Du kan hele vejen følge pakken med track & trace på din ordre.',
+            q: 'Hvad hvis den aldrig kommer?',
+            a: 'Er den ikke leveret efter 14 dage, får du alle pengene tilbage.',
           },
           {
             q: 'Hvor lang tid tager levering?',
             a:
-              'Det står i annoncen. Normalt er varen fremme på 2–3 hverdage. Skal sælger først have tilsendt en kasse fra os, må du regne med 4–6 hverdage.',
+              'Det står i annoncen. Typisk 2–3 hverdage, eller 4–6 hvis sælger først skal have en kasse.',
           },
           {
-            q: 'Hvad koster det at købe?',
+            q: 'Hvad koster det?',
             a:
-              'Du ser den samlede pris med fragt og køberbeskyttelse, før du betaler, så der kommer ingen overraskelser bagefter. Henter du selv varen, er der ingen fragt.',
+              'Du ser den samlede pris med fragt, før du betaler. Henter du selv, er der ingen fragt.',
           },
           {
-            q: 'Hvordan betaler jeg?',
+            q: 'Kan jeg betale med MobilePay?',
             a:
-              'Med kort, direkte på siden. Betalingen håndteres af Stripe, så vi ser aldrig dine kortoplysninger. Betal aldrig med MobilePay eller bankoverførsel uden om Fairway, for så er du ikke beskyttet.',
+              'Nej, kun med kort her på siden. Beder sælger dig betale på MobilePay eller overførsel, så lad være. Så er du ikke dækket.',
           },
         ],
       },
@@ -227,32 +219,31 @@ const localPages = {
           {
             q: 'Hvad koster det at sælge?',
             a:
-              'Det er gratis at oprette annoncer og at sælge, og fragtlabelen er betalt. Den eneste udgift er kassen, hvis du vil have en fra os: 59 kr., trukket fra salget.',
+              'Ingenting. Kun hvis du vil have en kasse fra os, koster den 59 kr., som vi trækker fra salget.',
           },
           {
             q: 'Hvornår får jeg pengene?',
             a:
-              'Når køber har godkendt varen, eller senest når de 48 timers tjek er gået uden indsigelse. Så sender Stripe pengene til din bankkonto.',
+              'Når køber har godkendt, eller 48 timer efter levering. Så sender Stripe dem til din konto.',
           },
           {
-            q: 'Skal jeg selv skaffe en kasse?',
-            a:
-              'Nej. Når du opretter annoncen, kan du vælge, at vi sender dig en kasse i den rigtige størrelse sammen med fragtlabelen. Den koster 59 kr., som trækkes fra salget. Pakker du i din egen, sender vi kun labelen eller QR-koden, og det er gratis.',
+            q: 'Skal jeg selv finde en kasse?',
+            a: 'Hvis du har en, så ja. Ellers sender vi en, der passer, også til en driver.',
           },
           {
-            q: 'Kan jeg sælge til afhentning i stedet for fragt?',
+            q: 'Kan køber hente den i stedet?',
             a:
-              'Ja. Vælg "Afhentning", når du opretter annoncen. Køber betaler stadig gennem Fairway, I aftaler tid og sted i beskederne på ordren, og pengene udbetales, når køber bekræfter, at varen er hentet.',
+              'Ja. Vælg "Afhentning" på annoncen. Køber betaler stadig her, og I aftaler tid og sted i beskederne.',
           },
           {
-            q: 'Hvilket udstyr må jeg sælge?',
+            q: 'Hvad må jeg sælge?',
             a:
-              'Alt golfrelateret: køller, bags, sko, tøj og tilbehør. Beskriv altid stand og eventuelle fejl ærligt — det er dét, der gør, at handlen går igennem uden problemer.',
+              'Alt til golf: køller, bags, sko, tøj og tilbehør. Skriv ærligt om brugsspor. Det sparer jer begge for bøvl.',
           },
           {
-            q: 'Hvordan sætter jeg den rigtige pris?',
+            q: 'Hvad skal jeg tage for den?',
             a:
-              'Kig på tilsvarende annoncer på Fairway. Alder, stand og efterspørgsel betyder mest — og en ærlig beskrivelse af brugsspor giver hurtigere salg end en for høj pris.',
+              'Kig på lignende annoncer. En fair pris og ærlige billeder sælger hurtigere end en høj pris.',
           },
         ],
       },
@@ -261,19 +252,18 @@ const localPages = {
 
   kontakt: {
     title: 'Kontakt',
-    intro: 'Vi svarer så hurtigt vi kan på hverdage.',
+    intro: 'Vi svarer så hurtigt, vi kan, på hverdage.',
     sections: [
       {
         heading: 'Skriv til os',
         type: 'paragraph',
-        text:
-          'Har du et spørgsmål om en handel, en forsendelse eller din konto, så skriv til os — så vender vi tilbage.',
+        text: 'Spørgsmål om en handel, en pakke eller din konto? Skriv, så hjælper vi.',
       },
       {
-        heading: 'Handler det om en igangværende handel?',
+        heading: 'Er det en igangværende handel?',
         type: 'paragraph',
         text:
-          'Skriv til den anden part i beskederne på ordren, under Indbakke. Er der noget galt med varen, så meld et problem på ordren inden for 48 timer efter levering, så holder vi pengene tilbage, mens vi hjælper jer.',
+          'Skriv først til den anden part i beskederne på ordren. Er der noget galt med varen, så meld det på ordren inden 48 timer efter levering. Så holder vi pengene, mens vi hjælper jer.',
       },
     ],
   },

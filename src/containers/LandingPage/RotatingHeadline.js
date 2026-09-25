@@ -16,8 +16,8 @@ import css from './LandingPage.module.css';
 const INTERVAL_MS = 5000;
 
 const PHRASES = [
-  { lead: 'Sælg dit udstyr —', accent: 'fragten er betalt', tail: '!' },
-  { lead: 'Køb brugt udstyr', accent: 'med sikkerhed', tail: '' },
+  { lead: 'Sælg dit udstyr —', accent: 'slip for bøvlet', tail: '' },
+  { lead: 'Køb brugt —', accent: 'uden at blive snydt', tail: '' },
 ];
 
 const RotatingHeadline = () => {

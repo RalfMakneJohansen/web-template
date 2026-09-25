@@ -25,7 +25,9 @@ describe('LandingPage', () => {
   it('tells the visitor when the listings could not be fetched, and still renders the page', () => {
     const fetchError = new Error('LandingPage failed');
 
-    render(<LandingPageComponent listings={[]} fetchError={fetchError} scrollingDisabled={false} />);
+    render(
+      <LandingPageComponent listings={[]} fetchError={fetchError} scrollingDisabled={false} />
+    );
 
     expect(
       screen.getByText('Vi kunne ikke hente annoncerne lige nu. Prøv at genindlæse siden.')

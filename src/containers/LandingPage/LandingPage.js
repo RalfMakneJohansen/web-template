@@ -23,14 +23,12 @@ import course4 from '../../assets/course/course-4.jpg';
 import tileBuy from '../../assets/tiles/tile-buy.jpg';
 import tileSell from '../../assets/tiles/tile-sell.jpg';
 
-
 import FooterContainer from '../FooterContainer/FooterContainer';
 import BoxWalkthrough from './BoxWalkthrough';
 import DealerCompare from './DealerCompare';
 import ShippingChoice from './ShippingChoice';
 import HeroCollage from './HeroCollage';
 import RotatingHeadline from './RotatingHeadline';
-
 
 import css from './LandingPage.module.css';
 
@@ -139,7 +137,7 @@ const COMPARE_ROWS = [
     label: 'Fragten',
     group: 'I finder selv ud af kasse og porto',
     dealer: 'De kan sende — men fragten er ikke betalt',
-    fairway: 'Label betalt, og kasse hvis du mangler'
+    fairway: 'Label på mail, og kasse hvis du mangler',
   },
 ];
 
@@ -151,7 +149,7 @@ const SIDES = [
     who: 'Sælger',
     title: 'Markant højere pris',
     text: 'end du får ved indlevering til en forhandler.',
-    note: 'Fragtlabel betalt. Aflever i pakkeshoppen.',
+    note: 'Label på mail. Aflever i pakkeshoppen.',
   },
   {
     who: 'Køber',
@@ -202,26 +200,26 @@ const ListingRow = props => {
           through the middle of it. */}
       {withTopWave ? <SectionWave position="top" /> : null}
       <div className={css.rowInner}>
-      <div className={css.rowHeader}>
-        <div>
-          <h2 className={css.rowTitle}>{title}</h2>
-          {subtitle ? <p className={css.rowSubtitle}>{subtitle}</p> : null}
+        <div className={css.rowHeader}>
+          <div>
+            <h2 className={css.rowTitle}>{title}</h2>
+            {subtitle ? <p className={css.rowSubtitle}>{subtitle}</p> : null}
+          </div>
+          <NamedLink name="SearchPage" to={seeAllTo} className={css.seeAll}>
+            Se alle
+          </NamedLink>
         </div>
-        <NamedLink name="SearchPage" to={seeAllTo} className={css.seeAll}>
-          Se alle
-        </NamedLink>
-      </div>
 
-      <ul className={css.productRow}>
-        {listings.map(listing => (
-          <li key={listing.id.uuid} className={css.productItem}>
-            <FairwayListingCard
-              listing={listing}
-              renderSizes="(max-width: 767px) 45vw, (max-width: 1023px) 30vw, 20vw"
-            />
-          </li>
-        ))}
-      </ul>
+        <ul className={css.productRow}>
+          {listings.map(listing => (
+            <li key={listing.id.uuid} className={css.productItem}>
+              <FairwayListingCard
+                listing={listing}
+                renderSizes="(max-width: 767px) 45vw, (max-width: 1023px) 30vw, 20vw"
+              />
+            </li>
+          ))}
+        </ul>
       </div>
       {withBottomWave ? <SectionWave position="bottom" /> : null}
     </section>
@@ -280,9 +278,9 @@ export const LandingPageComponent = props => {
             <span className={css.eyebrowOnDark}>Brugt golfudstyr · Danmark</span>
             <RotatingHeadline />
             <p className={css.heroText}>
-              {/* The seller pays no freight — the buyer pays a flat 50 kr., and our
-                  4.99% on top of it. Only a box, if the seller asks for one, costs 59 kr. */}
-              Det er gratis at sælge, og du beholder hele prisen. Vi står for fragten og betalingen.
+              {/* One line per side: the seller's hassle, the buyer's risk. */}
+              Sælger du, er pengene betalt, før du sender. Køber du, får sælger dem først, når du
+              har set varen.
             </p>
             <div className={css.heroActions}>
               <NamedLink name="NewListingPage" className={css.buttonPrimary}>
@@ -309,7 +307,16 @@ export const LandingPageComponent = props => {
           <div className={css.offerInner}>
             <p className={css.offerLine}>
               <span className={css.offerIcon} aria-hidden={true}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5v-9Z" />
                   <path d="m3.5 7.5 8.5 4.5 8.5-4.5M12 12v9" />
                 </svg>
@@ -321,7 +328,16 @@ export const LandingPageComponent = props => {
             </p>
             <p className={css.offerLine}>
               <span className={css.offerIcon} aria-hidden={true}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M12 3 5 5.8v5.5c0 4.3 3 8 7 9.7 4-1.7 7-5.4 7-9.7V5.8L12 3Z" />
                   <path d="m9 12.2 2.2 2.2L15.5 10" />
                 </svg>
@@ -387,7 +403,7 @@ export const LandingPageComponent = props => {
             <span className={css.tileContent}>
               <span className={css.tileLabel}>Sælg</span>
               <span className={css.tileTitle}>Opret annonce</span>
-              <span className={css.tileText}>Gratis at sælge. Fragten er betalt.</span>
+              <span className={css.tileText}>Gratis at sælge. Label på mail.</span>
               <span className={css.tileButton}>
                 Opret annonce
                 <ArrowIcon />
@@ -451,10 +467,7 @@ export const LandingPageComponent = props => {
 
               <ul className={css.threadList}>
                 {THREAD.map((msg, index) => (
-                  <li
-                    key={index}
-                    className={msg.from === 'buyer' ? css.msgBuyer : css.msgSeller}
-                  >
+                  <li key={index} className={msg.from === 'buyer' ? css.msgBuyer : css.msgSeller}>
                     <span className={css.msgBubble}>{msg.text}</span>
                   </li>
                 ))}
@@ -471,7 +484,8 @@ export const LandingPageComponent = props => {
               <span className={css.eyebrowOnDark}>Fragten</span>
               <h2 className={css.boxTitle}>Vi sender labelen</h2>
               <p className={css.boxLead}>
-                Du får en betalt fragtlabel eller QR-kode og afleverer pakken i en pakkeshop. Mangler du en kasse til driveren eller bagen, sender vi en for 59 kr.
+                Du får en fragtlabel eller QR-kode på mail og afleverer pakken i en pakkeshop.
+                Mangler du en kasse til driveren eller bagen, sender vi en for 59 kr.
               </p>
 
               <ShippingChoice />
@@ -498,9 +512,7 @@ export const LandingPageComponent = props => {
               ))}
             </div>
 
-            <p className={css.feeFine}>
-              Vores gebyr er 4,99% af prisen og betales af køber.
-            </p>
+            <p className={css.feeFine}>Vores gebyr er 4,99% af prisen og betales af køber.</p>
           </div>
         </section>
 

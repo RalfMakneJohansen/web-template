@@ -43,7 +43,7 @@ const DEALER_POINTS = [
 const FAIRWAY_POINTS = [
   { good: true, text: 'Du sætter selv prisen' },
   { good: true, text: 'Pengene går ind på din konto' },
-  { good: true, text: 'Betalt fragtlabel, når varen er solgt' },
+  { good: true, text: 'Fragtlabel på mail, når varen er solgt' },
   { good: true, text: '0 kr. i gebyr for dig som sælger' },
 ];
 
@@ -112,8 +112,8 @@ const DealerCompare = () => {
         <h2 className={css.title}>Forhandleren eller Fairway?</h2>
         <p className={css.lead}>
           Når du indleverer brugt udstyr, giver forhandleren typisk kun{' '}
-          <strong className={css.leadStrong}>{percentRange}</strong> af brugtprisen. Resten
-          er butikkens avance, når den sælger videre.
+          <strong className={css.leadStrong}>{percentRange}</strong> af brugtprisen. Resten er
+          butikkens avance, når den sælger videre.
         </p>
 
         <p className={css.example}>
@@ -184,9 +184,9 @@ const DealerCompare = () => {
         </div>
 
         <p className={css.fine}>
-          Regneeksempel. Forhandlere giver typisk {percentRange} af brugtprisen ved indlevering,
-          og tilbuddet varierer fra butik til butik. På Fairway betaler køber et gebyr på
-          4,99 %, i eksemplet {formatKr(buyerPays)} i alt — du får hele din pris.
+          Regneeksempel. Forhandlere giver typisk {percentRange} af brugtprisen ved indlevering, og
+          tilbuddet varierer fra butik til butik. På Fairway betaler køber et gebyr på 4,99 %, i
+          eksemplet {formatKr(buyerPays)} i alt — du får hele din pris.
         </p>
       </div>
     </section>
