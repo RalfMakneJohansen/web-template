@@ -165,3 +165,46 @@
   line-height: 25px;
   color: var(--colorSlate);
 }
+
+/* FAIRWAY: promise cards — a buyer's (or seller's) guarantees at a glance */
+.promises {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+}
+
+.promise {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+
+  background-color: var(--colorSagePale);
+  border-radius: var(--radiusCard);
+
+  @media (--viewportMedium) {
+    padding: 24px;
+  }
+}
+
+.promiseTitle {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--colorForest);
+}
+
+.promiseText {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--colorInk);
+}

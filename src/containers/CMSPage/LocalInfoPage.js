@@ -38,6 +38,18 @@ const Section = props => {
         </ol>
       ) : null}
 
+      {/* FAIRWAY: what someone is promised, as cards — a title and one line each */}
+      {section.type === 'promises' ? (
+        <ul className={css.promises}>
+          {section.items.map(item => (
+            <li key={item.title} className={css.promise}>
+              <span className={css.promiseTitle}>{item.title}</span>
+              <span className={css.promiseText}>{item.text}</span>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
       {section.type === 'faq' ? (
         <dl className={css.faq}>
           {section.items.map(item => (
