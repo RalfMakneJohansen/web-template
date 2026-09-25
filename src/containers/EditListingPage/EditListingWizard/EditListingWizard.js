@@ -783,8 +783,41 @@ class EditListingWizard extends Component {
       return <NamedRedirect name="EditListingPage" params={pathParams} />;
     }
 
+    // FAIRWAY: where the seller is in a new listing. On a phone the steps are a
+    // sideways-scrolling strip, so the count and the bar say how far along
+    // they are and how much is left; on a desktop the step list is in view.
+    const stepIndex = tabs.indexOf(selectedTab);
+    const stepProgress =
+      isNewListingFlow && stepIndex >= 0 ? (
+        <div
+          className={css.progress}
+          role="progressbar"
+          aria-valuemin={1}
+          aria-valuemax={tabs.length}
+          aria-valuenow={stepIndex + 1}
+          aria-label={intl.formatMessage(
+            { id: 'EditListingWizard.progress' },
+            { step: stepIndex + 1, total: tabs.length }
+          )}
+        >
+          <span className={css.progressLabel}>
+            <FormattedMessage
+              id="EditListingWizard.progress"
+              values={{ step: stepIndex + 1, total: tabs.length }}
+            />
+          </span>
+          <span className={css.progressTrack}>
+            <span
+              className={css.progressFill}
+              style={{ width: `${((stepIndex + 1) / tabs.length) * 100}%` }}
+            />
+          </span>
+        </div>
+      ) : null;
+
     return (
       <div className={classes}>
+        {stepProgress}
         <Tabs
           rootClassName={css.tabsContainer}
           navRootClassName={css.nav}

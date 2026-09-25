@@ -120,3 +120,51 @@
     background-color: var(--colorGround);
   }
 }
+
+/* FAIRWAY: step count and bar for a new listing, on phones and tablets */
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+
+  background-color: var(--colorWhite);
+  border-top: 1px solid var(--colorDividerWarm);
+
+  @media (--viewportLarge) {
+    display: none;
+  }
+}
+
+.progressLabel {
+  flex-shrink: 0;
+
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+}
+
+.progressTrack {
+  flex-grow: 1;
+  height: 6px;
+  overflow: hidden;
+
+  background-color: var(--colorSagePale);
+  border-radius: 999px;
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+
+  background-color: var(--colorForest);
+  border-radius: 999px;
+  transition: width 0.3s var(--easeOut);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progressFill {
+    transition: none;
+  }
+}

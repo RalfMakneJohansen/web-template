@@ -419,6 +419,7 @@
   "EditListingWizard.payoutModalInfoNew": "{marketplaceName} uses Stripe to process payments. Get verified with Stripe and add your payout details to receive money from transactions. Start by choosing your account type and country.",
   "EditListingWizard.payoutModalTitleOneMoreThing": "One more thing:",
   "EditListingWizard.payoutModalTitlePayoutPreferences": "Payout preferences",
+  "EditListingWizard.progress": "Step {step} of {total}",
   "EditListingWizard.redirectingToStripe": "You returned early from Stripe. Redirecting you back to Stripe…",
   "EditListingWizard.screenreader.tabNavigation": "Listing edit navigation",
   "EditListingWizard.tabLabelAvailability": "Availability",
