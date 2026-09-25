@@ -11,3 +11,12 @@
 .form {
   flex-grow: 1;
 }
+
+/* FAIRWAY: the seller's checklist, between the heading and the first field */
+.tradeReadiness {
+  margin-top: 18px;
+
+  @media (--viewportMedium) {
+    margin-top: 24px;
+  }
+}

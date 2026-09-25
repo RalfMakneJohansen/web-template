@@ -15,7 +15,14 @@ import {
 } from '../../util/userHelpers';
 import { isScrollingDisabled } from '../../ducks/ui.duck';
 
-import { H3, Page, UserNav, NamedLink, LayoutSingleColumn } from '../../components';
+import {
+  H3,
+  Page,
+  UserNav,
+  NamedLink,
+  LayoutSingleColumn,
+  TradeReadiness,
+} from '../../components';
 
 import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import FooterContainer from '../../containers/FooterContainer/FooterContainer';
@@ -181,6 +188,12 @@ export const ProfileSettingsPageComponent = props => {
 
             <ViewProfileLink userUUID={user?.id?.uuid} isUnauthorizedUser={isUnauthorizedUser} />
           </div>
+          {/* FAIRWAY: what is still missing before this user can sell */}
+          <TradeReadiness
+            className={css.tradeReadiness}
+            currentUser={currentUser}
+            context="profile"
+          />
           {profileSettingsForm}
         </div>
       </LayoutSingleColumn>

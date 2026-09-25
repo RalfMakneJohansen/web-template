@@ -1,0 +1,177 @@
+@import '../../styles/customMediaQueries.css';
+
+/* A card in the pale brand green; once everything is in place it settles to
+   white with a green edge, so a complete list reads as done at a glance. */
+.root {
+  padding: 18px 18px 20px 18px;
+
+  background-color: var(--colorSagePale);
+  border-radius: var(--radiusCard);
+
+  @media (--viewportMedium) {
+    padding: 24px;
+  }
+}
+
+.ready {
+  background-color: var(--colorWhite);
+  box-shadow: inset 0 0 0 1.5px rgba(15, 110, 86, 0.3);
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--colorForest);
+
+  @media (--viewportMedium) {
+    font-size: 26px;
+    line-height: 30px;
+  }
+}
+
+.lead {
+  margin: 6px 0 0 0;
+  padding: 0;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorGraphite);
+}
+
+.items {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item,
+.itemDone {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+
+  background-color: var(--colorWhite);
+  border-radius: 12px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: 24px minmax(0, 1fr) auto;
+  }
+}
+
+.ready .item,
+.ready .itemDone {
+  background-color: var(--colorGround);
+}
+
+.mark,
+.markDone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  & svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+}
+
+.mark {
+  box-shadow: inset 0 0 0 1.5px rgba(12, 40, 32, 0.25);
+
+  & svg {
+    fill: rgba(12, 40, 32, 0.35);
+    stroke: none;
+  }
+}
+
+.markDone {
+  background-color: var(--colorForest);
+
+  & svg {
+    stroke: var(--colorWhite);
+  }
+}
+
+.itemCopy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.itemTitle {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+}
+
+.itemText {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorSlate);
+}
+
+/* On a phone the action sits under the text, lined up with it */
+.itemLink {
+  grid-column: 2;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 14px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorWhite);
+  text-decoration: none;
+
+  background-color: var(--colorForest);
+  border-radius: var(--radiusPill);
+
+  &:hover {
+    text-decoration: none;
+    background-color: var(--marketplaceColorDark);
+  }
+
+  @media (--viewportMedium) {
+    grid-column: 3;
+  }
+}
+
+.buyerNote {
+  margin: 14px 0 0 0;
+  padding: 0;
+
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorGraphite);
+}
+
+.guideLink {
+  display: inline-block;
+  margin-top: 10px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

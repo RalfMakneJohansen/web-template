@@ -156,11 +156,11 @@ describe('EditListingShippingPanel', () => {
     // Shipping chosen, but no address yet: the step cannot be finished
     expect(screen.getByRole('button', { name: 'Save shipping' })).toBeDisabled();
 
-    await user.type(screen.getByLabelText('EditListingShippingPanel.senderName'), 'Ole Hansen');
-    await user.type(screen.getByLabelText('EditListingShippingPanel.senderLine1'), 'Gade 3');
-    await user.type(screen.getByLabelText('EditListingShippingPanel.senderPostal'), '8000');
-    await user.type(screen.getByLabelText('EditListingShippingPanel.senderCity'), 'Aarhus C');
-    await user.type(screen.getByLabelText('EditListingShippingPanel.senderPhone'), '87654321');
+    await user.type(screen.getByLabelText('SenderAddressFields.name'), 'Ole Hansen');
+    await user.type(screen.getByLabelText('SenderAddressFields.line1'), 'Gade 3');
+    await user.type(screen.getByLabelText('SenderAddressFields.postal'), '8000');
+    await user.type(screen.getByLabelText('SenderAddressFields.city'), 'Aarhus C');
+    await user.type(screen.getByLabelText('SenderAddressFields.phone'), '87654321');
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'Save shipping' })).not.toBeDisabled();

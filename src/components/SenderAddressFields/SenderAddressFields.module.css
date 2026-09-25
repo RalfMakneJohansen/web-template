@@ -1,0 +1,25 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  display: grid;
+  gap: 18px;
+}
+
+/* Postcode is four digits; the town takes the rest of the row */
+.row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.privacy {
+  margin: 0;
+  padding: 12px;
+
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorForest);
+
+  background-color: var(--colorSagePale);
+  border-radius: 10px;
+}

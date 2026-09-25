@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 // Import util modules
@@ -16,9 +17,10 @@ import {
   pickCategoryFields,
 } from '../../../../util/fieldHelpers';
 import { isBookingProcessAlias } from '../../../../transactions/transaction';
+import { getTradeReadiness } from '../../../../util/fairwayContact';
 
 // Import shared components
-import { H3, ListingLink } from '../../../../components';
+import { H3, ListingLink, TradeReadiness } from '../../../../components';
 
 // Import modules from this directory
 import ErrorMessage from './ErrorMessage';
@@ -356,6 +358,14 @@ const EditListingDetailsPanel = props => {
     hasListingTypesSet && (!hasExistingListingType || hasValidExistingListingType);
   const isPublished = listing?.id && state !== LISTING_STATE_DRAFT;
 
+  // FAIRWAY: before the first field, what this seller still needs in place to
+  // be paid — a sender address and a Stripe payout account. Both are asked for
+  // later in the flow anyway (shipping step, and Stripe when publishing); this
+  // is so neither arrives as a surprise at the end. Hidden once all is set.
+  const currentUser = useSelector(state => state.user?.currentUser);
+  const showReadiness =
+    !isPublished && !!currentUser?.id && !getTradeReadiness(currentUser).readyToSell;
+
   const panelHeadingProps = isPublished
     ? {
         id: 'EditListingDetailsPanel.title',
@@ -379,6 +389,14 @@ const EditListingDetailsPanel = props => {
       <H3 as="h1">
         <FormattedMessage id={panelHeadingProps.id} values={{ ...panelHeadingProps.values }} />
       </H3>
+
+      {showReadiness ? (
+        <TradeReadiness
+          className={css.tradeReadiness}
+          currentUser={currentUser}
+          context="listing"
+        />
+      ) : null}
 
       {canShowEditListingDetailsForm ? (
         <EditListingDetailsForm

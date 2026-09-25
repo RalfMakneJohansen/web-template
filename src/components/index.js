@@ -112,6 +112,7 @@ export { default as FieldTextInput } from './FieldTextInput/FieldTextInput';
 export { default as FieldBoolean } from './FieldBoolean/FieldBoolean';
 export { default as FieldCheckboxGroup } from './FieldCheckboxGroup/FieldCheckboxGroup';
 export { default as FieldPhoneNumberInput } from './FieldPhoneNumberInput/FieldPhoneNumberInput';
+export { default as SenderAddressFields } from './SenderAddressFields/SenderAddressFields';
 export { default as LocationAutocompleteInput, FieldLocationAutocompleteInput } from './LocationAutocompleteInput/LocationAutocompleteInput';
 
 // NOTE: these are code-splitted since these components are heavy and needed only on couple of pages
@@ -145,6 +146,7 @@ export const SectionText = loadable(() => import(/* webpackChunkName: "SectionTe
 export { default as StripeConnectAccountStatusBox } from './StripeConnectAccountStatusBox/StripeConnectAccountStatusBox';
 export { default as StripePaymentAddress } from './StripePaymentAddress/StripePaymentAddress';
 export { default as TopbarSimplified } from './TopbarSimplified/TopbarSimplified';
+export { default as TradeReadiness } from './TradeReadiness/TradeReadiness';
 
 
 // Forms

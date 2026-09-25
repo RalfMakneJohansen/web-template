@@ -36,6 +36,7 @@ const RequestQuotePage = loadable(() => import(/* webpackChunkName: "RequestQuot
 const SearchPageWithMap = loadable(() => import(/* webpackChunkName: "SearchPageWithMap" */ /* webpackPrefetch: true */  '../containers/SearchPage/SearchPageWithMap'));
 const SearchPageWithGrid = loadable(() => import(/* webpackChunkName: "SearchPageWithGrid" */ /* webpackPrefetch: true */  '../containers/SearchPage/SearchPageWithGrid'));
 const StripePayoutPage = loadable(() => import(/* webpackChunkName: "StripePayoutPage" */ '../containers/StripePayoutPage/StripePayoutPage'));
+const TradingGuidePage = loadable(() => import(/* webpackChunkName: "TradingGuidePage" */ '../containers/TradingGuidePage/TradingGuidePage'));
 const TermsOfServicePage = loadable(() => import(/* webpackChunkName: "TermsOfServicePage" */ '../containers/TermsOfServicePage/TermsOfServicePage'));
 const TransactionPage = loadable(() => import(/* webpackChunkName: "TransactionPage" */ '../containers/TransactionPage/TransactionPage'));
 const NoAccessPage = loadable(() => import(/* webpackChunkName: "NoAccessPage" */ '../containers/NoAccessPage/NoAccessPage'));
@@ -44,6 +45,7 @@ const NoAccessPage = loadable(() => import(/* webpackChunkName: "NoAccessPage" *
 const StyleguidePage = loadable(() => import(/* webpackChunkName: "StyleguidePage" */ '../containers/StyleguidePage/StyleguidePage'));
 
 export const ACCOUNT_SETTINGS_PAGES = [
+  'TradingGuidePage',
   'ContactDetailsPage',
   'PasswordChangePage',
   'StripePayoutPage',
@@ -329,7 +331,15 @@ const routeConfiguration = (layoutConfig, accessControlConfig) => {
       name: 'AccountSettingsPage',
       auth: true,
       authPage: 'LoginPage',
-      component: () => <NamedRedirect name="ContactDetailsPage" />,
+      component: () => <NamedRedirect name="TradingGuidePage" />,
+    },
+    {
+      // FAIRWAY: what it takes to trade, and the user's own checklist
+      path: '/account/guide',
+      name: 'TradingGuidePage',
+      auth: true,
+      authPage: 'LoginPage',
+      component: TradingGuidePage,
     },
     {
       path: '/account/contact-details',

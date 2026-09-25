@@ -31,3 +31,12 @@
   float: right;
   flex-shrink: 0;
 }
+
+/* FAIRWAY: the trading checklist between the heading and the form */
+.tradeReadiness {
+  margin-bottom: 36px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 48px;
+  }
+}

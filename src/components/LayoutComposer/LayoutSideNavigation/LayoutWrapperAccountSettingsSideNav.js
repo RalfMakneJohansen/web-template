@@ -121,6 +121,15 @@ const LayoutWrapperAccountSettingsSideNav = props => {
 
   const tabs = [
     {
+      // FAIRWAY: first, so the checklist is what "Kontoindstillinger" opens beside
+      text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.tradingGuideTabTitle" />,
+      selected: currentPage === 'TradingGuidePage',
+      id: 'TradingGuidePageTab',
+      linkProps: {
+        name: 'TradingGuidePage',
+      },
+    },
+    {
       text: <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.contactDetailsTabTitle" />,
       selected: currentPage === 'ContactDetailsPage',
       id: 'ContactDetailsPageTab',

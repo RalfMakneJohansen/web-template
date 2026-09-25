@@ -48,7 +48,8 @@ const UserNav = props => {
       selected: ACCOUNT_SETTINGS_PAGES.includes(currentPage),
       disabled: false,
       linkProps: {
-        name: 'ContactDetailsPage',
+        // FAIRWAY: account settings open on the trading checklist
+        name: 'TradingGuidePage',
       },
     },
   ];
