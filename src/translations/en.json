@@ -1364,7 +1364,7 @@
   "TradingGuidePage.seller.payout.title": "Set up a payout account at Stripe",
   "TradingGuidePage.seller.payout.text": "The first time you publish a listing we ask you to set it up. Stripe needs your name, address, date of birth and bank account, and sometimes a photo of your ID. It takes a few minutes.",
   "TradingGuidePage.seller.sold.title": "Ship the item once it sells",
-  "TradingGuidePage.seller.sold.text": "You get an email, and we send the box and the label. Ship the item and mark it as shipped. If it is not shipped within 14 days, the order is canceled and the buyer is refunded.",
+  "TradingGuidePage.seller.sold.text": "You get an email, and we send the label (and the box, if you chose one). Ship the item and mark the order as delivered when track & trace shows it has arrived. If it is not delivered within 14 days, the order is canceled and the buyer is refunded.",
   "TradingGuidePage.seller.paid.title": "Get paid",
   "TradingGuidePage.seller.paid.text": "When the buyer approves the item, or 48 hours after delivery, Stripe sends your full price to your bank account. It can take up to seven days to arrive.",
   "TradingGuidePage.seller.cta": "Create a listing",
