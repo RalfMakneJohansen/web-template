@@ -1855,5 +1855,12 @@
   "EditListingWizard.stepOf": "Step {step} of {total} · {label}",
   "EditListingWizard.percentDone": "{percent}% done",
   "TradeReadiness.compact.summary": "{count, plural, one {# thing} other {# things}} left before you can be paid",
-  "TradeReadiness.compact.toggle": "Show"
+  "TradeReadiness.compact.toggle": "Show",
+  "ListingHeadline.condition": "Condition: {condition}",
+  "ListingHeadline.shipment.own": "Shipped · 2–3 days",
+  "ListingHeadline.shipment.box": "Shipped · 4–6 days",
+  "ListingHeadline.shipment.meetup": "Pickup",
+  "ListingHeadline.priceNote": "+ shipping and buyer protection",
+  "ListingHeadline.priceNotePickup": "+ buyer protection · no shipping",
+  "InquiryForm.quickBidsLabel": "Quick bids"
 }

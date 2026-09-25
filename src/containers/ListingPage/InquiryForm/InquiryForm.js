@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form as FinalForm } from 'react-final-form';
+import React, { useState } from 'react';
+import { Form as FinalForm, useForm } from 'react-final-form';
 import classNames from 'classnames';
 
 import appSettings from '../../../config/settings';
@@ -34,8 +34,31 @@ const { Money } = sdkTypes;
  */
 const MIN_OFFER_RATIO = 0.25;
 
+// FAIRWAY: one-tap bids a little under the asking price, rounded to the
+// nearest 50 kr. the way people actually bid.
+const QUICK_BID_DISCOUNTS = [5, 10, 15];
+const ROUND_TO_SUBUNITS = 5000;
+
+export const quickBids = priceSubunits =>
+  priceSubunits > 0
+    ? QUICK_BID_DISCOUNTS.map(percent => ({
+        percent,
+        amount: Math.max(
+          ROUND_TO_SUBUNITS,
+          Math.round((priceSubunits * (100 - percent)) / 100 / ROUND_TO_SUBUNITS) *
+            ROUND_TO_SUBUNITS
+        ),
+      })).filter(
+        (bid, i, all) =>
+          bid.amount < priceSubunits && all.findIndex(b => b.amount === bid.amount) === i
+      )
+    : [];
+
 const OfferFields = props => {
   const { formId, intl, listingPrice, marketplaceCurrency } = props;
+  const form = useForm();
+  // The currency input keeps its own text; a new key redraws it with a picked bid.
+  const [amountKey, setAmountKey] = useState(0);
 
   const currency = listingPrice?.currency || marketplaceCurrency;
   const minOfferSubunits = listingPrice ? Math.round(listingPrice.amount * MIN_OFFER_RATIO) : 0;
@@ -54,6 +77,7 @@ const OfferFields = props => {
   return (
     <>
       <FieldCurrencyInput
+        key={amountKey}
         id={formId ? `${formId}.offerAmount` : 'offerAmount'}
         name="offerAmount"
         className={css.field}
@@ -61,8 +85,34 @@ const OfferFields = props => {
         placeholder={listingPrice ? formatMoney(intl, listingPrice) : ''}
         currencyConfig={appSettings.getCurrencyFormatting(currency)}
         validate={validators.composeValidators(amountRequired, amountTooLow)}
-        autoFocus
+        // No autoFocus: the modal moves focus to itself right after opening, which
+        // blurred the field and showed "Skriv hvad du vil byde" before anyone typed.
       />
+
+      {listingPrice && currency === listingPrice.currency ? (
+        <div
+          className={css.quickBids}
+          role="group"
+          aria-label={intl.formatMessage({ id: 'InquiryForm.quickBidsLabel' })}
+        >
+          {quickBids(listingPrice.amount).map(bid => (
+            <button
+              key={bid.percent}
+              type="button"
+              className={css.quickBid}
+              onClick={() => {
+                form.change('offerAmount', new Money(bid.amount, currency));
+                setAmountKey(k => k + 1);
+              }}
+            >
+              <span className={css.quickBidAmount}>
+                {formatMoney(intl, new Money(bid.amount, currency))}
+              </span>
+              <span className={css.quickBidPercent}>−{bid.percent} %</span>
+            </button>
+          ))}
+        </div>
+      ) : null}
 
       {listingPrice ? (
         <p className={css.askingPrice}>

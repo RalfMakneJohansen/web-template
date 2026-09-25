@@ -402,56 +402,6 @@
   padding-right: 12px;
 }
 
-/* FAIRWAY: bid and ask, in the mobile action bar */
-
-.ctaSecondary {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.ctaIconButton {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  width: 48px;
-  padding: 6px 2px;
-
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--colorInk);
-  border-radius: var(--radiusControl);
-
-  transition: transform 0.18s var(--easeOut), background-color 0.15s ease;
-}
-
-.ctaIconButton:hover {
-  background-color: var(--colorSagePale, #eaf7f1);
-}
-
-.ctaIconButton:active {
-  transform: translateY(1px);
-  transition-duration: 0.06s;
-}
-
-.ctaIconLabel {
-  font-size: 10px;
-  line-height: 13px;
-  font-weight: var(--fontWeightSemiBold);
-  letter-spacing: 0.02em;
-  color: var(--colorSlate);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ctaIconButton:active {
-    transform: none;
-  }
-}
-
 /* FAIRWAY: the phone bar's buy button matches the panel's.
    The desktop panel puts the buy action in the brand green; leaving the
    mobile bar in brass would mean the same action wore two colours
@@ -547,4 +497,41 @@
   @media (--viewportLarge) {
     flex-grow: 0;
   }
+}
+
+/* FAIRWAY: bid and buy as two equal buttons in the phone bar */
+.openOrderForm > .ctaOffer {
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0 12px;
+
+  font-family: var(--fontFamily);
+  font-size: 16px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorForest);
+  border-radius: var(--radiusControl);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    color: var(--colorForest);
+    background-color: var(--colorSagePale);
+    border-color: var(--colorForest);
+  }
+}
+
+.openOrderForm > .ctaOffer + button {
+  flex: 1 1 0;
+}
+
+/* Line icons: the global svg { fill: currentColor } would fill them in */
+.lineIcon {
+  flex-shrink: 0;
+  fill: none;
 }

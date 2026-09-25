@@ -81,6 +81,7 @@ const NegotiationRequestQuoteForm = loadable(() =>
 
 const strokeIcon = children => (
   <svg
+    className={css.lineIcon}
     width="20"
     height="20"
     viewBox="0 0 20 20"
@@ -101,11 +102,6 @@ const TagIcon = () =>
       <path d="M10.4 2.5H17.5v7.1L9.6 17.5a1.3 1.3 0 0 1-1.8 0l-5.3-5.3a1.3 1.3 0 0 1 0-1.8L10.4 2.5Z" />
       <circle cx="13.9" cy="6.1" r="1.1" />
     </>
-  );
-
-const ChatIcon = () =>
-  strokeIcon(
-    <path d="M17.5 9.6c0 3.3-3.4 6-7.5 6a8.8 8.8 0 0 1-2.2-.3L3.3 17l1.2-3.2A5.7 5.7 0 0 1 2.5 9.6c0-3.3 3.4-6 7.5-6s7.5 2.7 7.5 6Z" />
   );
 
 // This defines when ModalInMobile shows content as Modal
@@ -483,6 +479,7 @@ const OrderPanel = props => {
   const ctaTotal = customerTotal(lineItems, marketplaceCurrency)?.total;
   const showMakeOffer = typeof onMakeOffer === 'function' && shouldHavePurchase;
   const showContactSeller = typeof onContactUser === 'function' && shouldHavePurchase;
+  const showBidInBar = showMakeOffer && !isClosed && !isOwnListing && !isOutOfStock;
 
   return (
     <div className={classes}>
@@ -662,10 +659,16 @@ const OrderPanel = props => {
         ) : null}
       </ModalInMobile>
       <div className={css.openOrderForm}>
-        {/* FAIRWAY: once the line items are known, the bar shows what the buyer
-            actually pays rather than the item price — otherwise the bar and the
-            panel quote two different numbers for the same purchase. */}
-        {ctaTotal ? (
+        {/* FAIRWAY: on a phone, bidding is as big a choice as buying — two equal
+            buttons, like the apps people already use. Writing to the seller
+            sits on the seller's card at the top of the page. Without a bid
+            (own listing, sold, closed) the bar shows what the buyer pays. */}
+        {showBidInBar ? (
+          <button type="button" className={css.ctaOffer} onClick={onMakeOffer}>
+            <TagIcon />
+            <FormattedMessage id="ProductOrderForm.makeOffer" />
+          </button>
+        ) : ctaTotal ? (
           <div className={css.ctaTotal}>
             <span className={css.ctaTotalLabel}>
               <FormattedMessage id="FairwayPriceBreakdown.total" />
@@ -682,42 +685,6 @@ const OrderPanel = props => {
             showCurrencyMismatch
           />
         )}
-
-        {/* FAIRWAY: bidding and asking were a tap away only after opening the
-            panel. On a phone all three ways of reaching a seller belong in the
-            bar itself — a used marketplace where the only visible action is
-            "buy" is a shop. Icons rather than labels, because three text
-            buttons will not fit next to a price at 375px. */}
-        {!isClosed && !isOwnListing && !isOutOfStock && (showMakeOffer || showContactSeller) ? (
-          <div className={css.ctaSecondary}>
-            {showMakeOffer ? (
-              <button
-                type="button"
-                className={css.ctaIconButton}
-                onClick={onMakeOffer}
-                title={intl.formatMessage({ id: 'ProductOrderForm.makeOffer' })}
-              >
-                <TagIcon />
-                <span className={css.ctaIconLabel}>
-                  <FormattedMessage id="ProductOrderForm.makeOffer" />
-                </span>
-              </button>
-            ) : null}
-            {showContactSeller ? (
-              <button
-                type="button"
-                className={css.ctaIconButton}
-                onClick={onContactUser}
-                title={intl.formatMessage({ id: 'ProductOrderForm.contactSeller' })}
-              >
-                <ChatIcon />
-                <span className={css.ctaIconLabel}>
-                  <FormattedMessage id="OrderPanel.ctaAsk" />
-                </span>
-              </button>
-            ) : null}
-          </div>
-        ) : null}
 
         {isClosed ? (
           <div className={css.closedListingButton}>

@@ -1374,3 +1374,18 @@
     display: none;
   }
 }
+
+/* FAIRWAY: a wider buy panel on a desktop, so title, price and both buttons
+   have room — the gallery gives up the difference */
+.mainColumnForProductLayout {
+  @media (--viewportLarge) {
+    max-width: calc(100% - 448px);
+    flex-basis: calc(100% - 448px);
+  }
+}
+
+.orderColumnForProductLayout {
+  @media (--viewportLarge) {
+    flex-basis: 400px;
+  }
+}

@@ -1918,5 +1918,12 @@
   "EditListingWizard.stepOf": "Trin {step} af {total} · {label}",
   "EditListingWizard.percentDone": "{percent} % færdig",
   "TradeReadiness.compact.summary": "{count, plural, one {# ting mangler} other {# ting mangler}}, før du kan få penge for annoncen",
-  "TradeReadiness.compact.toggle": "Se hvad"
+  "TradeReadiness.compact.toggle": "Se hvad",
+  "ListingHeadline.condition": "Stand: {condition}",
+  "ListingHeadline.shipment.own": "Sendes · 2–3 dage",
+  "ListingHeadline.shipment.box": "Sendes · 4–6 dage",
+  "ListingHeadline.shipment.meetup": "Afhentning",
+  "ListingHeadline.priceNote": "+ fragt og køberbeskyttelse",
+  "ListingHeadline.priceNotePickup": "+ køberbeskyttelse · ingen fragt",
+  "InquiryForm.quickBidsLabel": "Hurtige bud"
 }

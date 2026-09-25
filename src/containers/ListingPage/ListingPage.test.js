@@ -296,9 +296,12 @@ describe('ListingPage variants', () => {
       expect(screen.getByTestId('carousel')).toBeInTheDocument();
       expect(screen.queryByTestId('hero')).not.toBeInTheDocument();
 
-      // Has order title (rendered for )
+      // FAIRWAY: the carousel layout shows the listing title itself — as the
+      // page h1 on a phone and in the desktop buy panel — with the order title
+      // left for the mobile order sheet.
       const orderTitle = queryAllByRole('heading', { name: 'ListingPage.orderTitle' });
-      expect(orderTitle).toHaveLength(3);
+      expect(orderTitle).toHaveLength(1);
+      expect(queryAllByRole('heading', { name: `${id} title` })).toHaveLength(2);
 
       // Has details section title and selected category info
       // FAIRWAY: the carousel layout renders one specification table

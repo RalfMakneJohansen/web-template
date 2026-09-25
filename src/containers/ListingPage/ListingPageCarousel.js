@@ -16,9 +16,7 @@ import { initializeCardPaymentData } from '../../ducks/stripe.duck.js';
 // Shared components
 import {
   DeliveryInfo,
-  H2,
   H3,
-  H4,
   Page,
   NamedLink,
   OrderPanel,
@@ -59,6 +57,7 @@ import SectionBreadcrumb from './SectionBreadcrumb';
 import SectionSpecs from './SectionSpecs';
 import SectionMapMaybe from './SectionMapMaybe';
 import SectionGallery from './SectionGallery';
+import ListingHeadline from './ListingHeadline';
 import SectionRelatedListings from './SectionRelatedListings';
 import SectionBuyerJourney from './SectionBuyerJourney';
 import SectionListingFaq from './SectionListingFaq';
@@ -321,9 +320,17 @@ export const ListingPageComponent = props => {
               className={showListingImage ? css.mobileHeading : css.noListingImageHeadingProduct}
             >
               {showListingImage ? (
-                <H2 as="h1" className={css.orderPanelTitle}>
-                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-                </H2>
+                /* FAIRWAY: tags, title, price and the seller, above the fold on a phone */
+                <ListingHeadline
+                  variant="page"
+                  title={title}
+                  price={price}
+                  publicData={publicData}
+                  listingFields={listingConfig.listingFields}
+                  author={ensuredAuthor}
+                  onContactUser={onContactUser}
+                  isOwnListing={isOwnListing}
+                />
               ) : (
                 <H3 as="h1" className={css.orderPanelTitle}>
                   <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
@@ -388,13 +395,17 @@ export const ListingPageComponent = props => {
               title={<FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />}
               titleDesktop={
                 /* Not an h1: this is the buy panel's own title, and the page
-                   already has one above the gallery. Three h1 elements with
-                   the same text is a diluted signal, and two of them are
-                   hidden at any given viewport. */
-                <H4 className={css.orderPanelTitle}>
-                  <FormattedMessage id="ListingPage.orderTitle" values={{ title: richTitle }} />
-                </H4>
+                   already has one above the gallery. FAIRWAY: tags, title and
+                   price together, so the panel opens on what it is and costs. */
+                <ListingHeadline
+                  variant="panel"
+                  title={title}
+                  price={price}
+                  publicData={publicData}
+                  listingFields={listingConfig.listingFields}
+                />
               }
+              hidePrice
               sectionHeadingAs="h2"
               payoutDetailsWarning={payoutDetailsWarning}
               author={ensuredAuthor}

@@ -1,0 +1,151 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Tags: what a golfer decides on at a glance */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+  border-radius: var(--radiusPill);
+}
+
+.tagCondition {
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 34px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--colorInk);
+  overflow-wrap: anywhere;
+
+  @media (--viewportMedium) {
+    font-size: 40px;
+    line-height: 44px;
+  }
+}
+
+.priceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.price {
+  font-family: var(--fontFamilyDisplay);
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--colorForest);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.priceNote {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorGraphite);
+}
+
+/* The seller, right under the price on a phone */
+.seller {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+  padding: 12px;
+
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorDivider);
+  border-radius: var(--radiusCard);
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+}
+
+.sellerText {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.sellerName {
+  overflow: hidden;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sellerMeta {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorGraphite);
+}
+
+.contact {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0 18px;
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorForest);
+  border-radius: var(--radiusPill);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--colorSagePale);
+  }
+}
+
+/* In the desktop buy panel: a little tighter */
+.panel {
+  gap: 10px;
+
+  & .title {
+    font-size: 36px;
+    line-height: 40px;
+  }
+}

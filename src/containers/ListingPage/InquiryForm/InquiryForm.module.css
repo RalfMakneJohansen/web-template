@@ -56,3 +56,48 @@
 .safety {
   margin-top: 12px;
 }
+
+/* FAIRWAY: one-tap bids */
+.quickBids {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  /* close under the field, and clear of the asking price line, which pulls itself up */
+  margin: -12px 0 26px 0;
+}
+
+.quickBid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-height: 56px;
+  padding: 6px;
+
+  font-family: var(--fontFamily);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorDivider);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s var(--easeOut), background-color 0.15s var(--easeOut);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--colorForest);
+    background-color: var(--colorSagePale);
+  }
+}
+
+.quickBidAmount {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: var(--fontWeightBold);
+  white-space: nowrap;
+}
+
+.quickBidPercent {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--colorGraphite);
+}
