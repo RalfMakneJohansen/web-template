@@ -1,0 +1,584 @@
+@import '../../../../styles/customMediaQueries.css';
+
+/* ================ A question ================ */
+
+.group {
+  position: relative;
+  min-width: 0;
+  margin: 0 0 24px 0;
+  padding: 0;
+  border: none;
+
+  @media (--viewportMedium) {
+    margin-bottom: 32px;
+  }
+}
+
+.legend {
+  composes: label from global;
+  padding: 0 0 12px 0;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* The native radio stays in the page for keyboards and screen readers, out
+   of sight; its label is what you see and tap. */
+.choice {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+
+.radio {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ================ Options: shared look ================ */
+
+.option,
+.tile {
+  position: relative;
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  min-height: 42px;
+  padding: 0 16px;
+
+  font-family: var(--fontFamily);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  text-align: center;
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorDivider);
+  border-radius: var(--radiusControl);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+
+  transition: border-color 0.16s var(--easeOut), background-color 0.16s var(--easeOut),
+    color 0.16s var(--easeOut), box-shadow 0.16s var(--easeOut), transform 0.16s var(--easeOut);
+
+  @media (--viewportMedium) {
+    min-height: 40px;
+  }
+}
+
+@media (hover: hover) {
+  .option:hover,
+  .tile:hover {
+    border-color: var(--colorForest);
+  }
+}
+
+.option:active,
+.tile:active {
+  transform: scale(0.97);
+  transition-duration: 0.06s;
+}
+
+.radio:focus-visible + .option,
+.radio:focus-visible + .tile {
+  outline: 2px solid var(--colorFairway);
+  outline-offset: 2px;
+}
+
+/* Chosen: the brand green fills in, with a small settle */
+.optionSelected {
+  color: var(--colorWhite);
+  background-color: var(--colorForest);
+  border-color: var(--colorForest);
+  box-shadow: 0 4px 12px rgba(15, 110, 86, 0.22);
+  animation: fwChoose 0.28s var(--easeOut);
+}
+
+@media (hover: hover) {
+  .optionSelected:hover {
+    border-color: var(--colorForest);
+  }
+}
+
+.checkMark {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 12;
+  animation: fwTick 0.3s 0.05s var(--easeOut) both;
+}
+
+/* ================ Layouts ================ */
+
+/* Two or three answers: one switch across the full width */
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(var(--count, 2), minmax(0, 1fr));
+  gap: 6px;
+  padding: 4px;
+
+  background-color: var(--colorGround);
+  border-radius: calc(var(--radiusControl) + 4px);
+
+  & .option {
+    min-height: 44px;
+    border-color: transparent;
+    background-color: transparent;
+  }
+
+  & .option:hover {
+    border-color: transparent;
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+
+  & .optionSelected,
+  & .optionSelected:hover {
+    color: var(--colorForest);
+    background-color: var(--colorWhite);
+    border-color: transparent;
+    box-shadow: var(--shadowRest);
+  }
+}
+
+/* More answers: chips that wrap */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  @media (--viewportMedium) {
+    gap: 8px;
+  }
+
+  & .option {
+    flex: 0 0 auto;
+    min-width: 64px;
+    padding: 0 14px;
+    border-radius: var(--radiusPill);
+  }
+}
+
+/* Brands: an even grid of tiles, three to a row on a phone */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+}
+
+/* A lone "Andet mærke" at the end of the grid takes the whole row, so it
+   reads as a way out rather than a missing tile. */
+.tiles > .choice:last-child:nth-child(3n + 1) {
+  grid-column: 1 / -1;
+
+  @media (--viewportMedium) {
+    grid-column: auto;
+  }
+}
+
+.tiles > .choice:last-child:nth-child(4n + 1) {
+  @media (--viewportMedium) {
+    grid-column: 1 / -1;
+  }
+}
+
+.tile {
+  min-height: 54px;
+  padding: 0 8px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  letter-spacing: -0.01em;
+  border-radius: var(--radiusCard);
+
+  @media (--viewportMedium) {
+    min-height: 56px;
+    font-size: 15px;
+  }
+}
+
+.tileOther {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorSlate);
+  border-style: dashed;
+}
+
+.tileOther.optionSelected {
+  color: var(--colorWhite);
+  border-style: solid;
+}
+
+.otherBrand {
+  margin-top: 12px;
+  animation: fwOpen 0.26s var(--easeOut);
+}
+
+.textInput {
+  min-height: 48px;
+}
+
+/* ================ Condition cards ================ */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  & .option {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 4px;
+    min-height: 108px;
+    padding: 14px 14px 16px 14px;
+
+    text-align: left;
+    border-radius: var(--radiusCard);
+  }
+
+  & .optionSelected {
+    color: var(--colorInk);
+    background-color: var(--colorSagePale);
+    border-color: var(--colorForest);
+    box-shadow: 0 0 0 1px var(--colorForest), 0 6px 16px rgba(15, 110, 86, 0.14);
+  }
+
+  & .checkMark {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+
+    color: var(--colorWhite);
+    background-color: var(--colorForest);
+    border-radius: 50%;
+    box-sizing: border-box;
+  }
+}
+
+.meter {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.bar {
+  width: 14px;
+  height: 5px;
+  background-color: var(--colorDivider);
+  border-radius: 3px;
+  transition: background-color 0.2s var(--easeOut);
+}
+
+.barOn {
+  background-color: var(--colorSage);
+}
+
+.optionSelected .barOn {
+  background-color: var(--colorForest);
+}
+
+.cardLabel {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: var(--fontWeightBold);
+}
+
+.cardHint {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: var(--fontWeightRegular);
+  color: var(--colorSlate);
+}
+
+/* ================ Text with suggestions ================ */
+
+.textField {
+  margin: 0;
+}
+
+/* On a phone the suggestions are one row you swipe, the way apps show
+   quick replies; from tablet width up they wrap. */
+.suggestions {
+  margin-top: 10px;
+
+  @media (--viewportMedium) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+  }
+}
+
+.suggestionsLabel {
+  display: block;
+  margin-bottom: 6px;
+
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+
+  @media (--viewportMedium) {
+    margin-bottom: 0;
+  }
+}
+
+.suggestionList {
+  display: flex;
+  gap: 6px;
+  margin: 0 -16px 0 0;
+  padding: 2px 16px 4px 2px;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (--viewportMedium) {
+    display: contents;
+  }
+}
+
+.suggestionItem {
+  display: inline-flex;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  animation: fwOpen 0.3s calc(var(--i, 0) * 30ms) var(--easeOut) both;
+}
+
+.suggestion {
+  min-height: 36px;
+  white-space: nowrap;
+  padding: 0 12px;
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+  border: 1px solid transparent;
+  border-radius: var(--radiusPill);
+  cursor: pointer;
+  transition: background-color 0.15s var(--easeOut), color 0.15s var(--easeOut),
+    transform 0.15s var(--easeOut);
+
+  &:hover {
+    border-color: var(--colorForest);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.suggestionChosen {
+  color: var(--colorWhite);
+  background-color: var(--colorForest);
+}
+
+/* ================ The title ================ */
+
+.titleBlock {
+  margin: 8px 0 24px 0;
+
+  @media (--viewportMedium) {
+    margin-bottom: 32px;
+  }
+}
+
+.titleCard {
+  position: relative;
+  padding: 18px 18px 14px 18px;
+
+  background-color: var(--colorGround);
+  background-image: radial-gradient(
+    120% 140% at 100% 0%,
+    rgba(93, 202, 165, 0.16) 0%,
+    rgba(93, 202, 165, 0) 60%
+  );
+  border: 1px solid var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
+  animation: fwOpen 0.3s var(--easeOut);
+
+  @media (--viewportMedium) {
+    padding: 20px 24px 16px 24px;
+  }
+}
+
+.titleCardHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleEyebrow {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--colorForest);
+}
+
+.titleCount {
+  font-size: 12px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+  color: var(--colorSlate);
+}
+
+.titleText {
+  margin: 6px 0 0 0;
+  padding: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--colorInk);
+  overflow-wrap: anywhere;
+  animation: fwTitle 0.3s var(--easeOut);
+
+  @media (--viewportMedium) {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+.titleFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  margin-top: 10px;
+}
+
+.titleNote {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--colorSlate);
+}
+
+.linkButton,
+.restore {
+  padding: 6px 0;
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:hover {
+    color: var(--colorCoralDark);
+  }
+}
+
+.restore {
+  margin-top: 8px;
+  font-weight: var(--fontWeightMedium);
+}
+
+/* ================ Motion ================ */
+
+@keyframes fwChoose {
+  0% {
+    transform: scale(0.94);
+  }
+  60% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fwTick {
+  from {
+    stroke-dashoffset: 12;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fwOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes fwTitle {
+  from {
+    opacity: 0.35;
+    transform: translateY(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .option,
+  .tile,
+  .suggestion,
+  .bar {
+    transition: none;
+  }
+
+  .optionSelected,
+  .checkMark,
+  .otherBrand,
+  .suggestionItem,
+  .titleCard,
+  .titleText {
+    animation: none;
+  }
+
+  .option:active,
+  .tile:active,
+  .suggestion:active {
+    transform: none;
+  }
+}

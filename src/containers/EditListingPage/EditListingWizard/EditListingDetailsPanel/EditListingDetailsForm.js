@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Field, Form as FinalForm } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classNames from 'classnames';
@@ -7,13 +7,23 @@ import classNames from 'classnames';
 import { FormattedMessage, useIntl } from '../../../../util/reactIntl';
 import { displayDescription } from '../../../../util/configHelpers.js';
 import { useConfiguration } from '../../../../context/configurationContext.js';
-import { EXTENDED_DATA_SCHEMA_TYPES, propTypes } from '../../../../util/types';
+import { EXTENDED_DATA_SCHEMA_TYPES, SCHEMA_TYPE_ENUM, propTypes } from '../../../../util/types';
 import {
   isFieldForCategory,
   isFieldForListingType,
   isValidCurrencyForTransactionProcess,
 } from '../../../../util/fieldHelpers';
 import { maxLength, required, composeValidators } from '../../../../util/validators';
+import {
+  GOLF_BRANDS,
+  IRON_SET_SUGGESTIONS,
+  composeListingTitle,
+  fieldGroupOf,
+  fieldRank,
+  loftOptionsFor,
+  modelSuggestionsFor,
+  popularBrandsFor,
+} from '../../../../util/fairwayGear';
 
 // Import shared components
 import {
@@ -26,6 +36,12 @@ import {
 } from '../../../../components';
 // Import modules from this directory
 import CategoryImagePicker, { canUseImagePicker } from './CategoryImagePicker';
+import {
+  FieldBrandPicker,
+  FieldChoiceChips,
+  FieldComposedTitle,
+  FieldTextSuggest,
+} from './GearFields';
 import css from './EditListingDetailsForm.module.css';
 
 const TITLE_MAX_LENGTH = 60;
@@ -270,42 +286,153 @@ const FieldSelectCategory = props => {
  */
 const KEYS_WITH_THEIR_OWN_STEP = ['shipment_type'];
 
+// Enums with this many options or fewer are shown as chips; longer lists keep the select
+const MAX_CHIP_OPTIONS = 12;
+
+// The words of a message id, or '' when there is no such message
+const messageOr = (intl, id, values) =>
+  intl.messages?.[id] ? intl.formatMessage({ id }, values) : '';
+
+/**
+ * FAIRWAY: the input for one listing field.
+ *
+ * Brand, model and the set of irons get the tap-first fields from
+ * GearFields.js, short enums become chips (condition becomes cards), and
+ * anything else — a field added in Console later, say — falls back to the
+ * template's CustomExtendedDataField.
+ */
+const ListingField = props => {
+  const { fieldConfig, name, formId, intl, values, categoryId } = props;
+  const { key, schemaType, enumOptions = [], saveConfig = {} } = fieldConfig;
+  const { isRequired, requiredMessage, placeholderMessage } = saveConfig;
+  const label = saveConfig.label || fieldConfig.label;
+  const defaultRequiredMessage = intl.formatMessage({
+    id: 'EditListingDetailsForm.defaultRequiredMessage',
+  });
+  const validate = isRequired ? required(requiredMessage || defaultRequiredMessage) : undefined;
+  const id = `${formId}.${name}`;
+  const isEnum = schemaType === SCHEMA_TYPE_ENUM;
+
+  if (key === 'brand' && !isEnum) {
+    return (
+      <FieldBrandPicker
+        name={name}
+        id={id}
+        label={label}
+        brands={popularBrandsFor(categoryId)}
+        allBrands={fieldConfig.suggestions || GOLF_BRANDS}
+        placeholder={intl.formatMessage({ id: 'GearFields.otherBrandPlaceholder' })}
+        validate={validate}
+      />
+    );
+  }
+
+  if ((key === 'model' || key === 'iron_set') && !isEnum) {
+    const suggestions =
+      key === 'model' ? modelSuggestionsFor(values.pub_brand, categoryId) : IRON_SET_SUGGESTIONS;
+    return (
+      <FieldTextSuggest
+        name={name}
+        id={id}
+        label={label}
+        placeholder={placeholderMessage}
+        suggestions={suggestions}
+        validate={validate}
+      />
+    );
+  }
+
+  const options =
+    key === 'loft' ? loftOptionsFor(enumOptions, categoryId, values[name]) : enumOptions;
+
+  if (isEnum && options.length > 0 && options.length <= MAX_CHIP_OPTIONS) {
+    const isCondition = key === 'condition';
+    return (
+      <FieldChoiceChips
+        name={name}
+        id={id}
+        label={label}
+        variant={isCondition ? 'cards' : 'auto'}
+        options={options.map(o => ({
+          key: `${o.option}`,
+          label: o.label,
+          hint: isCondition ? messageOr(intl, `GearFields.conditionHint.${o.option}`) : null,
+        }))}
+        isRequired={!!isRequired}
+        validate={validate}
+      />
+    );
+  }
+
+  // Wrapped: the template field drops its bottom margin when it is the last
+  // child, which is exactly where it lands at the end of a group.
+  return (
+    <div className={css.plainField}>
+      <CustomExtendedDataField
+        name={name}
+        fieldConfig={fieldConfig}
+        defaultRequiredMessage={defaultRequiredMessage}
+        formId={formId}
+      />
+    </div>
+  );
+};
+
 // Add collect data for listing fields (both publicData and privateData) based on configuration
 const AddListingFields = props => {
-  const { listingType, listingFieldsConfig, selectedCategories, formId, intl } = props;
+  const { listingType, listingFieldsConfig, selectedCategories, formId, intl, values } = props;
   const targetCategoryIds = Object.values(selectedCategories);
+  // The most specific category chosen decides brands, models and lofts
+  const categoryId = targetCategoryIds[targetCategoryIds.length - 1];
 
-  const fields = listingFieldsConfig.reduce((pickedFields, fieldConfig) => {
+  const picked = listingFieldsConfig.filter(fieldConfig => {
     const { key, schemaType, scope } = fieldConfig || {};
-    const namespacedKey = scope === 'public' ? `pub_${key}` : `priv_${key}`;
-
     const isKnownSchemaType = EXTENDED_DATA_SCHEMA_TYPES.includes(schemaType);
     const isProviderScope = ['public', 'private'].includes(scope);
     const isTargetListingType = isFieldForListingType(listingType, fieldConfig);
     const isTargetCategory = isFieldForCategory(targetCategoryIds, fieldConfig);
     const hasOwnStep = KEYS_WITH_THEIR_OWN_STEP.includes(key);
+    return (
+      isKnownSchemaType && isProviderScope && isTargetListingType && isTargetCategory && !hasOwnStep
+    );
+  });
 
-    return isKnownSchemaType &&
-      isProviderScope &&
-      isTargetListingType &&
-      isTargetCategory &&
-      !hasOwnStep
-      ? [
-          ...pickedFields,
-          <CustomExtendedDataField
-            key={namespacedKey}
-            name={namespacedKey}
-            fieldConfig={fieldConfig}
-            defaultRequiredMessage={intl.formatMessage({
-              id: 'EditListingDetailsForm.defaultRequiredMessage',
-            })}
-            formId={formId}
-          />,
-        ]
-      : pickedFields;
+  // FAIRWAY: what it is, then its details, then how worn it is — in groups,
+  // so the step reads as three short questions rather than one long form.
+  const sorted = [...picked].sort((a, b) => fieldRank(a.key) - fieldRank(b.key));
+  const groups = sorted.reduce((acc, fieldConfig) => {
+    const group = fieldGroupOf(fieldConfig.key);
+    const last = acc[acc.length - 1];
+    if (last && last.group === group) {
+      last.fields.push(fieldConfig);
+      return acc;
+    }
+    return [...acc, { group, fields: [fieldConfig] }];
   }, []);
 
-  return <>{fields}</>;
+  return (
+    <>
+      {groups.map((g, i) => (
+        <div key={g.group} className={css.fieldGroup} style={{ '--g': i }}>
+          {g.fields.map(fieldConfig => {
+            const { key, scope } = fieldConfig;
+            const namespacedKey = scope === 'public' ? `pub_${key}` : `priv_${key}`;
+            return (
+              <ListingField
+                key={namespacedKey}
+                name={namespacedKey}
+                fieldConfig={fieldConfig}
+                formId={formId}
+                intl={intl}
+                values={values}
+                categoryId={categoryId}
+              />
+            );
+          })}
+        </div>
+      ))}
+    </>
+  );
 };
 
 // Return configuration for given listingType
@@ -340,37 +467,6 @@ const getListingTypeConfig = (config, listingType) => {
  * @param {Function} props.onSubmit - The submit function
  * @returns {JSX.Element}
  */
-/**
- * FAIRWAY: keeps the title in step with brand and model.
- *
- * Writes the composed name only while the seller has not written their own —
- * tracked by remembering what was last composed. The moment the title differs
- * from that, it is theirs and this stops touching it.
- */
-const ComposeTitleFromBrandAndModel = props => {
-  const { formApi, values } = props;
-  const lastComposed = useRef(null);
-  const { brand, model, title } = values || {};
-
-  useEffect(() => {
-    const composed = [brand, model]
-      .map(part => (typeof part === 'string' ? part.trim() : ''))
-      .filter(Boolean)
-      .join(' ');
-
-    if (!composed) {
-      return;
-    }
-    const titleIsOursOrEmpty = !title || title === lastComposed.current;
-    if (titleIsOursOrEmpty && title !== composed) {
-      lastComposed.current = composed;
-      formApi.change('title', composed);
-    }
-  }, [brand, model, title, formApi]);
-
-  return null;
-};
-
 const EditListingDetailsForm = props => (
   <FinalForm
     {...props}
@@ -449,6 +545,15 @@ const EditListingDetailsForm = props => (
 
       const showListingFields = hasCategories ? allCategoriesChosen : listingType;
 
+      // FAIRWAY: the title the answers add up to, e.g. "PING G430 Max driver · 10.5° · Stiff"
+      const chosenCategories = Object.values(pickSelectedCategories(values) || {});
+      const composedTitle = composeListingTitle({
+        values,
+        fieldConfigs: listingFieldsConfig,
+        categoryId: chosenCategories[chosenCategories.length - 1],
+        text: (id, vars) => messageOr(intl, id, vars),
+      });
+
       const classes = classNames(css.root, className);
       const submitReady = (updated && pristine) || ready;
       const submitInProgress = updateInProgress;
@@ -511,30 +616,26 @@ const EditListingDetailsForm = props => (
               selectedCategories={pickSelectedCategories(values)}
               formId={formId}
               intl={intl}
+              values={values}
             />
           )}
 
           {/* FAIRWAY: the title comes last and writes itself.
               It used to be the first thing asked, before brand and model — so
               the seller invented a name, then typed the same words again two
-              fields later. Now brand and model compose it, and the seller only
-              has to look at it. Typing over it stops the composing. */}
+              fields later. Now the answers compose it and it is shown as it
+              will read; "Ret titel" makes it the seller's own. */}
           {showTitle && isCompatibleCurrency && (
-            <>
-              <ComposeTitleFromBrandAndModel formApi={formApi} values={values} />
-              <FieldTextInput
-                id={`${formId}title`}
-                name="title"
-                className={css.title}
-                type="text"
-                label={intl.formatMessage({ id: 'EditListingDetailsForm.title' })}
-                placeholder={intl.formatMessage({
-                  id: 'EditListingDetailsForm.titlePlaceholder',
-                })}
-                maxLength={TITLE_MAX_LENGTH}
-                validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
-              />
-            </>
+            <FieldComposedTitle
+              id={`${formId}title`}
+              composed={composedTitle}
+              label={intl.formatMessage({ id: 'EditListingDetailsForm.title' })}
+              placeholder={intl.formatMessage({
+                id: 'EditListingDetailsForm.titlePlaceholder',
+              })}
+              maxLength={TITLE_MAX_LENGTH}
+              validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+            />
           )}
 
           {!isCompatibleCurrency && listingType && (

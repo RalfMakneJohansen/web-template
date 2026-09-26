@@ -6,7 +6,14 @@ import { formatMoney } from '../../../../util/currency';
 import { isFieldForCategory } from '../../../../util/fieldHelpers';
 import { LISTING_STATE_DRAFT } from '../../../../util/types';
 
-import { Button, H3, ListingLink, NamedLink, SaleBreakdown } from '../../../../components';
+import {
+  Button,
+  FairwayListingCard,
+  H3,
+  ListingLink,
+  NamedLink,
+  SaleBreakdown,
+} from '../../../../components';
 
 import css from './EditListingReviewPanel.module.css';
 
@@ -175,9 +182,26 @@ const EditListingReviewPanel = props => {
         </p>
       ) : null}
 
-      <p className={css.listingTitle}>{title}</p>
+      {/* FAIRWAY: the listing as buyers will meet it — the same card as in
+          search and on the front page — so the seller sees the result before
+          pressing publish, not after. Decorative: every value is in the rows
+          below, where each one can be changed. */}
+      <section className={css.preview}>
+        <div className={css.previewCard} aria-hidden={true}>
+          <FairwayListingCard listing={listing} renderSizes="(max-width: 767px) 50vw, 240px" />
+        </div>
+        <div className={css.previewText}>
+          <p className={css.previewEyebrow}>
+            <FormattedMessage id="EditListingReviewPanel.previewEyebrow" />
+          </p>
+          <p className={css.listingTitle}>{title}</p>
+          <p className={css.previewHint}>
+            <FormattedMessage id="EditListingReviewPanel.previewHint" />
+          </p>
+        </div>
+      </section>
 
-      {images.length > 0 ? (
+      {images.length > 1 ? (
         <ul className={css.thumbs}>
           {images.slice(0, 6).map(image => {
             const variant =

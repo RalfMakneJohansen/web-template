@@ -34,10 +34,17 @@ export const CONDITION_LABELS = {
  */
 const SPEC_KEYS = ['shaft_flex', 'loft', 'wedge_loft', 'putter_length', 'shoe_size'];
 
-const specParts = (publicData, listingFields) => {
+// "10.5°" and "10°" — the wizard writes whole lofts without the ".0"
+const specInText = (spec, text) => {
+  const lower = `${spec}`.toLowerCase();
+  return text.includes(lower) || text.includes(lower.replace('.0°', '°'));
+};
+
+const specParts = (publicData, listingFields, alreadySaid = '') => {
   if (!publicData) {
     return [];
   }
+  const said = alreadySaid.toLowerCase();
   return SPEC_KEYS.map(key => {
     const raw = publicData[key];
     if (raw == null || raw === '') {
@@ -48,6 +55,9 @@ const specParts = (publicData, listingFields) => {
     return option?.label || raw;
   })
     .filter(Boolean)
+    // A title the wizard composed already carries loft and flex; saying them
+    // twice read "… · 10.5° · Stiff / Stiff / 10.5°"
+    .filter(spec => !specInText(spec, said))
     .slice(0, 2);
 };
 
@@ -100,12 +110,17 @@ const FairwayListingCard = props => {
   const canonicalBrand =
     brandSuggestions.find(b => b.toLowerCase() === String(brand || '').trim().toLowerCase()) ||
     brand;
-  const specs = specParts(publicData, config.listing.listingFields || []);
-
   // The title carries the whole name — the wizard composes it from brand and
   // model, so it reads "Titleist GT4 Driver" rather than just "GT4". Model is
   // the fallback for listings written before that.
-  const name = title || model;
+  const fullName = title || model || '';
+  const specs = specParts(publicData, config.listing.listingFields || [], fullName);
+
+  // The brand has its own line above, so a title that starts with it drops
+  // it here: "PING" over "G430 Max driver", not "PING" over "PING G430 …".
+  const brandPrefix = canonicalBrand ? `${String(canonicalBrand).toLowerCase()} ` : null;
+  const startsWithBrand = brandPrefix && fullName.toLowerCase().startsWith(brandPrefix);
+  const name = startsWithBrand ? fullName.slice(brandPrefix.length) : fullName;
 
   return (
     <NamedLink className={classNames(css.root, className)} name="ListingPage" params={{ id, slug }}>

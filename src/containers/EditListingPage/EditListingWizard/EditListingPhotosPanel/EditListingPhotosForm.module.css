@@ -12,23 +12,39 @@
 .imagesFieldArray {
   flex-shrink: 0;
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-  margin: 0 0 24px 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-flow: dense;
+  gap: 8px;
+  margin: 0 0 18px 0;
 
   /* Prevents iOS Safari's long-press-to-select-text while Sortable's own drag
   recognition is setting up. */
   user-select: none;
 
   @media (--viewportMedium) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+}
+
+/* FAIRWAY: the cover photo is the one buyers see in the search results, so
+   it is shown big: across the grid on a phone, two by two on a wider screen.
+   Before the first photo, the first slot takes its place. */
+.sortableImages > :first-child,
+.slotCover {
+  grid-column: span 2;
+
+  @media (--viewportMedium) {
+    grid-row: span 2;
   }
 }
 
 .thumbnail {
   width: 100%;
   background-color: var(--colorGrey50);
-  border-radius: var(--borderRadiusMedium);
+  border-radius: var(--radiusCard);
+  animation: fwPhotoIn 0.35s var(--easeOut);
 }
 
 /* Sortable needs a real DOM container to attach to, but its children must
@@ -67,18 +83,8 @@
 }
 
 .addImageWrapper {
-  float: left;
   position: relative;
   width: 100%;
-  overflow: hidden;
-
-  &::after {
-    content: '.';
-    visibility: hidden;
-    display: block;
-    height: 0;
-    clear: both;
-  }
 }
 
 /* Remove pointer-events while an image is being dragged. */
@@ -87,38 +93,24 @@
 }
 
 .addImage {
-  /* Layout */
   /* Maintain aspect ratio */
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 0;
 
-  /* Colors */
-  background-color: var(--colorWhite);
+  background-color: var(--colorGround);
+  border: 2px dashed var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
 
-  @media (--viewportLarge) {
-    background-color: var(--colorGrey50);
-  }
-
-  border-style: dashed;
-  border-color: var(--colorGrey100);
-  border-width: 2px;
-  border-radius: var(--borderRadiusMedium);
-
-  /* Behaviour */
   cursor: pointer;
-  transition: var(--transitionStyleButton);
+  transition: border-color 0.16s var(--easeOut), background-color 0.16s var(--easeOut),
+    transform 0.16s var(--easeOut);
 
   &:hover {
-    border-color: var(--colorGrey300);
+    border-color: var(--colorForest);
   }
 }
 
@@ -126,40 +118,6 @@
   /* Use move as a fallback if grab is unsupported */
   cursor: move;
   cursor: grabbing;
-}
-
-.chooseImageText {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.chooseImage {
-  composes: h4 from global;
-  color: var(--colorGrey700);
-  font-weight: var(--fontWeightSemiBold);
-
-  margin-top: 0;
-  margin-bottom: 0;
-
-  @media (--viewportLarge) {
-    font-weight: var(--fontWeightSemiBold);
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-}
-
-.imageTypes {
-  composes: marketplaceTinyFontStyles from global;
-  color: var(--colorGrey600);
-
-  margin-top: 0;
-  margin-bottom: 0;
-
-  @media (--viewportLarge) {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
 }
 
 .addImageInput {
@@ -172,21 +130,243 @@
   position: absolute;
   white-space: nowrap;
 
-  &:focus ~ .addImage {
-    border-color: var(--colorGrey300);
+  &:focus-visible ~ .addImage,
+  &:focus-visible + .captureButton {
+    outline: 2px solid var(--colorFairway);
+    outline-offset: 2px;
+  }
+}
+
+/* ================ FAIRWAY: progress ================ */
+
+.progress {
+  margin: 0 0 18px 0;
+
+  @media (--viewportMedium) {
+    margin-bottom: 24px;
+  }
+}
+
+.progressRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin-bottom: 8px;
+}
+
+.progressCount {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: var(--fontWeightBold);
+  font-variant-numeric: tabular-nums;
+  color: var(--colorInk);
+}
+
+.progressMissing,
+.progressDone {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorSlate);
+}
+
+.progressDone {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+}
+
+.progressTrack {
+  height: 6px;
+  overflow: hidden;
+  background-color: var(--colorGroundDeep);
+  border-radius: var(--radiusPill);
+}
+
+.progressFill {
+  display: block;
+  height: 100%;
+  min-width: 6px;
+  background-color: var(--colorSage);
+  border-radius: inherit;
+  transition: width 0.45s var(--easeOut), background-color 0.3s var(--easeOut);
+}
+
+.progressFillDone {
+  background-color: var(--colorForest);
+}
+
+/* ================ FAIRWAY: the slots ================ */
+
+.slotTile {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* The next photo to take: the one slot in the brand green */
+.slotActive {
+  background-color: var(--colorSagePale);
+  border-color: rgba(15, 110, 86, 0.45);
+  color: var(--colorForest);
+
+  &:hover {
+    background-color: #dff2ea;
+    border-color: var(--colorForest);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.slotContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px;
+  text-align: center;
+}
+
+.slotPlus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 2px;
+
+  color: var(--colorWhite);
+  background-color: var(--colorForest);
+  border-radius: 50%;
+  box-shadow: 0 6px 16px rgba(15, 110, 86, 0.28);
+  animation: fwBreathe 2.4s var(--easeOut) infinite;
+
+  @media (--viewportMedium) {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.slotTitle {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+
+  @media (--viewportMedium) {
+    font-size: 15px;
+  }
+}
+
+.slotHint {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--colorSlate);
+}
+
+/* The shots after that, waiting their turn */
+.slotGhost {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+
+  text-align: center;
+  color: var(--colorSlate);
+  background-color: var(--colorWhite);
+  border: 1.5px dashed var(--colorDividerWarm);
+  border-radius: var(--radiusCard);
+  transition: border-color 0.16s var(--easeOut), background-color 0.16s var(--easeOut);
+
+  &:hover {
+    border-color: var(--colorSage);
+    background-color: var(--colorGround);
+  }
+}
+
+.slotNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+
+  font-size: 13px;
+  font-weight: var(--fontWeightBold);
+  font-variant-numeric: tabular-nums;
+  color: var(--colorSlate);
+  background-color: var(--colorGround);
+  border-radius: 50%;
+}
+
+.slotGhostTitle {
+  font-size: 13px;
+  line-height: 17px;
+  font-weight: var(--fontWeightMedium);
+}
+
+.lineIcon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The camera is only useful where there is a camera to open. Desktop
+   browsers ignore the capture attribute, so the button would just repeat the
+   upload slot there. */
+.captureRow {
+  display: none;
+  position: relative;
+  margin-bottom: 18px;
+}
+
+@media (pointer: coarse) {
+  .captureRow {
+    display: flex;
+  }
+}
+
+.captureButton {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+
+  font-size: 15px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorForest);
+  border-radius: var(--radiusPill);
+  cursor: pointer;
+
+  &:active {
+    background-color: var(--colorSagePale);
   }
 }
 
 .tip {
-  composes: h5 from global;
-
   flex-shrink: 0;
-  color: var(--colorGrey600);
-  margin-top: 24px;
-  margin-bottom: 60px;
+  margin: 0 0 36px 0;
+  padding: 12px 14px;
+
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorGraphite);
+  background-color: var(--colorGround);
+  border-radius: var(--radiusControl);
 
   @media (--viewportLarge) {
-    margin-top: 0;
     margin-bottom: 0;
   }
 }
@@ -235,15 +415,30 @@
   }
 }
 
-/* The camera tile is only useful where there is a camera to open. Desktop
-   browsers ignore the capture attribute, so the tile would just duplicate the
-   upload tile there. */
-.captureTile {
-  display: none;
+@keyframes fwPhotoIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
 }
 
-@media (pointer: coarse) {
-  .captureTile {
-    display: block;
+@keyframes fwBreathe {
+  0%,
+  100% {
+    box-shadow: 0 6px 16px rgba(15, 110, 86, 0.28), 0 0 0 0 rgba(93, 202, 165, 0.45);
+  }
+  50% {
+    box-shadow: 0 6px 16px rgba(15, 110, 86, 0.28), 0 0 0 8px rgba(93, 202, 165, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .thumbnail,
+  .slotPlus {
+    animation: none;
+  }
+
+  .progressFill {
+    transition: none;
   }
 }

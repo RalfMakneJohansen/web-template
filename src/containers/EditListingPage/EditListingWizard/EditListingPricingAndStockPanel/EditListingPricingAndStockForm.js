@@ -188,6 +188,8 @@ export const EditListingPricingAndStockForm = props => (
             id={`${formId}.price`}
             name="price"
             className={css.input}
+            // FAIRWAY: the price is the one number that matters here, so it is typed big
+            inputClassName={css.priceInput}
             autoFocus={autoFocus}
             label={intl.formatMessage(
               { id: 'EditListingPricingAndStockForm.pricePerProduct' },

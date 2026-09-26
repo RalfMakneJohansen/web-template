@@ -4,10 +4,51 @@ import { Form as FinalForm } from 'react-final-form';
 
 import { FormattedMessage, useIntl } from '../../../../util/reactIntl';
 import { LISTING_STATE_DRAFT } from '../../../../util/types';
+import { appendSentence, descriptionPhrasesFor } from '../../../../util/fairwayGear';
 
 import { Button, FieldTextInput, Form, H3, ListingLink } from '../../../../components';
 
 import css from './EditListingDescriptionPanel.module.css';
+
+/**
+ * FAIRWAY: the things buyers ask about, as chips that add a sentence.
+ *
+ * A blank box is the hardest part of a listing to fill in on a phone. These
+ * give the seller a start — and each one answers a question a buyer would
+ * otherwise send as a message. A chip already in the text shows as used.
+ */
+const PhraseChips = props => {
+  const { phrases, description, onAdd, intl } = props;
+  const text = (description || '').toLowerCase();
+  return (
+    <div className={css.phrases}>
+      <p className={css.phrasesLabel} id="descriptionPhrasesLabel">
+        <FormattedMessage id="EditListingDescriptionPanel.phrasesLabel" />
+      </p>
+      <ul className={css.phraseList} aria-labelledby="descriptionPhrasesLabel">
+        {phrases.map((id, i) => {
+          const sentence = intl.formatMessage({ id: `EditListingDescriptionPanel.phrase.${id}` });
+          const isUsed = text.includes(sentence.toLowerCase());
+          return (
+            <li key={id} className={css.phraseItem} style={{ '--i': i }}>
+              <button
+                type="button"
+                className={isUsed ? classNames(css.phrase, css.phraseUsed) : css.phrase}
+                onClick={() => onAdd(sentence)}
+                disabled={isUsed}
+              >
+                <span className={css.phraseSign} aria-hidden={true}>
+                  {isUsed ? '✓' : '+'}
+                </span>
+                {sentence}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
 
 /**
  * Description gets its own step so the seller writes it after seeing their own
@@ -63,7 +104,9 @@ const EditListingDescriptionPanel = props => {
         initialValues={{ description: listing?.attributes?.description }}
         onSubmit={values => onSubmit({ description: values.description || '' })}
         render={formRenderProps => {
-          const { handleSubmit, invalid, pristine, values } = formRenderProps;
+          const { handleSubmit, invalid, pristine, values, form } = formRenderProps;
+          const phrases = descriptionPhrasesFor(listing?.attributes?.publicData?.categoryLevel1);
+          const length = (values.description || '').trim().length;
           const { updateListingError, showListingsError } = errors || {};
           const submitReady = (panelUpdated && pristine) || ready;
           const submitInProgress = updateInProgress;
@@ -95,6 +138,25 @@ const EditListingDescriptionPanel = props => {
                 placeholder={intl.formatMessage({
                   id: 'EditListingDescriptionPanel.placeholder',
                 })}
+                inputRootClass={css.textarea}
+              />
+              <p className={css.counter} aria-live="polite">
+                {length === 0 ? null : length < 40 ? (
+                  <FormattedMessage id="EditListingDescriptionPanel.counterShort" />
+                ) : (
+                  <span className={css.counterGood}>
+                    <FormattedMessage id="EditListingDescriptionPanel.counterGood" />
+                  </span>
+                )}
+              </p>
+
+              <PhraseChips
+                phrases={phrases}
+                description={values.description}
+                intl={intl}
+                onAdd={sentence =>
+                  form.change('description', appendSentence(values.description, sentence))
+                }
               />
 
               <Button

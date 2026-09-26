@@ -8,13 +8,44 @@ exports[`EditListingDeliveryForm matches snapshot 1`] = `
     method="post"
   >
     <div
+      aria-live="polite"
+      class="progress"
+    >
+      <div
+        class="progressRow"
+      >
+        <span
+          class="progressCount"
+        >
+          <span>
+            EditListingPhotosForm.progressCount
+          </span>
+        </span>
+        <span
+          class="progressMissing"
+        >
+          <span>
+            EditListingPhotosForm.progressMissing
+          </span>
+        </span>
+      </div>
+      <div
+        class="progressTrack"
+      >
+        <span
+          class="progressFill"
+          style="width: 0%;"
+        />
+      </div>
+    </div>
+    <div
       class="imagesFieldArray"
     >
       <div
         class="sortableImages"
       />
       <div
-        class="addImageWrapper"
+        class="addImageWrapper slotTile slotCover"
       >
         <div
           class="root"
@@ -30,28 +61,45 @@ exports[`EditListingDeliveryForm matches snapshot 1`] = `
                 accept="image/*"
                 class="addImageInput"
                 id="addImage"
+                multiple=""
                 name="addImage"
                 type="file"
               />
               <label
-                class="addImage"
+                class="addImage slotActive"
                 for="addImage"
               >
                 <span
-                  class="chooseImageText"
+                  class="slotContent"
                 >
                   <span
-                    class="chooseImage"
+                    aria-hidden="true"
+                    class="slotPlus"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="lineIcon"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      width="22"
+                    >
+                      <path
+                        d="M12 5v14M5 12h14"
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    class="slotTitle"
                   >
                     <span>
-                      EditListingPhotosForm.chooseImage
+                      EditListingPhotosForm.nextShot
                     </span>
                   </span>
                   <span
-                    class="imageTypes"
+                    class="slotHint"
                   >
                     <span>
-                      EditListingPhotosForm.imageTypes
+                      EditListingPhotosForm.chooseImages
                     </span>
                   </span>
                 </span>
@@ -61,7 +109,8 @@ exports[`EditListingDeliveryForm matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="addImageWrapper captureTile"
+        aria-hidden="true"
+        class="slotTile"
       >
         <div
           class="root"
@@ -73,49 +122,189 @@ exports[`EditListingDeliveryForm matches snapshot 1`] = `
             <div
               class="aspectBox"
             >
-              <input
-                accept="image/*"
-                capture="environment"
-                class="addImageInput"
-                id="captureImage"
-                name="captureImage"
-                type="file"
-              />
-              <label
-                class="addImage"
-                for="captureImage"
+              <span
+                class="slotGhost"
               >
                 <span
-                  class="chooseImageText"
+                  class="slotNumber"
                 >
-                  <span
-                    class="chooseImage"
-                  >
-                    <span>
-                      EditListingPhotosForm.captureImage
-                    </span>
-                  </span>
-                  <span
-                    class="imageTypes"
-                  >
-                    <span>
-                      EditListingPhotosForm.captureImageHint
-                    </span>
-                  </span>
+                  2
                 </span>
-              </label>
+                <span
+                  class="slotGhostTitle"
+                >
+                  EditListingPhotosForm.shot.front
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="slotTile"
+      >
+        <div
+          class="root"
+        >
+          <div
+            class="aspectPadding"
+            style="padding-bottom: 100%;"
+          >
+            <div
+              class="aspectBox"
+            >
+              <span
+                class="slotGhost"
+              >
+                <span
+                  class="slotNumber"
+                >
+                  3
+                </span>
+                <span
+                  class="slotGhostTitle"
+                >
+                  EditListingPhotosForm.shot.back
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="slotTile"
+      >
+        <div
+          class="root"
+        >
+          <div
+            class="aspectPadding"
+            style="padding-bottom: 100%;"
+          >
+            <div
+              class="aspectBox"
+            >
+              <span
+                class="slotGhost"
+              >
+                <span
+                  class="slotNumber"
+                >
+                  4
+                </span>
+                <span
+                  class="slotGhostTitle"
+                >
+                  EditListingPhotosForm.shot.details
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="slotTile"
+      >
+        <div
+          class="root"
+        >
+          <div
+            class="aspectPadding"
+            style="padding-bottom: 100%;"
+          >
+            <div
+              class="aspectBox"
+            >
+              <span
+                class="slotGhost"
+              >
+                <span
+                  class="slotNumber"
+                >
+                  5
+                </span>
+                <span
+                  class="slotGhostTitle"
+                >
+                  EditListingPhotosForm.shot.accessories
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="slotTile"
+      >
+        <div
+          class="root"
+        >
+          <div
+            class="aspectPadding"
+            style="padding-bottom: 100%;"
+          >
+            <div
+              class="aspectBox"
+            >
+              <span
+                class="slotGhost"
+              >
+                <span
+                  class="slotNumber"
+                >
+                  6
+                </span>
+                <span
+                  class="slotGhostTitle"
+                >
+                  EditListingPhotosForm.shot.marks
+                </span>
+              </span>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <p
-      class="arrayError"
+    <div
+      class="captureRow"
     >
-      <span>
-        EditListingPhotosForm.minImagesRequired
-      </span>
-    </p>
+      <input
+        accept="image/*"
+        capture="environment"
+        class="addImageInput"
+        id="captureImage"
+        name="captureImage"
+        type="file"
+      />
+      <label
+        class="captureButton"
+        for="captureImage"
+      >
+        <svg
+          aria-hidden="true"
+          class="lineIcon"
+          height="20"
+          viewBox="0 0 24 24"
+          width="20"
+        >
+          <path
+            d="M4 8h3l2-3h6l2 3h3v11H4z"
+          />
+          <circle
+            cx="12"
+            cy="13"
+            r="3.5"
+          />
+        </svg>
+        <span>
+          EditListingPhotosForm.captureImage
+        </span>
+      </label>
+    </div>
     <p
       class="tip"
     >

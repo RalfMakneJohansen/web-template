@@ -160,4 +160,34 @@ describe('FairwayListingCard', () => {
     expect(screen.queryByText('Som ny')).not.toBeInTheDocument();
     expect(screen.queryByText('God')).not.toBeInTheDocument();
   });
+
+  // The wizard now writes the specs into the title itself
+  it('does not repeat specs the title already says', () => {
+    const listing = createListing(
+      'listing1',
+      {
+        title: 'Titleist GT4 driver · 10.5° · Stiff',
+        publicData: { shaft_flex: 'stiff', loft: '10_5' },
+      },
+      { author }
+    );
+
+    render(<FairwayListingCard listing={listing} />, { config: getConfig() });
+
+    expect(screen.getByText('Titleist GT4 driver · 10.5° · Stiff')).toBeInTheDocument();
+    expect(screen.queryByText(/\/ Stiff/)).not.toBeInTheDocument();
+  });
+
+  it('drops the brand from the title when it is shown on its own line', () => {
+    const listing = createListing(
+      'listing1',
+      { title: 'PING G440 Max driver', publicData: { brand: 'PING' } },
+      { author }
+    );
+
+    render(<FairwayListingCard listing={listing} />, { config: getConfig() });
+
+    expect(screen.getByText('PING')).toBeInTheDocument();
+    expect(screen.getByText('G440 Max driver')).toBeInTheDocument();
+  });
 });

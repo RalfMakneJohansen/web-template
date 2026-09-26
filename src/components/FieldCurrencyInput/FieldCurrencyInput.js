@@ -215,7 +215,17 @@ class CurrencyInputComponent extends Component {
 export const CurrencyInput = injectIntl(CurrencyInputComponent);
 
 const FieldCurrencyInputComponent = props => {
-  const { rootClassName, className, id, label, input, meta, hideErrorMessage, ...rest } = props;
+  const {
+    rootClassName,
+    className,
+    inputClassName,
+    id,
+    label,
+    input,
+    meta,
+    hideErrorMessage,
+    ...rest
+  } = props;
 
   if (label && !id) {
     throw new Error('id required when a label is given');
@@ -227,7 +237,7 @@ const FieldCurrencyInputComponent = props => {
   // field has been touched and the validation has failed.
   const hasError = touched && invalid && error;
 
-  const inputClasses = classNames(css.input, {
+  const inputClasses = classNames(css.input, inputClassName, {
     [css.inputSuccess]: valid,
     [css.inputError]: hasError,
   });
@@ -253,6 +263,7 @@ const FieldCurrencyInputComponent = props => {
  * @param {Object} props
  * @param {string?} props.className add more style rules in addition to components own css.root
  * @param {string?} props.rootClassName overwrite components own css.root
+ * @param {string?} props.inputClassName add style rules to the input element
  * @param {string} props.name name for the input attribute
  * @param {string} props.id given to input
  * @param {ReactNode} props.label

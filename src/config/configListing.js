@@ -1,3 +1,5 @@
+import { GOLF_BRANDS } from '../util/fairwayGear';
+
 /////////////////////////////////////////////////////////
 // Configurations related to listing.                  //
 // Main configuration here is the extended data config //
@@ -84,62 +86,8 @@ const FILTER = (label, group) => ({
   group,
 });
 
-/**
- * The brands a Danish golfer is actually selling.
- *
- * Offered as suggestions on the Mærke field, not enforced: you can still type
- * a make that is not here, which matters for an old club or a small maker.
- * The point is that nobody has to spell TaylorMade, and that two listings of
- * the same brand end up written the same way — free text is how a catalogue
- * ends up with "ping", "PING" and "Ping" as three different brands.
- *
- * Ordered by how often they turn up in a Danish bag, not alphabetically, so
- * the common ones are the first thing the list shows.
- */
-const GOLF_BRANDS = [
-  'TaylorMade',
-  'Callaway',
-  'Titleist',
-  'PING',
-  'Mizuno',
-  'Cobra',
-  'Srixon',
-  'Cleveland',
-  'Wilson',
-  'Honma',
-  'PXG',
-  'Bridgestone',
-  'XXIO',
-  'Tour Edge',
-  'Benross',
-  'Yonex',
-  // Putters
-  'Scotty Cameron',
-  'Odyssey',
-  'Bettinardi',
-  'L.A.B. Golf',
-  'Evnroll',
-  // Bags and trolleys
-  'Sun Mountain',
-  'Big Max',
-  'Vessel',
-  'Ogio',
-  'Motocaddy',
-  'PowaKaddy',
-  // Shoes and clothing
-  'FootJoy',
-  'ECCO',
-  'adidas',
-  'Nike',
-  'Puma',
-  'Under Armour',
-  'Skechers',
-  'Galvin Green',
-  // Electronics
-  'Garmin',
-  'Bushnell',
-  'Shot Scope',
-];
+// FAIRWAY: GOLF_BRANDS lives in util/fairwayGear.js with the rest of what the
+// listing wizard knows about gear (popular brands per category, model lines).
 
 export const listingFields = [
   {
@@ -259,10 +207,7 @@ export const listingFields = [
     scope: 'public',
     schemaType: 'enum',
     categoryConfig: { limitToCategoryIds: true, categoryIds: SHAFTED_CATEGORIES },
-    enumOptions: [
-      { option: 'steel', label: 'Stål' },
-      { option: 'graphite', label: 'Grafit' },
-    ],
+    enumOptions: [{ option: 'steel', label: 'Stål' }, { option: 'graphite', label: 'Grafit' }],
     filterConfig: FILTER('Skaft', 'secondary'),
     showConfig: { label: 'Skaftmateriale', isDetail: true },
     saveConfig: { label: 'Skaft' },
@@ -355,10 +300,7 @@ export const listingFields = [
     scope: 'public',
     schemaType: 'enum',
     categoryConfig: { limitToCategoryIds: true, categoryIds: ['putter'] },
-    enumOptions: [
-      { option: 'blade', label: 'Blade' },
-      { option: 'mallet', label: 'Mallet' },
-    ],
+    enumOptions: [{ option: 'blade', label: 'Blade' }, { option: 'mallet', label: 'Mallet' }],
     filterConfig: FILTER('Puttertype', 'primary'),
     showConfig: { label: 'Type', isDetail: true },
     saveConfig: { label: 'Puttertype' },

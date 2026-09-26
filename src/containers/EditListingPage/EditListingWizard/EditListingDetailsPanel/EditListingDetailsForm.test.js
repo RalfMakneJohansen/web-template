@@ -114,7 +114,8 @@ describe('EditListingDetailsForm', () => {
     await user.type(screen.getByRole('textbox', { name: description }), 'Lorem ipsum');
 
     // Fill custom listing field
-    await user.selectOptions(screen.getByLabelText('Clothing'), 'kids');
+    // FAIRWAY: a short enum is a row of chips (radio buttons)
+    await user.click(screen.getByRole('radio', { name: 'Kids' }));
 
     // Test that save button is enabled
     expect(screen.getByRole('button', { name: saveActionMsg })).toBeEnabled();

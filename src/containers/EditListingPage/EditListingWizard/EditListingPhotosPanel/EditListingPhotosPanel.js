@@ -104,6 +104,8 @@ const EditListingPhotosPanel = props => {
         updated={panelUpdated}
         updateInProgress={updateInProgress}
         listingImageConfig={listingImageConfig}
+        // FAIRWAY: decides which shot list the empty photo slots show
+        categoryId={listing?.attributes?.publicData?.categoryLevel1}
         allFilesUploadedAndVerified={allFilesUploadedAndVerified}
         filesTabParams={filesTabParams}
         filesRequired={filesRequired}

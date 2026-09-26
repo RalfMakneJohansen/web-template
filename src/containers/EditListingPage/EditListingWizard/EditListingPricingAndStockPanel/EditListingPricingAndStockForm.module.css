@@ -28,6 +28,31 @@
   }
 }
 
+/* FAIRWAY: the price typed large, the way a till shows it */
+.priceInput {
+  height: 72px;
+  padding: 0 20px;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--colorInk);
+  border-radius: var(--radiusCard);
+
+  &::placeholder {
+    font-weight: 600;
+    color: var(--colorGrey300);
+  }
+
+  @media (--viewportMedium) {
+    height: 80px;
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
 .unitTypeHidden {
   display: none;
 }

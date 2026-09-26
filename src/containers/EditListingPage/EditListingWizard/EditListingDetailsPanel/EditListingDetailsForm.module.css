@@ -75,3 +75,37 @@
     margin-top: 100px;
   }
 }
+
+/* FAIRWAY: the questions in three groups (what it is, its details, its
+   condition), each set off by a hairline and rising in after the category
+   is picked, one after the other. */
+.fieldGroup {
+  padding-top: 24px;
+  border-top: 1px solid var(--colorDivider);
+  animation: fwGroupIn 0.4s calc(var(--g, 0) * 70ms) var(--easeOut) both;
+
+  @media (--viewportMedium) {
+    padding-top: 32px;
+  }
+}
+
+.plainField {
+  margin-bottom: 24px;
+
+  @media (--viewportMedium) {
+    margin-bottom: 32px;
+  }
+}
+
+@keyframes fwGroupIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fieldGroup {
+    animation: none;
+  }
+}

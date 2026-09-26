@@ -424,11 +424,9 @@ describe('EditListingPage', () => {
       ).not.toBeInTheDocument();
       expect(getByLabelText('Cat')).toBeInTheDocument();
       //
-      expect(
-        getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-      ).toBe(true);
-      //
-      expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(false);
+      // FAIRWAY: short enums are chips (radio buttons), not a select
+      expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(false);
+      expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
       //
       expect(
         getByRole('button', { name: 'EditListingWizard.default-purchase.new.saveDetails' })
@@ -473,12 +471,10 @@ describe('EditListingPage', () => {
         screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
       ).not.toBeInTheDocument();
       expect(getByLabelText('Cat')).toBeInTheDocument();
-      // Check custom extended data field exists
-      expect(
-        getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-      ).toBe(true);
-      // Check there is no selection
-      expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(false);
+      // Check custom extended data field exists, with no selection
+      // FAIRWAY: short enums are chips (radio buttons), not a select
+      expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(false);
+      expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
       // Check the submit button exists
       expect(
         getByRole('button', { name: 'EditListingWizard.default-purchase.new.saveDetails' })
@@ -549,11 +545,9 @@ describe('EditListingPage', () => {
       screen.queryByRole('textbox', { name: 'EditListingDetailsForm.description' })
     ).not.toBeInTheDocument();
     expect(getByLabelText('Cat')).toBeInTheDocument();
-    expect(
-      getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-    ).toBe(true);
-    //
-    expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(false);
+    // FAIRWAY: short enums are chips (radio buttons), not a select
+    expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(false);
+    expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
     expect(getByRole('button', { name: 'EditListingWizard.edit.saveDetails' })).toBeInTheDocument();
   });
 
@@ -614,11 +608,9 @@ describe('EditListingPage', () => {
       ).not.toBeInTheDocument();
       expect(getByLabelText('Cat')).toBeInTheDocument();
 
-      expect(
-        getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-      ).toBe(true);
-
-      expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(false);
+      // FAIRWAY: short enums are chips (radio buttons), not a select
+      expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(false);
+      expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
 
       expect(
         getByRole('button', { name: 'EditListingWizard.default-purchase.new.saveDetails' })
@@ -676,10 +668,9 @@ describe('EditListingPage', () => {
 
       // Tab/form: listing field
       expect(getByLabelText('Cat')).toBeInTheDocument();
-      expect(
-        getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-      ).toBe(true);
-      expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(false);
+      // FAIRWAY: short enums are chips (radio buttons), not a select
+      expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(false);
+      expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
 
       expect(
         getByRole('button', { name: 'EditListingWizard.edit.saveDetails' })
@@ -687,15 +678,10 @@ describe('EditListingPage', () => {
     });
 
     // Test intercation
-    await user.selectOptions(
-      screen.getByRole('combobox'),
-      screen.getByRole('option', { name: 'Cat 1' })
-    );
+    await user.click(screen.getByRole('radio', { name: 'Cat 1' }));
 
-    expect(
-      getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-    ).toBe(false);
-    expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(true);
+    expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(true);
+    expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
   });
 
   it('Purchase: edit flow on pricing-and-stock tab', async () => {
@@ -816,8 +802,12 @@ describe('EditListingPage', () => {
       expect(getByText('EditListingShippingPanel.title')).toBeInTheDocument();
 
       // Tab/form: the two shipment_type options, neither one preselected
-      expect(getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })).not.toBeChecked();
-      expect(getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })).not.toBeChecked();
+      expect(
+        getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })
+      ).not.toBeChecked();
+      expect(
+        getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })
+      ).not.toBeChecked();
 
       // No separate delivery-method form: shipment_type decides pickup and shipping
       expect(
@@ -836,7 +826,9 @@ describe('EditListingPage', () => {
     await user.click(getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' }));
 
     expect(getByRole('radio', { name: 'EditListingShippingPanel.option.box.title' })).toBeChecked();
-    expect(getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })).not.toBeChecked();
+    expect(
+      getByRole('radio', { name: 'EditListingShippingPanel.option.own.title' })
+    ).not.toBeChecked();
   });
 
   it('Purchase: edit flow on photos tab', async () => {
@@ -886,8 +878,8 @@ describe('EditListingPage', () => {
       // Tab: panel title
       expect(getByText('EditListingPhotosPanel.title')).toBeInTheDocument();
 
-      expect(getByText('EditListingPhotosForm.chooseImage')).toBeInTheDocument();
-      expect(getByText('EditListingPhotosForm.imageTypes')).toBeInTheDocument();
+      expect(getByText('EditListingPhotosForm.chooseImages')).toBeInTheDocument();
+      expect(getByText('EditListingPhotosForm.nextShot')).toBeInTheDocument();
       expect(getByText('EditListingPhotosForm.addImagesTip')).toBeInTheDocument();
       expect(getByText('EditListingWizard.edit.savePhotos')).toBeInTheDocument();
     });
@@ -2272,8 +2264,8 @@ describe('EditListingPage', () => {
       // Tab: panel title
       expect(getByText('EditListingPhotosPanel.title')).toBeInTheDocument();
 
-      expect(getByText('EditListingPhotosForm.chooseImage')).toBeInTheDocument();
-      expect(getByText('EditListingPhotosForm.imageTypes')).toBeInTheDocument();
+      expect(getByText('EditListingPhotosForm.chooseImages')).toBeInTheDocument();
+      expect(getByText('EditListingPhotosForm.nextShot')).toBeInTheDocument();
       expect(getByText('EditListingPhotosForm.addImagesTip')).toBeInTheDocument();
       expect(getByText('EditListingWizard.edit.savePhotos')).toBeInTheDocument();
     });
@@ -2562,10 +2554,9 @@ describe('EditListingPage', () => {
 
       // Tab/form: listing field
       expect(getByLabelText('Cat')).toBeInTheDocument();
-      expect(
-        getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-      ).toBe(true);
-      expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(false);
+      // FAIRWAY: short enums are chips (radio buttons), not a select
+      expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(false);
+      expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
 
       expect(
         getByRole('button', { name: 'EditListingWizard.edit.saveDetails' })
@@ -2573,15 +2564,10 @@ describe('EditListingPage', () => {
     });
 
     // Test intercation
-    await user.selectOptions(
-      screen.getByRole('combobox'),
-      screen.getByRole('option', { name: 'Cat 1' })
-    );
+    await user.click(screen.getByRole('radio', { name: 'Cat 1' }));
 
-    expect(
-      getByRole('option', { name: 'CustomExtendedDataField.placeholderSingleSelect' }).selected
-    ).toBe(false);
-    expect(getByRole('option', { name: 'Cat 1' }).selected).toBe(true);
+    expect(getByRole('radio', { name: 'Cat 1' }).checked).toBe(true);
+    expect(getByRole('radio', { name: 'Cat 2' }).checked).toBe(false);
   });
 
   it('Inquiry: edit flow no pricing on details tab', async () => {
@@ -2833,8 +2819,8 @@ describe('EditListingPage', () => {
       // Tab: panel title
       expect(getByText('EditListingPhotosPanel.title')).toBeInTheDocument();
 
-      expect(getByText('EditListingPhotosForm.chooseImage')).toBeInTheDocument();
-      expect(getByText('EditListingPhotosForm.imageTypes')).toBeInTheDocument();
+      expect(getByText('EditListingPhotosForm.chooseImages')).toBeInTheDocument();
+      expect(getByText('EditListingPhotosForm.nextShot')).toBeInTheDocument();
       expect(getByText('EditListingPhotosForm.addImagesTip')).toBeInTheDocument();
       expect(getByText('EditListingWizard.edit.savePhotos')).toBeInTheDocument();
     });

@@ -28,6 +28,128 @@
   margin-top: 24px;
 }
 
+.textarea {
+  min-height: 150px;
+  padding: 14px 16px;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: var(--radiusCard);
+  resize: vertical;
+}
+
+/* FAIRWAY: a quiet nudge under the box, never a warning */
+.counter {
+  min-height: 20px;
+  margin: 8px 0 0 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--colorSlate);
+}
+
+.counterGood {
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorForest);
+}
+
+.phrases {
+  margin: 12px 0 32px 0;
+}
+
+.phrasesLabel {
+  margin: 0 0 10px 0;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--colorSlate);
+}
+
+.phraseList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.phraseItem {
+  display: inline-flex;
+  animation: fwPhraseIn 0.3s calc(var(--i, 0) * 35ms) var(--easeOut) both;
+}
+
+.phrase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 14px 0 10px;
+
+  font-family: var(--fontFamily);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: var(--fontWeightMedium);
+  color: var(--colorInk);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorDivider);
+  border-radius: var(--radiusPill);
+  cursor: pointer;
+  transition: border-color 0.15s var(--easeOut), background-color 0.15s var(--easeOut),
+    transform 0.15s var(--easeOut);
+
+  &:hover:not(:disabled) {
+    border-color: var(--colorForest);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+}
+
+.phraseSign {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+  border-radius: 50%;
+}
+
+.phraseUsed {
+  cursor: default;
+  color: var(--colorForest);
+  background-color: var(--colorSagePale);
+  border-color: transparent;
+
+  & .phraseSign {
+    color: var(--colorWhite);
+    background-color: var(--colorForest);
+  }
+}
+
+@keyframes fwPhraseIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phraseItem {
+    animation: none;
+  }
+
+  .phrase {
+    transition: none;
+  }
+}
+
 .optionalNote {
   composes: marketplaceTinyFontStyles from global;
   margin: 12px 0 0 0;
