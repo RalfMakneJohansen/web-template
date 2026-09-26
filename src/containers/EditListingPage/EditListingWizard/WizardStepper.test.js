@@ -30,4 +30,14 @@ describe('WizardStepper', () => {
     expect(screen.getByText('label-pricing').closest('a')).toBeInTheDocument();
     expect(screen.getByText('label-photos').closest('a')).toBeNull();
   });
+
+  it('counts steps that are filled in, even ahead of the current one', () => {
+    const draft = steps.map(step => ({ ...step, completed: step.key !== 'photos' }));
+    render(<WizardStepper steps={draft} currentIndex={0} />);
+
+    // details (current) is not counted; pricing and shipping are done
+    expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50');
+    expect(screen.getByText('label-shipping').closest('a')).toBeInTheDocument();
+    expect(screen.getByText('label-photos').closest('a')).toBeNull();
+  });
 });

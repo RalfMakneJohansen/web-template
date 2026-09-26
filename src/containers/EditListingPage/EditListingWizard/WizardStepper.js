@@ -34,7 +34,7 @@ const CheckIcon = () => (
  *
  * @component
  * @param {Object} props
- * @param {Array<{ key: string, label: string, linkProps: Object, reachable: boolean }>} props.steps
+ * @param {Array<{ key: string, label: string, linkProps: Object, reachable: boolean, completed?: boolean }>} props.steps
  * @param {number} props.currentIndex - Index of the step being filled in
  * @returns {JSX.Element}
  */
@@ -42,7 +42,12 @@ const WizardStepper = props => {
   const { steps, currentIndex } = props;
   const intl = useIntl();
   const total = steps.length;
-  const percent = Math.round((currentIndex / total) * 100);
+  // A step is done when it is filled in (completed), or, when that is not
+  // known, when it lies behind the current one
+  const isStepDone = (step, i) =>
+    i !== currentIndex && (typeof step.completed === 'boolean' ? step.completed : i < currentIndex);
+  const doneCount = steps.filter(isStepDone).length;
+  const percent = Math.round((Math.max(currentIndex, doneCount) / total) * 100);
   const current = steps[currentIndex];
 
   return (
@@ -71,7 +76,7 @@ const WizardStepper = props => {
 
       <ol className={css.steps}>
         {steps.map((step, i) => {
-          const isDone = i < currentIndex;
+          const isDone = isStepDone(step, i);
           const isCurrent = i === currentIndex;
           const content = (
             <>

@@ -792,7 +792,7 @@ class EditListingWizard extends Component {
       isNewListingFlow && stepIndex >= 0 ? (
         <WizardStepper
           currentIndex={stepIndex}
-          steps={tabs.map(tab => ({
+          steps={tabs.map((tab, i) => ({
             key: tab,
             label: tabLabelAndSubmit(
               intl,
@@ -803,6 +803,13 @@ class EditListingWizard extends Component {
             ).label,
             linkProps: tabLink(tab),
             reachable: !!tabsStatus[tab],
+            // What is actually filled in, so a draft opened on step 1 shows its
+            // later steps as done. Description never blocks, so it only counts
+            // once written or passed.
+            completed:
+              tab === DESCRIPTION
+                ? !!currentListing?.attributes?.description || i < stepIndex
+                : tabCompleted(tab, currentListing, config),
           }))}
         />
       ) : null;
