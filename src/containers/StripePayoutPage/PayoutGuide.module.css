@@ -1,0 +1,415 @@
+@import '../../styles/customMediaQueries.css';
+
+.root {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+
+  @media (--viewportMedium) {
+    gap: 24px;
+    margin-top: 24px;
+  }
+}
+
+.icon {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ================ Where you are ================ */
+
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px;
+
+  color: var(--colorInk);
+  background-color: var(--colorGround);
+  border-radius: var(--radiusSheet);
+  animation: fwGuideIn 0.45s var(--easeOut) both;
+
+  @media (--viewportMedium) {
+    gap: 20px;
+    padding: 28px;
+  }
+}
+
+.hero_notStarted {
+  color: var(--colorPaper);
+  background-color: var(--colorForest);
+  background-image: radial-gradient(
+    120% 160% at 100% 0%,
+    rgba(93, 202, 165, 0.35) 0%,
+    rgba(93, 202, 165, 0) 60%
+  );
+}
+
+.hero_needsInfo {
+  background-color: #fff6e5;
+  box-shadow: inset 0 0 0 1px #f5d9a6;
+}
+
+.hero_ready {
+  background-color: var(--colorSagePale);
+  box-shadow: inset 0 0 0 1px rgba(15, 110, 86, 0.25);
+}
+
+.heroIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border-radius: 14px;
+  box-shadow: var(--shadowRest);
+
+  & .icon {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+.hero_needsInfo .heroIcon {
+  color: var(--colorGold);
+}
+
+.heroBody {
+  min-width: 0;
+}
+
+.heroStatus {
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.heroTitle {
+  margin: 4px 0 0 0;
+  padding: 0;
+
+  font-family: var(--fontFamilyDisplay);
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: inherit;
+
+  @media (--viewportMedium) {
+    font-size: 28px;
+    line-height: 32px;
+  }
+}
+
+.heroText {
+  margin: 8px 0 0 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 22px;
+  opacity: 0.88;
+}
+
+/* ================ The steps ================ */
+
+.steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (--viewportLarge) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+.step {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding: 0 0 18px 0;
+  animation: fwGuideIn 0.45s calc(0.08s + var(--i, 0) * 60ms) var(--easeOut) both;
+
+  /* The line joining one step to the next, down the side on a phone */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 34px;
+    bottom: 2px;
+    left: 15px;
+    width: 2px;
+    background-color: var(--colorDivider);
+    border-radius: 1px;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  &:last-child::before {
+    display: none;
+  }
+
+  @media (--viewportLarge) {
+    gap: 14px;
+    padding: 18px;
+    background-color: var(--colorWhite);
+    border: 1px solid var(--colorDivider);
+    border-radius: var(--radiusCard);
+
+    &::before {
+      display: none;
+    }
+  }
+}
+
+.stepDone::before {
+  background-color: var(--colorSage);
+}
+
+.stepMark {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  font-size: 14px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorSlate);
+  background-color: var(--colorWhite);
+  border: 1.5px solid var(--colorDivider);
+  border-radius: 50%;
+
+  & .icon {
+    width: 16px;
+    height: 16px;
+    stroke-width: 2.4;
+  }
+}
+
+.stepDone .stepMark {
+  color: var(--colorWhite);
+  background-color: var(--colorForest);
+  border-color: var(--colorForest);
+}
+
+.stepCurrent .stepMark {
+  color: var(--colorForest);
+  border-color: var(--colorForest);
+  box-shadow: 0 0 0 4px rgba(93, 202, 165, 0.25);
+}
+
+@media (--viewportLarge) {
+  .stepCurrent {
+    border-color: var(--colorForest);
+    box-shadow: 0 6px 16px rgba(15, 110, 86, 0.12);
+  }
+}
+
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-top: 5px;
+}
+
+.stepTitle {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.stepText {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--colorGraphite);
+}
+
+.stepWhere {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: var(--fontWeightSemiBold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--colorForest);
+}
+
+/* ================ The form, as a card ================ */
+
+.formCard {
+  padding: 4px 18px 18px 18px;
+
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorDivider);
+  border-radius: var(--radiusSheet);
+  box-shadow: var(--shadowRest);
+
+  @media (--viewportMedium) {
+    padding: 8px 28px 28px 28px;
+  }
+}
+
+/* ================ What to have ready ================ */
+
+.sectionTitle {
+  margin: 0 0 12px 0;
+  padding: 0;
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: var(--fontWeightBold);
+  color: var(--colorInk);
+}
+
+.needs {
+  padding: 18px;
+  background-color: var(--colorGround);
+  border-radius: var(--radiusSheet);
+
+  @media (--viewportMedium) {
+    padding: 24px 28px;
+  }
+}
+
+.needList {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (--viewportMedium) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 20px;
+  }
+}
+
+.need {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--colorInk);
+}
+
+.needTick {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 0;
+
+  color: var(--colorForest);
+  background-color: var(--colorWhite);
+  border-radius: 50%;
+
+  & .icon {
+    width: 14px;
+    height: 14px;
+    stroke-width: 2.6;
+  }
+}
+
+.needsNote {
+  margin: 14px 0 0 0;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--colorSlate);
+}
+
+/* ================ Questions ================ */
+
+.faq {
+  margin: 0;
+}
+
+.question {
+  border-bottom: 1px solid var(--colorDivider);
+
+  &:first-of-type {
+    border-top: 1px solid var(--colorDivider);
+  }
+}
+
+.questionTitle {
+  position: relative;
+  display: block;
+  padding: 16px 32px 16px 0;
+
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: var(--fontWeightSemiBold);
+  color: var(--colorInk);
+  list-style: none;
+  cursor: pointer;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  /* A plus that turns into a minus */
+  &::after {
+    content: '+';
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    font-size: 22px;
+    font-weight: var(--fontWeightRegular);
+    color: var(--colorForest);
+    transform: translateY(-50%);
+    transition: transform 0.2s var(--easeOut);
+  }
+}
+
+.question[open] .questionTitle::after {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.answer {
+  margin: 0;
+  padding: 0 0 16px 0;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--colorGraphite);
+  animation: fwGuideIn 0.25s var(--easeOut);
+}
+
+@keyframes fwGuideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero,
+  .step,
+  .answer {
+    animation: none;
+  }
+
+  .questionTitle::after {
+    transition: none;
+  }
+}

@@ -86,6 +86,7 @@ const TradingGuidePage = () => {
     currentPage: 'TradingGuidePage',
     showPaymentMethods,
     showPayoutDetails,
+    currentUser,
   };
 
   const handleSenderSubmit = values => {

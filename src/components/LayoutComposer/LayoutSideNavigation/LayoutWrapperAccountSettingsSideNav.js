@@ -3,10 +3,12 @@
  * Navigational 'aside' content should be added to this wrapper.
  */
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 
 import { FormattedMessage } from '../../../util/reactIntl';
+import { getTradeReadiness } from '../../../util/fairwayContact';
 
-import { TabNav } from '../../../components';
+import { NamedLink } from '../../../components';
 
 import { createGlobalState } from './hookGlobalState';
 
@@ -55,6 +57,72 @@ const scrollToTab = (currentPage, scrollLeft, setScrollLeft) => {
   }
 };
 
+// FAIRWAY: one line icon per settings page, so the row reads at a glance
+const NAV_ICONS = {
+  TradingGuidePage: (
+    <>
+      <path d="M9 4h6v3H9z" />
+      <path d="M8 5.5H6v15h12v-15h-2" />
+      <path d="m9 13 2 2 4-4" />
+    </>
+  ),
+  ContactDetailsPage: (
+    <>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
+      <path d="m4 7 8 6 8-6" />
+    </>
+  ),
+  PasswordChangePage: (
+    <>
+      <rect x="5" y="10.5" width="14" height="10" rx="2" />
+      <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
+    </>
+  ),
+  StripePayoutPage: (
+    <>
+      <path d="M3 10h18L12 4 3 10Z" />
+      <path d="M5.5 10v8M10 10v8M14 10v8M18.5 10v8M3 20h18" />
+    </>
+  ),
+  PaymentMethodsPage: (
+    <>
+      <rect x="3" y="5.5" width="18" height="13" rx="2" />
+      <path d="M3 10h18M7 15h3" />
+    </>
+  ),
+  ManageAccountPage: (
+    <>
+      <circle cx="12" cy="8.5" r="3.5" />
+      <path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" />
+    </>
+  ),
+};
+
+const NavIcon = ({ page }) => (
+  <svg className={css.navIcon} width="20" height="20" viewBox="0 0 24 24" aria-hidden={true}>
+    {NAV_ICONS[page]}
+  </svg>
+);
+
+/**
+ * FAIRWAY: which settings pages still need something from this user, so the
+ * nav can put a dot on them. Everything is read off the current user.
+ *
+ * @param {Object} currentUser
+ * @returns {Object<string, boolean>} page name → needs attention
+ */
+export const pagesNeedingAttention = currentUser => {
+  if (!currentUser?.id) {
+    return {};
+  }
+  const { emailVerified, payoutAccount, readyToSell } = getTradeReadiness(currentUser);
+  return {
+    TradingGuidePage: !readyToSell,
+    ContactDetailsPage: !emailVerified,
+    StripePayoutPage: !payoutAccount,
+  };
+};
+
 /**
  * Side nav with navigation to different account settings.
  *
@@ -64,6 +132,7 @@ const scrollToTab = (currentPage, scrollLeft, setScrollLeft) => {
  * @param {string?} props.accountSettingsNavProps.currentPage
  * @param {boolean?} props.accountSettingsNavProps.showPaymentMethods
  * @param {boolean?} props.accountSettingsNavProps.showPayoutDetails
+ * @param {Object?} props.accountSettingsNavProps.currentUser - For the dots on pages that need something
  * @returns {JSX.Element} Side nav with navigation to different account settings
  */
 const LayoutWrapperAccountSettingsSideNav = props => {
@@ -157,8 +226,37 @@ const LayoutWrapperAccountSettingsSideNav = props => {
     },
   ];
 
+  // FAIRWAY: app-style pills with an icon each — a row you swipe on a phone,
+  // a list on a desktop — and a dot on the pages that still need something.
+  const attention = pagesNeedingAttention(accountSettingsNavProps.currentUser);
+
   return (
-    <TabNav rootClassName={css.tabs} tabRootClassName={css.tab} tabs={tabs} ariaLabel={ariaLabel} />
+    <nav className={css.accountNav} aria-label={ariaLabel}>
+      {tabs.map(tab => {
+        const page = tab.linkProps.name;
+        return (
+          <div key={tab.id} id={tab.id} className={css.accountNavItem}>
+            <NamedLink
+              {...tab.linkProps}
+              className={classNames(css.accountNavLink, {
+                [css.accountNavLinkSelected]: tab.selected,
+              })}
+              aria-current={tab.selected ? 'page' : undefined}
+            >
+              <NavIcon page={page} />
+              <span className={css.accountNavText}>{tab.text}</span>
+              {attention[page] ? (
+                <span className={css.attentionDot}>
+                  <span className={css.srOnly}>
+                    <FormattedMessage id="LayoutWrapperAccountSettingsSideNav.needsAttention" />
+                  </span>
+                </span>
+              ) : null}
+            </NamedLink>
+          </div>
+        );
+      })}
+    </nav>
   );
 };
 

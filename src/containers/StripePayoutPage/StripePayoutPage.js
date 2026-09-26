@@ -30,6 +30,7 @@ import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import FooterContainer from '../../containers/FooterContainer/FooterContainer';
 
 import { savePayoutDetails } from './StripePayoutPage.duck';
+import PayoutGuide, { payoutState } from './PayoutGuide';
 
 import css from './StripePayoutPage.module.css';
 
@@ -155,6 +156,11 @@ export const StripePayoutPageComponent = props => {
     }
   );
 
+  // FAIRWAY: where the seller is, for the guide above the form
+  const stripeAvailable = !!config.stripe?.publishableKey;
+  const guideState = payoutState({ stripeAvailable, stripeConnected, requirementsMissing });
+  const bankLast4 = getBankAccountLast4Digits(stripeAccountData);
+
   const returnedNormallyFromStripe = returnURLType === STRIPE_ONBOARDING_RETURN_URL_SUCCESS;
   const returnedAbnormallyFromStripe = returnURLType === STRIPE_ONBOARDING_RETURN_URL_FAILURE;
   const showVerificationNeeded = stripeConnected && requirementsMissing;
@@ -182,6 +188,7 @@ export const StripePayoutPageComponent = props => {
     currentPage: 'StripePayoutPage',
     showPaymentMethods,
     showPayoutDetails,
+    currentUser,
   };
 
   return (
@@ -214,51 +221,60 @@ export const StripePayoutPageComponent = props => {
           ) : returnedAbnormallyFromStripe && !getAccountLinkError ? (
             <FormattedMessage id="StripePayoutPage.redirectingToStripe" />
           ) : (
-            <StripeConnectAccountForm
-              rootClassName={css.stripeConnectAccountForm}
-              disabled={formDisabled}
-              inProgress={payoutDetailsSaveInProgress}
-              ready={payoutDetailsSaved}
-              currentUser={ensuredCurrentUser}
-              stripeBankAccountLastDigits={getBankAccountLast4Digits(stripeAccountData)}
-              savedCountry={savedCountry}
-              savedAccountType={savedAccountType}
-              submitButtonText={intl.formatMessage({
-                id: 'StripePayoutPage.submitButtonText',
-              })}
-              stripeAccountError={
-                createStripeAccountError || updateStripeAccountError || fetchStripeAccountError
-              }
-              stripeAccountLinkError={getAccountLinkError}
-              stripeAccountFetched={stripeAccountFetched}
-              onChange={onPayoutDetailsChange}
-              onSubmit={onPayoutDetailsSubmit}
-              onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink}
-              stripeConnected={stripeConnected}
-              authScopes={authScopes}
-            >
-              {stripeConnected && !returnedAbnormallyFromStripe && showVerificationNeeded ? (
-                <StripeConnectAccountStatusBox
-                  type="verificationNeeded"
-                  inProgress={getAccountLinkInProgress}
-                  onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink(
-                    'custom_account_verification'
-                  )}
-                  disabled={limitedRights}
-                  title={stripeButtonTitle}
-                />
-              ) : stripeConnected && savedCountry && !returnedAbnormallyFromStripe ? (
-                <StripeConnectAccountStatusBox
-                  type="verificationSuccess"
-                  inProgress={getAccountLinkInProgress}
-                  disabled={payoutDetailsSaveInProgress || limitedRights}
-                  onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink(
-                    'custom_account_update'
-                  )}
-                  title={stripeButtonTitle}
-                />
+            <PayoutGuide state={guideState} bankLast4={bankLast4}>
+              {stripeAvailable ? (
+                <StripeConnectAccountForm
+                  rootClassName={css.stripeConnectAccountForm}
+                  disabled={formDisabled}
+                  inProgress={payoutDetailsSaveInProgress}
+                  ready={payoutDetailsSaved}
+                  currentUser={ensuredCurrentUser}
+                  stripeBankAccountLastDigits={getBankAccountLast4Digits(stripeAccountData)}
+                  savedCountry={savedCountry}
+                  savedAccountType={savedAccountType}
+                  submitButtonText={intl.formatMessage({
+                    id: 'StripePayoutPage.submitButtonText',
+                  })}
+                  stripeAccountError={
+                    createStripeAccountError || updateStripeAccountError || fetchStripeAccountError
+                  }
+                  stripeAccountLinkError={getAccountLinkError}
+                  stripeAccountFetched={stripeAccountFetched}
+                  onChange={onPayoutDetailsChange}
+                  onSubmit={onPayoutDetailsSubmit}
+                  onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink}
+                  stripeConnected={stripeConnected}
+                  authScopes={authScopes}
+                >
+                  {stripeConnected && !returnedAbnormallyFromStripe && showVerificationNeeded ? (
+                    <StripeConnectAccountStatusBox
+                      type="verificationNeeded"
+                      inProgress={getAccountLinkInProgress}
+                      onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink(
+                        'custom_account_verification'
+                      )}
+                      disabled={limitedRights}
+                      title={stripeButtonTitle}
+                    />
+                  ) : stripeConnected && savedCountry && !returnedAbnormallyFromStripe ? (
+                    <StripeConnectAccountStatusBox
+                      type="verificationSuccess"
+                      inProgress={getAccountLinkInProgress}
+                      disabled={payoutDetailsSaveInProgress || limitedRights}
+                      onGetStripeConnectAccountLink={handleGetStripeConnectAccountLink(
+                        'custom_account_update'
+                      )}
+                      title={stripeButtonTitle}
+                    />
+                  ) : null}
+                </StripeConnectAccountForm>
+              ) : process.env.NODE_ENV !== 'production' ? (
+                // Only in development: what is missing, for whoever runs the site
+                <p className={css.devNote}>
+                  <FormattedMessage id="StripePayoutPage.devMissingKey" />
+                </p>
               ) : null}
-            </StripeConnectAccountForm>
+            </PayoutGuide>
           )}
         </div>
       </LayoutSideNavigation>

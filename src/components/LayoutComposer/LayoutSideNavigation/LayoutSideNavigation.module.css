@@ -32,6 +32,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  /* FAIRWAY: a grid item may otherwise grow to its widest child (the
+     scrolling row of settings pills) and push the page sideways */
+  min-width: 0;
 
   /* When side nav is shown as a column, Topbar's box-shadow should be visible */
   z-index: calc(var(--zIndexTopbar) - 1);
@@ -75,7 +78,9 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  width: 100vw;
+  /* FAIRWAY: 100%, not 100vw — 100vw includes the scrollbar on Windows, which
+     made every account page 15px too wide with a sideways scrollbar */
+  width: 100%;
   padding: 0 24px;
 
   border-top-width: 1px;
@@ -131,4 +136,118 @@
   @media (--viewportLarge) {
     margin-left: 0;
   }
+}
+
+/* ================ FAIRWAY: account settings as app pills ================ */
+
+.accountNav {
+  display: flex;
+  flex-direction: row;
+  /* a flex item in the side nav: without these it grows to fit every pill
+     and pushes the page sideways instead of scrolling */
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 6px;
+  margin: 0 -24px;
+  padding: 10px 24px;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (--viewportLarge) {
+    flex-direction: column;
+    gap: 2px;
+    margin: 24px 0 0 0;
+    padding: 0 24px 0 0;
+    overflow: visible;
+  }
+}
+
+.accountNavItem {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.accountNavLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px 0 12px;
+
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: var(--fontWeightSemiBold);
+  white-space: nowrap;
+  color: var(--colorGraphite);
+  background-color: var(--colorGround);
+  border-radius: var(--radiusPill);
+  transition: background-color 0.16s var(--easeOut), color 0.16s var(--easeOut);
+
+  &:hover {
+    text-decoration: none;
+    color: var(--colorInk);
+    background-color: var(--colorGroundDeep);
+  }
+
+  @media (--viewportLarge) {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 14px;
+    font-size: 15px;
+    background-color: transparent;
+    border-radius: var(--radiusControl);
+  }
+}
+
+.accountNavLinkSelected,
+.accountNavLinkSelected:hover {
+  color: var(--colorWhite);
+  background-color: var(--colorForest);
+
+  @media (--viewportLarge) {
+    color: var(--colorForest);
+    background-color: var(--colorSagePale);
+  }
+}
+
+.navIcon {
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.accountNavText {
+  min-width: 0;
+}
+
+/* Something is missing on this page */
+.attentionDot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  margin-left: 2px;
+  background-color: #e8590c;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--colorWhite);
+
+  @media (--viewportLarge) {
+    margin-left: auto;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }

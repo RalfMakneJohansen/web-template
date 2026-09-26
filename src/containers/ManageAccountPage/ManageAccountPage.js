@@ -114,6 +114,7 @@ export const ManageAccountPageComponent = props => {
     currentPage: 'ManageAccountPage',
     showPaymentMethods,
     showPayoutDetails,
+    currentUser,
   };
 
   return (

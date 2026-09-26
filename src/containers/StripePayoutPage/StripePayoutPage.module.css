@@ -9,6 +9,7 @@
 
   @media (--viewportLarge) {
     margin: 0;
+    max-width: 760px;
   }
 }
 
@@ -23,4 +24,16 @@
 
 .stripeConnectAccountForm {
   margin-top: 0;
+}
+
+/* FAIRWAY: only rendered in development, when the Stripe key is missing */
+.devNote {
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--colorGraphite);
+  background-color: var(--colorGround);
+  border: 1px dashed var(--colorDividerWarm);
+  border-radius: var(--radiusControl);
 }
