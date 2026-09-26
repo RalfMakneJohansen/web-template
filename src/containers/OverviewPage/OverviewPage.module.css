@@ -608,6 +608,10 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  /* width as well as height: next to a listing the row is taller than a
+     square, and height plus aspect-ratio made the tile as wide as the row
+     was tall — 54px past the edge of a phone */
+  width: 100%;
   min-height: 160px;
   aspect-ratio: 1 / 1;
 
@@ -826,4 +830,13 @@
   font-size: 16px;
   line-height: 22px;
   color: var(--colorAttentionDark);
+}
+
+/* FAIRWAY: the setup checklist under the trades waiting on you */
+.todoChecklist {
+  margin-top: 12px;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }

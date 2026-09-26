@@ -198,6 +198,8 @@ const OverviewPage = () => {
   const showVerifyBanner = !!user.id && !readiness.emailVerified && !showChecklist;
 
   const actions = actionItems({ sales, orders });
+  // Trades waiting on this user, plus the setup steps still missing
+  const todoCount = actions.length + (showChecklist ? 3 - readyCount : 0);
   const stats = overviewStats({ sales, orders, listingCount });
   const recent = recentTrades({ sales, orders });
 
@@ -323,7 +325,7 @@ const OverviewPage = () => {
               <h2 id="overview-todo" className={css.sectionTitle}>
                 <FormattedMessage id="OverviewPage.todoTitle" />
               </h2>
-              {actions.length > 0 ? <span className={css.count}>{actions.length}</span> : null}
+              {todoCount > 0 ? <span className={css.count}>{todoCount}</span> : null}
             </div>
             {actions.length > 0 ? (
               <ul className={css.actions}>
@@ -331,7 +333,25 @@ const OverviewPage = () => {
                   <ActionCard key={`${item.kind}-${item.tx.id.uuid}`} item={item} />
                 ))}
               </ul>
-            ) : (
+            ) : null}
+
+            {/* FAIRWAY: what a seller still has to set up is a to-do too. It
+                used to sit in its own section under an "Alt er klaret" card,
+                which said the opposite of the list right below it. */}
+            {showChecklist ? (
+              <div className={css.todoChecklist}>
+                <TradeReadiness
+                  currentUser={currentUser}
+                  context="profile"
+                  onResendVerification={onResendVerification}
+                />
+                <p className={css.readyHint}>
+                  <FormattedMessage id="OverviewPage.readyCount" values={{ count: readyCount }} />
+                </p>
+              </div>
+            ) : null}
+
+            {actions.length === 0 && !showChecklist ? (
               <div className={css.allDone}>
                 <span className={css.allDoneMark} aria-hidden={true}>
                   ✓
@@ -345,21 +365,8 @@ const OverviewPage = () => {
                   </span>
                 </span>
               </div>
-            )}
+            ) : null}
           </section>
-
-          {showChecklist ? (
-            <section className={css.section}>
-              <TradeReadiness
-                currentUser={currentUser}
-                context="profile"
-                onResendVerification={onResendVerification}
-              />
-              <p className={css.readyHint}>
-                <FormattedMessage id="OverviewPage.readyCount" values={{ count: readyCount }} />
-              </p>
-            </section>
-          ) : null}
 
           <div className={css.columns}>
             {canSell ? (

@@ -89,10 +89,35 @@ describe('OverviewPage', () => {
     expect(screen.getByText('OverviewPage.tradeStatus.toSend')).toBeInTheDocument();
   });
 
-  it('says all is done when nothing waits for you', () => {
+  it('lists the missing setup as a to-do, not "all done", for a seller not set up', () => {
     render(<OverviewPage />, { initialState: initialState({ saleRefs: [] }) });
 
-    expect(screen.getByText('OverviewPage.allDoneTitle')).toBeInTheDocument();
+    expect(screen.queryByText('OverviewPage.allDoneTitle')).not.toBeInTheDocument();
+    expect(screen.getByText('OverviewPage.readyCount')).toBeInTheDocument();
     expect(screen.getByText('OverviewPage.noTrades')).toBeInTheDocument();
+  });
+
+  it('says all is done when nothing waits for you and you are set up', () => {
+    const readyUser = {
+      ...createCurrentUser('me', {
+        emailVerified: true,
+        profile: {
+          firstName: 'Petra',
+          lastName: 'M',
+          displayName: 'Petra M',
+          abbreviatedName: 'PM',
+          protectedData: {
+            phoneNumber: '12345678',
+            senderAddress: { name: 'Petra M', line1: 'Testvej 1', postalCode: '2100', city: 'Kbh' },
+          },
+        },
+      }),
+      stripeAccount: { id: new UUID('stripe-account') },
+    };
+    const state = initialState({ saleRefs: [] });
+    render(<OverviewPage />, { initialState: { ...state, user: { currentUser: readyUser } } });
+
+    expect(screen.getByText('OverviewPage.allDoneTitle')).toBeInTheDocument();
+    expect(screen.queryByText('OverviewPage.readyCount')).not.toBeInTheDocument();
   });
 });
