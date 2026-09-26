@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 // Import configs and util modules
@@ -11,12 +11,13 @@ import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_EDIT,
 } from '../../util/urlHelpers';
-import { getTradeReadiness } from '../../util/fairwayContact';
+import { emailVerifiedAtOf, getTradeReadiness } from '../../util/fairwayContact';
 import { shipmentFrom } from '../../util/fairwayTracking';
 import { showCreateListingLinkForUser } from '../../util/userHelpers';
 import { useConfiguration } from '../../context/configurationContext';
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck';
 import { isScrollingDisabled } from '../../ducks/ui.duck';
+import { sendVerificationEmail } from '../../ducks/user.duck';
 
 // Import shared components
 import {
@@ -24,6 +25,7 @@ import {
   LayoutSingleColumn,
   NamedLink,
   Page,
+  ResendVerificationButton,
   ResponsiveImage,
   TradeReadiness,
   UserNav,
@@ -165,6 +167,8 @@ const ListingTile = ({ listing, intl, hideStatus = false }) => {
 const OverviewPage = () => {
   const intl = useIntl();
   const config = useConfiguration();
+  const dispatch = useDispatch();
+  const onResendVerification = () => dispatch(sendVerificationEmail());
   const scrollingDisabled = useSelector(isScrollingDisabled);
   const currentUser = useSelector(state => state.user?.currentUser);
   const {
@@ -188,6 +192,10 @@ const OverviewPage = () => {
     key => readiness[key]
   ).length;
   const canSell = showCreateListingLinkForUser(config, currentUser);
+  const verifiedAt = emailVerifiedAtOf(currentUser);
+  const showChecklist = canSell && !readiness.readyToSell;
+  // The checklist already asks sellers to confirm their email.
+  const showVerifyBanner = !!user.id && !readiness.emailVerified && !showChecklist;
 
   const actions = actionItems({ sales, orders });
   const stats = overviewStats({ sales, orders, listingCount });
@@ -241,7 +249,19 @@ const OverviewPage = () => {
                       <span className={css.badgeDot} aria-hidden={true}>
                         {readiness[key] ? '✓' : ''}
                       </span>
-                      <FormattedMessage id={`OverviewPage.badge.${key}`} />
+                      {key === 'emailVerified' && readiness.emailVerified && verifiedAt ? (
+                        <FormattedMessage
+                          id="OverviewPage.badge.emailVerifiedAt"
+                          values={{
+                            date: intl.formatDate(new Date(verifiedAt), {
+                              day: 'numeric',
+                              month: 'short',
+                            }),
+                          }}
+                        />
+                      ) : (
+                        <FormattedMessage id={`OverviewPage.badge.${key}`} />
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -262,6 +282,24 @@ const OverviewPage = () => {
               </NamedLink>
             </div>
           </header>
+
+          {showVerifyBanner ? (
+            <div className={css.verifyBanner} role="status">
+              <span className={css.verifyText}>
+                <strong className={css.verifyTitle}>
+                  <FormattedMessage id="OverviewPage.verifyTitle" />
+                </strong>
+                <FormattedMessage
+                  id="OverviewPage.verifyText"
+                  values={{ email: user.attributes.email }}
+                />
+              </span>
+              <ResendVerificationButton
+                onResend={onResendVerification}
+                email={user.attributes.email}
+              />
+            </div>
+          ) : null}
 
           <ul className={css.stats}>
             {statCards.map(stat => (
@@ -310,9 +348,13 @@ const OverviewPage = () => {
             )}
           </section>
 
-          {canSell && !readiness.readyToSell ? (
+          {showChecklist ? (
             <section className={css.section}>
-              <TradeReadiness currentUser={currentUser} context="profile" />
+              <TradeReadiness
+                currentUser={currentUser}
+                context="profile"
+                onResendVerification={onResendVerification}
+              />
               <p className={css.readyHint}>
                 <FormattedMessage id="OverviewPage.readyCount" values={{ count: readyCount }} />
               </p>

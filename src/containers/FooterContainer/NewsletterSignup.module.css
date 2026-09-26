@@ -3,6 +3,9 @@
 /* FAIRWAY: the newsletter card — the forest panel of the landing page's
    shipping section, as a card on the white footer. */
 .root {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   display: grid;
   gap: 24px;
   margin-bottom: 48px;

@@ -59,6 +59,7 @@ import SectionMapMaybe from './SectionMapMaybe';
 import SectionGallery from './SectionGallery';
 import ListingHeadline from './ListingHeadline';
 import ListingDescription from './ListingDescription';
+import PublishedCelebration from './PublishedCelebration';
 import SectionRelatedListings from './SectionRelatedListings';
 import SectionBuyerJourney from './SectionBuyerJourney';
 import SectionListingFaq from './SectionListingFaq';
@@ -314,6 +315,9 @@ export const ListingPageComponent = props => {
                 tab: listingTab,
               }}
             />
+            {/* FAIRWAY: just published — say so, and suggest sharing it */}
+            <PublishedCelebration listing={currentListing} isOwnListing={isOwnListing} />
+
             {showListingImage && (
               <SectionGallery
                 listing={currentListing}

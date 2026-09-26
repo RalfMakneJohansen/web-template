@@ -9,6 +9,14 @@ export const verifyEmail = createAsyncThunk(
   (verificationToken, { dispatch, rejectWithValue, extra: sdk }) => {
     return sdk.currentUser
       .verifyEmail({ verificationToken })
+      .then(() =>
+        // FAIRWAY: note when it happened. Sharetribe keeps only the flag, and
+        // "Bekræftet 26. sep." on the profile is worth one small write. Best
+        // effort: a failed note must never look like a failed verification.
+        sdk.currentUser
+          .updateProfile({ privateData: { emailVerifiedAt: new Date().toISOString() } })
+          .catch(() => null)
+      )
       .then(() => {
         // Dispatch fetchCurrentUser after successful verification
         dispatch(fetchCurrentUser({ enforce: true }));

@@ -26,6 +26,7 @@ import TopbarContainer from '../../containers/TopbarContainer/TopbarContainer';
 import FooterContainer from '../../containers/FooterContainer/FooterContainer';
 
 import { updateProfile } from '../ProfileSettingsPage/ProfileSettingsPage.duck';
+import { sendVerificationEmail } from '../../ducks/user.duck';
 
 import css from './TradingGuidePage.module.css';
 
@@ -103,7 +104,10 @@ const TradingGuidePage = () => {
         topbar={
           <>
             <TopbarContainer />
-            <UserNav currentPage="TradingGuidePage" showManageListingsLink={showManageListingsLink} />
+            <UserNav
+              currentPage="TradingGuidePage"
+              showManageListingsLink={showManageListingsLink}
+            />
           </>
         }
         sideNav={null}
@@ -120,7 +124,12 @@ const TradingGuidePage = () => {
             <FormattedMessage id="TradingGuidePage.lead" />
           </p>
 
-          <TradeReadiness className={css.readiness} currentUser={currentUser} context="guide" />
+          <TradeReadiness
+            className={css.readiness}
+            currentUser={currentUser}
+            context="guide"
+            onResendVerification={() => dispatch(sendVerificationEmail())}
+          />
 
           <section className={css.section} aria-labelledby="guide-seller">
             <h2 id="guide-seller" className={css.sectionTitle}>

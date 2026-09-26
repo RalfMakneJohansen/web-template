@@ -428,6 +428,9 @@
 /* ================ Buy / sell tiles ================ */
 
 .tiles {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
@@ -719,6 +722,9 @@
 
 /* The band runs edge to edge; its contents stay on the page's own column. */
 .rowInner {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   width: 100%;
   max-width: var(--contentMaxWidthPages);
   margin: 0 auto;
@@ -850,6 +856,9 @@
 }
 
 .sellBannerInner {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   position: relative;
   z-index: 1;
 
@@ -903,6 +912,9 @@
 }
 
 .boxInner {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
@@ -1204,6 +1216,9 @@
 }
 
 .communityInner {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   display: grid;
   grid-template-columns: 1fr;
   gap: 32px;

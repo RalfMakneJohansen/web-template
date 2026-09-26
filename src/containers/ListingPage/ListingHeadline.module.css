@@ -181,3 +181,39 @@
     line-height: 40px;
   }
 }
+
+/* FAIRWAY: the top of the listing settles in, one line after the other */
+.topRow,
+.title,
+.priceBlock,
+.seller {
+  animation: fwSettle 0.5s var(--easeOut) both;
+}
+
+.title {
+  animation-delay: 0.05s;
+}
+
+.priceBlock {
+  animation-delay: 0.1s;
+}
+
+.seller {
+  animation-delay: 0.15s;
+}
+
+@keyframes fwSettle {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topRow,
+  .title,
+  .priceBlock,
+  .seller {
+    animation: none;
+  }
+}

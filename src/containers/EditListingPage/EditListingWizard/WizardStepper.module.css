@@ -166,3 +166,50 @@
     transition: none;
   }
 }
+
+/* The step just finished pops as its tick appears; the line to it fills */
+.stepJustDone .circle {
+  animation: fwPop 0.5s var(--easeOut) both;
+}
+
+.stepJustDone .check {
+  stroke-dasharray: 16;
+  animation: fwDraw 0.35s 0.2s var(--easeOut) both;
+}
+
+.stepCurrent::before {
+  transform-origin: left center;
+  animation: fwFill 0.5s var(--easeOut) both;
+}
+
+@keyframes fwPop {
+  0% {
+    transform: scale(0.7);
+  }
+  60% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fwDraw {
+  from {
+    stroke-dashoffset: 16;
+  }
+}
+
+@keyframes fwFill {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stepJustDone .circle,
+  .stepJustDone .check,
+  .stepCurrent::before {
+    animation: none;
+  }
+}

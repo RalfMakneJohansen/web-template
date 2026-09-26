@@ -242,6 +242,8 @@ export const EditListingPageComponent = props => {
             id: listingId.uuid,
             slug: listingSlug,
           },
+          // FAIRWAY: tells the listing page to celebrate, once (PublishedCelebration)
+          state: { fairwayJustPublished: true },
         };
 
     return <NamedRedirect {...redirectProps} />;

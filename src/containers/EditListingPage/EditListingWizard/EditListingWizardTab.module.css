@@ -43,3 +43,21 @@
     padding: 48px 56px 56px 56px;
   }
 }
+
+/* FAIRWAY: each step arrives rather than appears */
+.panel {
+  animation: fwStepIn 0.45s var(--easeOut) both;
+}
+
+@keyframes fwStepIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}

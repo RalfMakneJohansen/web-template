@@ -98,3 +98,16 @@ export const getTradeReadiness = currentUser => {
     readyToSell: emailVerified && senderAddress && payoutAccount,
   };
 };
+
+/**
+ * FAIRWAY: when the current email was confirmed, as an ISO string, or null.
+ * Written to privateData.emailVerifiedAt when the verification link is used
+ * (ducks/emailVerification.duck.js); Sharetribe itself keeps only the flag.
+ *
+ * @param {Object} currentUser
+ * @returns {string|null}
+ */
+export const emailVerifiedAtOf = currentUser => {
+  const at = currentUser?.attributes?.profile?.privateData?.emailVerifiedAt;
+  return typeof at === 'string' && !isNaN(Date.parse(at)) ? at : null;
+};

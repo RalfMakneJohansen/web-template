@@ -8,6 +8,7 @@ import { FormattedMessage, injectIntl, intlShape } from '../../../util/reactIntl
 import { propTypes } from '../../../util/types';
 import * as validators from '../../../util/validators';
 import { ensureCurrentUser } from '../../../util/data';
+import { emailVerifiedAtOf } from '../../../util/fairwayContact';
 import {
   isChangeEmailTakenError,
   isChangeEmailWrongPassword,
@@ -210,7 +211,21 @@ class ContactDetailsFormComponent extends Component {
             // Current email is verified and there's no pending unverified email
             emailVerifiedInfo = (
               <span className={css.emailVerified}>
-                <FormattedMessage id="ContactDetailsForm.emailVerified" />
+                {/* FAIRWAY: with the date it happened, once we know it */}
+                {emailVerifiedAtOf(currentUser) ? (
+                  <FormattedMessage
+                    id="ContactDetailsForm.emailVerifiedAt"
+                    values={{
+                      date: intl.formatDate(new Date(emailVerifiedAtOf(currentUser)), {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      }),
+                    }}
+                  />
+                ) : (
+                  <FormattedMessage id="ContactDetailsForm.emailVerified" />
+                )}
               </span>
             );
           } else if (!emailVerified && !pendingEmail) {

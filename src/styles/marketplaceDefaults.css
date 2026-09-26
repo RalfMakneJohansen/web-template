@@ -1824,3 +1824,46 @@ textarea {
     margin-top: 32px;
   }
 }
+
+/* ============================================================
+   FAIRWAY: motion
+
+   One small vocabulary, used everywhere:
+   - fwReveal: content glides up into place as it scrolls into view. Scroll-
+     driven (animation-timeline: view()), so no JavaScript and no layout
+     work; browsers without it simply show everything in place.
+   - Page-to-page: a short cross-fade on full navigations
+     (cross-document view transitions).
+   Nothing moves for people who have asked for reduced motion.
+   ============================================================ */
+
+@keyframes fwReveal {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fwReveal {
+  /* composed into sections that should glide in */
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .fwReveal {
+      animation: fwReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}

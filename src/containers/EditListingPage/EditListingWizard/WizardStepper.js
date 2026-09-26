@@ -81,6 +81,8 @@ const WizardStepper = props => {
           );
           const classes = classNames(css.step, {
             [css.stepDone]: isDone,
+            // the step just finished gets a small pop as its tick appears
+            [css.stepJustDone]: i === currentIndex - 1,
             [css.stepCurrent]: isCurrent,
           });
           return (

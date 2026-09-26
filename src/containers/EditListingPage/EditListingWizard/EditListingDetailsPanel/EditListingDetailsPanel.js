@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 
 // Import util modules
@@ -18,6 +18,7 @@ import {
 } from '../../../../util/fieldHelpers';
 import { isBookingProcessAlias } from '../../../../transactions/transaction';
 import { getTradeReadiness } from '../../../../util/fairwayContact';
+import { sendVerificationEmail } from '../../../../ducks/user.duck';
 
 // Import shared components
 import { H3, ListingLink, TradeReadiness } from '../../../../components';
@@ -363,6 +364,7 @@ const EditListingDetailsPanel = props => {
   // later in the flow anyway (shipping step, and Stripe when publishing); this
   // is so neither arrives as a surprise at the end. Hidden once all is set.
   const currentUser = useSelector(state => state.user?.currentUser);
+  const dispatch = useDispatch();
   const showReadiness =
     !isPublished && !!currentUser?.id && !getTradeReadiness(currentUser).readyToSell;
 
@@ -396,6 +398,7 @@ const EditListingDetailsPanel = props => {
           currentUser={currentUser}
           context="listing"
           compact
+          onResendVerification={() => dispatch(sendVerificationEmail())}
         />
       ) : null}
 

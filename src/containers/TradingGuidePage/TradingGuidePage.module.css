@@ -26,6 +26,9 @@
 }
 
 .section {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   margin-top: 36px;
   padding-top: 30px;
   border-top: 1px solid var(--colorDivider);

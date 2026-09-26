@@ -42,6 +42,9 @@
 }
 
 .section {
+  /* FAIRWAY: glides in as it scrolls into view (marketplaceDefaults.css) */
+  composes: fwReveal from global;
+
   margin-top: 44px;
 }
 

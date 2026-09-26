@@ -67,6 +67,7 @@ export { default as SaleBreakdown } from './SaleBreakdown/SaleBreakdown';
 export { default as DeliveryInfo } from './DeliveryInfo/DeliveryInfo';
 export { default as OffPlatformWarning } from './OffPlatformWarning/OffPlatformWarning';
 export { default as BuyerProtectionCard } from './BuyerProtectionCard/BuyerProtectionCard';
+export { default as ResendVerificationButton } from './ResendVerificationButton/ResendVerificationButton';
 export { default as CategoryIcon, DRAWN_CATEGORY_IDS } from './CategoryIcon/CategoryIcon';
 export { default as FairwayCardSkeleton } from './FairwayListingCard/FairwayCardSkeleton';
 export { default as ResponsiveBackgroundImageContainer } from './ResponsiveBackgroundImageContainer/ResponsiveBackgroundImageContainer';

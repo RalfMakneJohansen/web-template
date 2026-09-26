@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { FormattedMessage } from '../../util/reactIntl';
-import { getTradeReadiness } from '../../util/fairwayContact';
+import { FormattedMessage, useIntl } from '../../util/reactIntl';
+import { emailVerifiedAtOf, getTradeReadiness } from '../../util/fairwayContact';
 
 import NamedLink from '../NamedLink/NamedLink';
+import ResendVerificationButton from '../ResendVerificationButton/ResendVerificationButton';
 
 import css from './TradeReadiness.module.css';
 
@@ -39,10 +40,19 @@ const DotIcon = () => (
  * @param {Object} props.currentUser - The current user, with the stripeAccount relationship
  * @param {'guide'|'profile'|'listing'} [props.context] - Where the card is shown; picks the heading and links
  * @param {boolean} [props.compact] - One line saying how much is missing, opening to the list
+ * @param {Function} [props.onResendVerification] - Sends the verification email again; without it the email item links to contact details
  * @returns {JSX.Element} the readiness checklist
  */
 const TradeReadiness = props => {
-  const { className, rootClassName, currentUser, context = 'profile', compact = false } = props;
+  const {
+    className,
+    rootClassName,
+    currentUser,
+    context = 'profile',
+    compact = false,
+    onResendVerification,
+  } = props;
+  const intl = useIntl();
   if (!currentUser?.id) {
     return null;
   }
@@ -70,6 +80,33 @@ const TradeReadiness = props => {
       linkName: 'StripePayoutPage',
     },
   ];
+
+  const email = currentUser?.attributes?.email;
+  const verifiedAt = emailVerifiedAtOf(currentUser);
+  const actionFor = item =>
+    item.key === 'email' && typeof onResendVerification === 'function' ? (
+      <ResendVerificationButton onResend={onResendVerification} email={email} />
+    ) : (
+      <NamedLink className={css.itemLink} name={item.linkName} to={item.linkTo}>
+        <FormattedMessage id={`TradeReadiness.${item.key}.cta`} />
+      </NamedLink>
+    );
+  // The done text for the email says when it was confirmed, once we know.
+  const doneText = item =>
+    item.key === 'email' && verifiedAt ? (
+      <FormattedMessage
+        id="TradeReadiness.email.doneAt"
+        values={{
+          date: intl.formatDate(new Date(verifiedAt), {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          }),
+        }}
+      />
+    ) : (
+      <FormattedMessage id={`TradeReadiness.${item.key}.done`} />
+    );
 
   // FAIRWAY: in a flow the full card pushed the actual question off the screen;
   // compact, it is one line that opens to the same list.
@@ -106,9 +143,7 @@ const TradeReadiness = props => {
                   <FormattedMessage id={`TradeReadiness.${item.key}.todo`} />
                 </span>
               </span>
-              <NamedLink className={css.itemLink} name={item.linkName} to={item.linkTo}>
-                <FormattedMessage id={`TradeReadiness.${item.key}.cta`} />
-              </NamedLink>
+              {actionFor(item)}
             </li>
           ))}
         </ul>
@@ -140,16 +175,14 @@ const TradeReadiness = props => {
                 <FormattedMessage id={`TradeReadiness.${item.key}.title`} />
               </span>
               <span className={css.itemText}>
-                <FormattedMessage
-                  id={`TradeReadiness.${item.key}.${item.done ? 'done' : 'todo'}`}
-                />
+                {item.done ? (
+                  doneText(item)
+                ) : (
+                  <FormattedMessage id={`TradeReadiness.${item.key}.todo`} />
+                )}
               </span>
             </span>
-            {item.done ? null : (
-              <NamedLink className={css.itemLink} name={item.linkName} to={item.linkTo}>
-                <FormattedMessage id={`TradeReadiness.${item.key}.cta`} />
-              </NamedLink>
-            )}
+            {item.done ? null : actionFor(item)}
           </li>
         ))}
       </ul>
